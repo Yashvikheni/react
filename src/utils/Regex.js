@@ -4,17 +4,15 @@ export const emailValidation = email => {
 }
 
 export const passwordValidation = password => {
-    const regex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/
-    return regex.test(password)
+    const a=password.length>5?true:false;
+    return a
 }
-export const capitalize = string => string[0].toUpperCase() + string.slice(1)
 export const nameValidation=name=>{
     const letters =/^[A-Za-z]+$/
     return letters.test(name)
 }
 export const isEmpty=value=>{
-value =""
-return true
+const a=value===""?true:false
+return a
 }
-export const camelCaseSpace = string => string.replace(/([a-z])([A-Z])/g, '$1 $2')
-export const isNumber = value => /^[0-9]+$/.test(value)
+

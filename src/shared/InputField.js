@@ -2,31 +2,28 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import '../App.css'
-
-const InputField = ({value, label, placeholder, type,name,onChange,refs}) => {
-  
+const InputField = ({placeholder, type ,onChange,...fields}) => {
     return (
         <div>
-            {/* {label && <label htmlFor="app-input-field">{label}</label>} */}
-
             {type === 'radio'? (
                <>
                 <input
-                    type={type}
-                    name={name}
-                    value={value}
+                    type="radio"
                     onChange={onChange}
+                    {...fields}
                 />
-                <label>{value}</label>
+                <label>{fields.value}</label>
                 </>
             ) : (
+                <>
+                <label>{fields.name}</label>
                 <input
-                    type={type}
-                    name={name}
+                    
                     placeholder={placeholder}
                    onChange={onChange}
-                />
-               
+             
+                    {...fields}
+                /></>
             )}
            
         </div>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Form from "../shared/Form";
+import {Validators} from "../utils/Validators";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
@@ -13,11 +14,13 @@ function LogIn() {
         title: "Email",
         type: "email",
         name: "email",
+        placeholder: "email",
       },
       {
         title: "Password",
         type: "password",
         name: "password",
+        placeholder: "password",
       },
       {
         type: "link",
@@ -34,8 +37,11 @@ function LogIn() {
   };
 
   async function handleSubmit(e, values) {
-    const err = {};
     e.preventDefault();
+    const ans=Validators(values)
+    setError(ans)
+  console.log(ans)
+    if (ans.email==="" && ans.password==="") {
     const response = await axios
       .post(`${baseUrl}users/Login`, values)
       .then((response) => {
@@ -50,12 +56,12 @@ function LogIn() {
         // err.message="inc"
          err.msg = err.message
          setError(err)
-      });
+      });}
   }
 
   return (
     <div>
-      <Form template={template} onSubmit={handleSubmit} errors={error} />
+      <Form template={template} onSubmit={handleSubmit} error={error} setError={setError}/>
     </div>
   );
 }

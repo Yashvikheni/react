@@ -6,7 +6,7 @@ import SignUp from './presentation/SignUp'
 import LogIn from './presentation/LogIn'
 import ForgotPassword from './presentation/ForgotPassword'
 import TeacherDashboard from './presentation/TeacherDashboard'
-
+import NewPassword from './presentation/NewPassword'
 function App() {
   return (
     <div className="App">
@@ -19,6 +19,7 @@ function App() {
               <Route  path='/login' element={<LogIn />}> </Route>
               <Route  path='/forgotPassword' element={<ForgotPassword />}></Route>
             <Route path="/teacherDashboard" element={<TeacherDashboard />}></Route>
+            <Route path="/newpassword" element={<NewPassword />}></Route>
             </Routes>
         </Router>
     </div>

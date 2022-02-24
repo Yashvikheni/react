@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import SignUpReducer from './SignUpReducer'
+
 const RootReducers = combineReducers({
-    SignUpReducer
+    SignUpReducer,
+   
 })
 export default RootReducers

@@ -1,13 +1,15 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button'
-import Validators from "../utils/Validators";
+import  { Validation } from "../utils/Validators";
 import InputField from './InputField';
 import { Link } from 'react-router-dom'
 import '../App.css'
-function Form({ template, onSubmit }) {
-
-    const [errors, setErrors] = useState({});
+function Form({ template, onSubmit, error,setError }) {
+    useEffect(() =>{
+    error=error
+    },[error])
+    
     const [data, setData] = useState({})
    
     let { title, fields, buttonName } = template;
@@ -15,17 +17,17 @@ function Form({ template, onSubmit }) {
     const renderFields = (fields) => {
         
         return fields.map(field => {
-            let { title, type, name,value, path,required } = field;
+            let { type, name,value, path} = field;
             <label htmlFor={name}>{title}</label>
 
             if(type==='text' || type==='password'|| type==='email'){
                 return(
                 <div key={name}> 
            
-                  <TextField fullWidth={true} type={type} variant="outlined" required={required} label={name} name={name} onChange={handleChange}></TextField>
-                  {type==='text'?<span className="error">{errors.name}</span>:<span></span>}
-                {type==='password'?<span className="error">{errors.password}</span>:<span></span>} 
-                {type==='email'?<span className="error">{errors.email}</span>:<span></span>}
+                  <TextField fullWidth={true}   variant="outlined" {...field} onChange={handleChange}/>
+                  {type==='text'?<span className="error">{error.name}</span>:<span></span>}
+                {type==='password'?<span className="error">{error.password}</span>:<span></span>} 
+                {type==='email'?<span className="error">{error.email}</span>:<span></span>}
                           </div>)
             }
             else if(type==='radio'){
@@ -38,7 +40,7 @@ function Form({ template, onSubmit }) {
                             
                              )}
                             )}
-                            <span className="error">{errors.role}</span>
+                            <span className="error">{error.role}</span>
                         </div>)
             }
             else if(type==='link'){
@@ -56,7 +58,9 @@ function Form({ template, onSubmit }) {
     const handleChange = (e) => {
         const { name,value } = e.target;
         setData((prev)=>({...prev,[name]:value}))
-        setErrors(Validators(data));
+        const ans=Validation(name,value,data)
+        setError(ans);
+    
     }
     return (
         <div>

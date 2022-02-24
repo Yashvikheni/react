@@ -14,7 +14,16 @@ export const signUpFailure=(error)=>{
         type:'SIGN_UP_FAILURE' ,
         payload:error   }
 }
-
+export const set=(users)=>{
+    return {
+        type:'FILL',
+    payload:users    }
+}
+export const empty=(error)=>{
+    return {
+        type:'EMPTY' ,
+        payload:error   }
+}
 export const fetchUsers=()=>
 async(dispatch)=>{
         dispatch(signUpRequest)
@@ -22,7 +31,7 @@ async(dispatch)=>{
        await axios.get(`${baseUrl}dashboard/Teachers`,{headers:{'access-token':`${token}`}})
        .then((response)=>{
            const user=response.data.data
-           console.log(user)
+           
            dispatch(signUpSuccess(user))
        }).catch((error)=>{
            const errorMsg=error.message
