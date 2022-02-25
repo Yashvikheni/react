@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import Form from "../shared/Form";
-import {Validators} from "../utils/Validators";
+import { Validators} from "../utils/Validators";
+import {isEmpty} from "../utils/Regex"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
 function LogIn() {
+  const [msg, setMsg] = useState(null)
   const [error, setError] = useState({});
   let history = useNavigate();
   let template = {
@@ -40,28 +42,26 @@ function LogIn() {
     e.preventDefault();
     const ans=Validators(values)
     setError(ans)
-  console.log(ans)
-    if (ans.email==="" && ans.password==="") {
-    const response = await axios
+    if (isEmpty(ans.email) && isEmpty(ans.password)) {
+    await axios
       .post(`${baseUrl}users/Login`, values)
       .then((response) => {
+        setMsg("Successfully logged in")
         localStorage.setItem("userIn", response.data.data.token);
-        console.log(response.data.data.role);
+        localStorage.setItem("role", response.data.data.role);
         if (response.data.data.role === "teacher") {
-          console.log("first");
           history("/teacherDashboard");
         }
       })
       .catch(function (err) {
-        // err.message="inc"
-         err.msg = err.message
-         setError(err)
+      setMsg("Incorrect Username or password")
+       
       });}
   }
 
   return (
     <div>
-      <Form template={template} onSubmit={handleSubmit} error={error} setError={setError}/>
+      <Form template={template} onSubmit={handleSubmit} error={error} setError={setError} msg={msg}/>
     </div>
   );
 }

@@ -24,14 +24,13 @@ export const empty=(error)=>{
         type:'EMPTY' ,
         payload:error   }
 }
-export const fetchUsers=()=>
+export const fetchUsers=({api})=>
 async(dispatch)=>{
         dispatch(signUpRequest)
         const token=localStorage.getItem('userIn');
-       await axios.get(`${baseUrl}dashboard/Teachers`,{headers:{'access-token':`${token}`}})
+       await axios.get(`${baseUrl}${api}`,{headers:{'access-token':`${token}`}})
        .then((response)=>{
            const user=response.data.data
-           
            dispatch(signUpSuccess(user))
        }).catch((error)=>{
            const errorMsg=error.message

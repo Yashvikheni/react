@@ -38,4 +38,4 @@ InputField.propTypes={
     onChange: PropTypes.func.isRequired,
     type: PropTypes.string
 }
-export default InputField;
+export default React.memo(InputField);

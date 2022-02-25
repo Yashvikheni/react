@@ -1,6 +1,6 @@
 const initialState = {
     loading: false,
-    user: [],
+    users: [],
     error: "",
   };
   

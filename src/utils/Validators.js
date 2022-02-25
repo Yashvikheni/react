@@ -8,9 +8,12 @@ export const Validators = (values) => {
 
   const errors = {};
   const obj = Object.keys(values);
+  console.log(obj)
   const checkName = obj.some((val) => val === "name"); 
   const checkEmail = obj.some((val) => val === "email");
   const checkPassword = obj.some((val) => val === "password");
+  const checkPass = obj.some((val) => val === "Password");
+  const checkCP = obj.some((val) => val === "ConfirmPassword");
   if (checkName) {
       errors.name=Empty(values.name);
   } else {
@@ -25,6 +28,16 @@ export const Validators = (values) => {
     errors.password=Empty(values.password)
   } else {
     errors.password = "required";
+  }
+  if (checkPass) {
+    errors.Password=Empty(values.Password)
+  } else {
+    errors.Password = "required";
+  }
+  if (checkCP) {
+    errors.ConfirmPassword=Empty(values.ConfirmPassword)
+  } else {
+    errors.ConfirmPassword = "required";
   }
   const checkRole = obj.some((val) => val === "role");
   if (!checkRole) {
@@ -47,7 +60,7 @@ export const Validation =(name,value,data) =>{
     else if (!nameValidation(value)) {
     errors.name = "enter the character only"}
     else{
-      errors.name = " ";
+      errors.name = "";
       }}
     else{
     errors.name =Empty(data.name)
@@ -61,7 +74,7 @@ export const Validation =(name,value,data) =>{
   else if (!emailValidation(value)) {
     errors.email = "enter Valid email";}
     else{
-      errors.email = " ";
+      errors.email = "";
       }
   }
  else{
@@ -74,7 +87,7 @@ if(name==="password"){
 else if (!passwordValidation(value)) {
     errors.password = "enter valid password";}
     else{
-      errors.password = " ";
+      errors.password = "";
       }
   }
   else{
@@ -84,7 +97,7 @@ else if (!passwordValidation(value)) {
   if(name==="role"){
     errors.role=Empty(value);}
     else{
-      errors.role = " "
+      errors.role = ""
     }
   
 return errors;
