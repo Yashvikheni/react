@@ -38,3 +38,9 @@ async(dispatch)=>{
        })
     
 }
+// export const postData=({api,value})=>{
+//     async(dispatch)=>{
+//         dispatch(signUpRequest)
+//         cons `
+//     }
+// }

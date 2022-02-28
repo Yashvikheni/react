@@ -9,21 +9,19 @@ const StudentDetails = ()=> {
   const {loading,users,error}=state
 
     useEffect(() => {
-    const id =localStorage.getItem('student')
+    const id =localStorage.getItem('studentid')
     const api=`dashboard/Teachers/viewStudentDetail?id=${id}`
     dispatch(fetchUsers({api}))
     },[dispatch])
 
-
+console.log(users)
   return (
-      <>
+      <div>
       <div>StudentDetails</div>
 
 {users.map((value)=>{
     
     const {_id,name,email,Result} = value;
-console.log(typeof(Result.length))
-console.log(Result.length)
     return(
   
     <Table className="form-outer-wrapper" key={_id}>
@@ -33,8 +31,9 @@ console.log(Result.length)
       <tr><td>Email</td><td>{email}</td></tr>
       <tr><td>Result</td> 
       <td>
-          {(Result.length)?
-           Result.map((rr)=>{return(
+        {loading?<div>Loading...</div>:error?<div>{error}</div>:
+          (Array.isArray(Result))?
+           (Result.map((rr)=>{return(
            <Table className="form-outer-wrapper" key={rr._id}>
                <thead>
       <tr><td>subjectId</td><td>{rr._id}</td></tr>
@@ -45,19 +44,15 @@ console.log(Result.length)
 
           </thead>
                </Table>
-          )}):"null"} 
+          )})):"null"}
           
           </td></tr></thead>
-     {/* {value.Result.map(rr=>{
-         console.log(rr)
-     } */}
-       {/* } )} */}
      </Table>
    
 )
 })}
     
-      </>
+      </div>
   )
 }
 export default StudentDetails

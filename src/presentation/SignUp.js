@@ -1,14 +1,13 @@
-import React, { useState } from "react";
 import Form from "../shared/Form";
+import React, { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { Validators } from "../utils/Validators";
-import { isEmpty } from "../utils/Regex";
 import axios from "axios";
 import { baseUrl } from "../utils/Constant";
 
 function SignUp(props) {
+
   const [msg, setMsg] = useState(null);
-  const [error, setError] = useState({});
+ 
   const history = useNavigate();
   let template = {
     title: "Sign Up",
@@ -29,6 +28,7 @@ function SignUp(props) {
         title: "Password",
         type: "password",
         name: "password",
+        autoComplete:'on',
         placeholder: "password",
       },
       {
@@ -36,47 +36,39 @@ function SignUp(props) {
         type: "radio",
         name: "role",
         value: ["Teacher", "Student"],
-      },
-      {
-        type: "link",
-        path: "/logIN",
-        name: "Already have an Account ?",
-      },
-    ],
+      }],
+   link:
+   [
+     {
+      path: "/logIN",
+      linkName: "Already have an Account ?",
+     }
+
+   ],
     buttonName: "Sign Up",
   };
-
-  async function handleSubmit(e, values) {
-    e.preventDefault();
-    const ans = Validators(values);
-    setError(ans);
-    console.log(Object.values(ans));
-    //  if (Object.values(ans).map(ok=>ok===""?true:false)) {
-    if (
-      isEmpty(ans.name) &&
-      isEmpty(ans.password) &&
-      isEmpty(ans.role) &&
-      isEmpty(ans.email)
-    ) {
-      await axios
-        .post(`${baseUrl}users/SignUp`, values)
+  
+async function handle(value){
+  console.log(value)
+  await axios
+        .post(`${baseUrl}users/SignUp`, value)
         .then((response) => {
-          setMsg("successFully SignUp");
-          history("/logIN");
-        })
-        .catch(function (err) {
-          setMsg(err.message);
+            setMsg("successFully SignUp");
+            history("/login");
+          })
+          .catch(function (err) {
+           console.log(err.message);
         });
     }
-  }
-
+ 
+    
+  
+  
   return (
     <Form
       template={template}
-      onSubmit={handleSubmit}
-      error={error}
-      setError={setError}
       msg={msg}
+      handle={handle}
     />
   );
 }

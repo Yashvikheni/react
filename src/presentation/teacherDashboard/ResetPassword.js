@@ -1,40 +1,44 @@
-import React,{useState} from 'react'
+import React from 'react'
 import Form from '../../shared/Form'
-import {Validators} from '../../utils/Validators'
-// import {useLocation} from"react-router-dom"
-// import {baseUrl} from "../utils/Constant"
-// import {isEmpty} from "../utils/Regex"
-
+import {useLocation} from"react-router-dom"
+import axios from 'axios'
+import { baseUrl } from '../../utils/Constant'
 const ResetPassword = () => {
-    const [error, setError] = useState({})
     const template = {
-        title: "New password",
+        title: "Reset password",
         fields: [
             {
                 title: "Password",
                 type: "password",
-                name: "OldPassword",
+                name: "oldPassword",
+                autoComplete:'on',
                 placeholder: "Old password",
               }, {
           title: "Password",
           type: "password",
           name: "Password",
+          autoComplete:'on',
           placeholder: "New password",
         },
         {
             title: "confirm password",
             type: "password",
             name: "ConfirmPassword",
+            autoComplete:'on',
             placeholder: "Confirm Password"
     }],buttonName: "Reset"}
-    async function handleSubmit (e,values){
-        e.preventDefault()
-        const ans=Validators(values)
-        setError(ans)
-        console.log(ans)
+    async function handle (values){
+       console.log('values', values)
+       const token=localStorage.getItem('userIn');
+       await axios
+       .post(`${baseUrl}users/ResetPassword`, values,{headers:{'access-token':`${token}`}})
+       .then((response)=>
+       console.log(response.data))
+       .catch((error)=>
+       console.log(error.message))
         }
   return (
-    <div> <Form template={template} onSubmit={handleSubmit} error={error} setError={setError}/></div>
+    <div> <Form template={template} handle={handle}/></div>
   )
 }
 

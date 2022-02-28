@@ -1,80 +1,53 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Validation } from "../utils/Validators";
+import { Validators, Validation } from "../utils/Validators";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
 import "../App.css";
-function Form({ template, onSubmit, error, setError, msg }) {
+function Form({ template, msg, handle }) {
+  const [error, setError] = useState({});
+  let index = 0;
+  const [state, setState] = useState({});
+  let { title, fields, buttonName, link } = template;
+
   useEffect(() => {
-    error = error;
-  }, [error]);
-
-  const [data, setData] = useState({});
-
-  let { title, fields, buttonName } = template;
+    fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
+  }, []);
 
   const renderFields = (fields) => {
     return fields.map((field) => {
-      let { type, name, value, path, placeholder } = field;
+      let { type, name, value } = field;
       <label htmlFor={name}>{title}</label>;
-
       if (type === "text" || type === "password" || type === "email") {
         return (
-          <div key={placeholder}>
+          <div key={name}>
             <TextField
               fullWidth={true}
               variant="outlined"
               {...field}
               onChange={handleChange}
             />
-            {name === "name" ? (
-              <span className="error">{error.name}</span>
-            ) : (
-              <span></span>
-            )}
-            {name === "password" ? (
-              <span className="error">{error.password}</span>
-            ) : (
-              <span></span>
-            )}
-            {name === "email" ? (
-              <span className="error">{error.email}</span>
-            ) : (
-              <span></span>
-            )}
-            {name === "Password" ? (
-              <span className="error">{error.Password}</span>
-            ) : (
-              <span></span>
-            )}
-            {name === "ConfirmPassword" ? (
-              <span className="error">{error.ConfirmPassword}</span>
-            ) : (
-              <span></span>
-            )}
+            <span className="error">{error[name]}</span>
           </div>
         );
       } else if (type === "radio") {
         return (
-          <div key={placeholder}>
+          <div key={index}>
             {value.map((element) => {
+              index++;
               return (
-                <InputField
-                  type="radio"
-                  name={name}
-                  value={element}
-                  onChange={handleChange}
-                />
+                <div key={element}>
+                  <InputField
+                    type="radio"
+                    name={name}
+                    value={element}
+                    onChange={handleChange}
+                  />
+                </div>
               );
             })}
-            <span className="error">{error.role}</span>
-          </div>
-        );
-      } else if (type === "link") {
-        return (
-          <div>
-            <Link to={path}>{name}</Link>
+            <span className="error">{error[name]}</span>
           </div>
         );
       } else {
@@ -82,12 +55,30 @@ function Form({ template, onSubmit, error, setError, msg }) {
       }
     });
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prev) => ({ ...prev, [name]: value }));
-    const ans = Validation(name, value, data);
-    setError(ans);
+  const renderLinks = (link) => {
+    return link.map((li) => {
+      const { path, linkName } = li;
+      return (
+        <div key={path}>
+          <Link to={path}>{linkName}</Link>
+        </div>
+      );
+    });
   };
+  function handleSubmit(e, values) {
+    e.preventDefault();
+    Validators(values, error, setError);  
+    const a = Object.values(error).map((ok) => ok);
+    if (a.every((val) => val === "")) {
+      handle(values);
+    }
+  }
+  const handleChange = React.useCallback((e) => {
+    const { name, value, type } = e.target;
+    setState((prev) => ({ ...prev, [name]: value }));
+    const ans = Validation(name, value, state, type, error);
+    setError(ans);
+  });
   return (
     <div>
       {msg}
@@ -95,8 +86,10 @@ function Form({ template, onSubmit, error, setError, msg }) {
         <h4>{title}</h4>
         {renderFields(fields)}
         <br />
+        {link ? renderLinks(link) : null}
+
         <Button
-          onClick={(e) => onSubmit(e, data)}
+          onClick={(e) => handleSubmit(e, state)}
           type="submit"
           varient="contained"
           className="btn"
@@ -107,4 +100,5 @@ function Form({ template, onSubmit, error, setError, msg }) {
     </div>
   );
 }
+
 export default React.memo(Form);

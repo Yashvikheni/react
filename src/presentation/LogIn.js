@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import Form from "../shared/Form";
-import { Validators} from "../utils/Validators";
-import {isEmpty} from "../utils/Regex"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
 function LogIn() {
   const [msg, setMsg] = useState(null)
-  const [error, setError] = useState({});
   let history = useNavigate();
   let template = {
     title: "Log IN",
@@ -22,48 +19,47 @@ function LogIn() {
         title: "Password",
         type: "password",
         name: "password",
+        autoComplete:'on',
         placeholder: "password",
-      },
+      }],
+      link:[
       {
-        type: "link",
         path: "/signUp",
-        name: `Don't have an Account ?`,
+        linkName: `Don't have an Account ?`,
       },
       {
-        type: "link",
         path: "/forgotPassword",
-        name: "forgot Password?",
+        linkName: "forgot Password?",
       },
     ],
     buttonName: "Log In",
   };
-
-  async function handleSubmit(e, values) {
-    e.preventDefault();
-    const ans=Validators(values)
-    setError(ans)
-    if (isEmpty(ans.email) && isEmpty(ans.password)) {
-    await axios
-      .post(`${baseUrl}users/Login`, values)
-      .then((response) => {
-        setMsg("Successfully logged in")
-        localStorage.setItem("userIn", response.data.data.token);
-        localStorage.setItem("role", response.data.data.role);
-        if (response.data.data.role === "teacher") {
-          history("/teacherDashboard");
-        }
-      })
-      .catch(function (err) {
-      setMsg("Incorrect Username or password")
-       
-      });}
+  async function handle(values) {
+  console.log('values', values)
+      await axios
+        .post(`${baseUrl}users/Login`, values)
+        .then((response) => {
+          setMsg("Successfully logged in")
+          localStorage.setItem("userIn", response.data.data.token);
+          console.log(response.data.data.role);
+          localStorage.setItem("role", response.data.data.role);
+          if (response.data.data.role === "teacher") {
+            console.log("first");
+            history("/teacherDashboard");
+         
+          }
+        })
+        .catch(function (err) {
+         console.log('err', err.message)
+  
+      });
+    
+    }
+  
+    return (
+      <div>
+        <Form template={template} handle={handle}  msg={msg}/>
+      </div>
+    );
   }
-
-  return (
-    <div>
-      <Form template={template} onSubmit={handleSubmit} error={error} setError={setError} msg={msg}/>
-    </div>
-  );
-}
-
-export default LogIn;
+  export default LogIn;

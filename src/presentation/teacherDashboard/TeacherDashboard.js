@@ -1,8 +1,10 @@
-import React from 'react'
-
-const TeacherDashboard = () => {
+import React,{useEffect} from 'react'
+const TeacherDashboard = () => {  
+  
   return (
-    <div>TeacherDashboard</div>
+    <div>
+  
+      TeacherDashboard</div>
   )
 }
 

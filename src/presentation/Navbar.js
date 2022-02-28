@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   const token = localStorage.getItem("userIn");
+
   const back = () => {
-    localStorage.clear();
+    localStorage.removeItem("userIn");
   };
 
   if (token) {
@@ -14,43 +15,50 @@ function Navbar() {
         <nav>
           <ul>
             <li>
-              <div className="dropdown">
-                <button className="dropbtn">
-                  <img src="settings.png" alt="Settings" />
-                  <i className="fa fa-caret-down"></i>
-                </button>
-                <div className="dropdown-content">
-                  <Link to="/resetpassword">Reset Password</Link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <Link to="/login" onClick={back}>
-                LogOut &nbsp; &nbsp;
+              {" "}
+              <Link
+                to="/login"
+                className="logout_btn"
+                refresh="true"
+                onClick={back}
+              >
+                LogOut
               </Link>
             </li>
             <li>
-              <Link to="/studentdata"> Student Data </Link>
+              {" "}
+              <Link to="/studentdata">Student Data</Link>
             </li>
-       
+            <li>
+              {" "}
+              <Link to="/createexam">Create Exam</Link>
+            </li>
+            <li>
+              {" "}
+              <Link to="/viewexam">View Exam</Link>
+            </li>
+            <li>
+              {" "}
+              <Link to="/resetpassword">Reset password</Link>
+            </li>
           </ul>
         </nav>
       </div>
     );
   } else {
     return (
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/signup">sign Up</Link>
-            </li>
-            <li>
-              <Link to="/login">Log In</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/signup">sign Up</Link>
+          </li>
+          <li>
+            <Link to="/login" refresh="true">
+              Log In
+            </Link>
+          </li>
+        </ul>
+      </nav>
     );
   }
 }
