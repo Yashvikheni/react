@@ -35,27 +35,21 @@ function LogIn() {
     buttonName: "Log In",
   };
   async function handle(values) {
-  console.log('values', values)
       await axios
         .post(`${baseUrl}users/Login`, values)
         .then((response) => {
           setMsg("Successfully logged in")
           localStorage.setItem("userIn", response.data.data.token);
-          console.log(response.data.data.role);
+          localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("role", response.data.data.role);
           if (response.data.data.role === "teacher") {
-            console.log("first");
-            history("/teacherDashboard");
-         
+             history("/teacherDashboard");
           }
         })
         .catch(function (err) {
          console.log('err', err.message)
-  
-      });
-    
-    }
-  
+      }); 
+  }
     return (
       <div>
         <Form template={template} handle={handle}  msg={msg}/>

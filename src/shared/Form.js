@@ -5,7 +5,7 @@ import { Validators, Validation } from "../utils/Validators";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
 import "../App.css";
-function Form({ template, msg, handle }) {
+function Form({ template, msg, handle ,vall,setVall}) {
   const [error, setError] = useState({});
   let index = 0;
   const [state, setState] = useState({});
@@ -14,11 +14,12 @@ function Form({ template, msg, handle }) {
   useEffect(() => {
     fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
   }, []);
-
   const renderFields = (fields) => {
     return fields.map((field) => {
+ 
       let { type, name, value } = field;
-      <label htmlFor={name}>{title}</label>;
+      
+       <label htmlFor={name}>{title}</label>;
       if (type === "text" || type === "password" || type === "email") {
         return (
           <div key={name}>
@@ -26,6 +27,7 @@ function Form({ template, msg, handle }) {
               fullWidth={true}
               variant="outlined"
               {...field}
+              value={vall?vall[name]:value}
               onChange={handleChange}
             />
             <span className="error">{error[name]}</span>
@@ -73,12 +75,14 @@ function Form({ template, msg, handle }) {
       handle(values);
     }
   }
-  const handleChange = React.useCallback((e) => {
+  const handleChange =(e) => {
     const { name, value, type } = e.target;
+   if(vall){
+    setVall((prev) => ({ ...prev, [name]: value }))}
     setState((prev) => ({ ...prev, [name]: value }));
     const ans = Validation(name, value, state, type, error);
     setError(ans);
-  });
+  }
   return (
     <div>
       {msg}
@@ -92,8 +96,7 @@ function Form({ template, msg, handle }) {
           onClick={(e) => handleSubmit(e, state)}
           type="submit"
           varient="contained"
-          className="btn"
-        >
+          className="btn">
           {buttonName}
         </Button>
       </form>

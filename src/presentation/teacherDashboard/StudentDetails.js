@@ -1,5 +1,5 @@
 import {useSelector,useDispatch} from 'react-redux'
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 import {fetchUsers} from '../../store/Actions/Action'
 import Table from '@material-ui/core/Table';
 import '../../App.css'
@@ -23,7 +23,6 @@ console.log(users)
     
     const {_id,name,email,Result} = value;
     return(
-  
     <Table className="form-outer-wrapper" key={_id}>
         <thead><tr>
       <td>ID</td><td>{_id}</td></tr>
@@ -48,11 +47,8 @@ console.log(users)
           
           </td></tr></thead>
      </Table>
-   
 )
-})}
-    
-      </div>
+})}  </div>
   )
 }
 export default StudentDetails
