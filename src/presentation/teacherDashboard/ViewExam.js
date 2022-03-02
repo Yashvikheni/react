@@ -44,7 +44,7 @@ const ViewExam = () => {
       ) : error ? (
         <div>{error}</div>
       ) : Array.isArray(users) ? (
-        users.map((rr) => {
+        users?.map((rr) => {
           return (
             <div key={rr._id}>
               <Table className="form-outer-wrapper">

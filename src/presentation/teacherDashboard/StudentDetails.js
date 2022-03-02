@@ -1,37 +1,44 @@
 import {useSelector,useDispatch} from 'react-redux'
-import React,{useEffect} from 'react'
-import {fetchUsers} from '../../store/Actions/Action'
+import React,{useEffect,useState} from 'react'
+import {fetchUsersRequest,fetchUsersSuccess,fetchUsersFailure} from '../../store/Actions/Action'
 import Table from '@material-ui/core/Table';
+import axios from 'axios';
+import {baseUrl} from "../../utils/Constant"
 import '../../App.css'
 const StudentDetails = ()=> {
-  const dispatch=useDispatch();
-  const state=useSelector((state) => state.SignUpReducer)
-  const {loading,users,error}=state
+const [student, setStudent] = useState([])
 
-    useEffect(() => {
-    const id =localStorage.getItem('studentid')
-    const api=`dashboard/Teachers/viewStudentDetail?id=${id}`
-    dispatch(fetchUsers({api}))
-    },[dispatch])
 
-console.log(users)
+useEffect(() => {
+  fetch();
+ },[])
+ async function fetch(){ 
+  const token=localStorage.getItem('userIn');
+  const id=localStorage.getItem('studentid')
+   await axios.get(`${baseUrl}dashboard/Teachers/viewStudentDetail?id=${id}`,{headers:{'access-token':`${token}`}})
+ .then((response)=>{
+     setStudent(response.data.data)
+ 
+    
+ }).catch((error)=>{
+    alert(error.message)
+ })}
   return (
       <div>
       <div>StudentDetails</div>
 
-{users.map((value)=>{
-    
-    const {_id,name,email,Result} = value;
+{student?student.map((value)=>{
+    const {_id,name,email,Result} = value;  
     return(
-    <Table className="form-outer-wrapper" key={_id}>
+    <Table key={_id}>
         <thead><tr>
       <td>ID</td><td>{_id}</td></tr>
       <tr><td>Name</td><td>{name}</td></tr>
       <tr><td>Email</td><td>{email}</td></tr>
       <tr><td>Result</td> 
       <td>
-        {loading?<div>Loading...</div>:error?<div>{error}</div>:
-          (Array.isArray(Result))?
+       {
+          (Array.isArray(Result)?
            (Result.map((rr)=>{return(
            <Table className="form-outer-wrapper" key={rr._id}>
                <thead>
@@ -43,12 +50,13 @@ console.log(users)
 
           </thead>
                </Table>
-          )})):"null"}
+           )})):null)}
           
           </td></tr></thead>
      </Table>
-)
-})}  </div>
+     )}):null}
+         
+ </div>
   )
 }
 export default StudentDetails

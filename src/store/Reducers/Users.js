@@ -1,30 +1,30 @@
 const initialState = {
     loading: false,
-    user: [],
+    student:[],
     error: "",
   };
   
-  const SignUpReducer = (state = initialState, action) => {
+  const Users = (state = initialState, action) => {
     switch (action.type) {
-      case "SIGN_UP":
+      case "FETCH_USERS":
         return {
           loading: true,
-          user:[]
+          student:[],
         };
-      case "SIGN_UP_SUCCESS":
+      case "FETCH_USERS_SUCCESS":
         return {
           loading: false,
-          user: action.payload,
+          student: action.payload,
           error: "",
         };
-      case "SIGN_UP_FAILURE":   
+      case "FETCH_USERS_FAILURE":   
         return {
           loading: false,
-          user: [],
+          student:[],
           error: action.payload
         };
       default:
         return state;
     }
   }
-  export default SignUpReducer;
+  export default Users;

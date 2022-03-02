@@ -96,7 +96,6 @@ const CreateExam = () => {
         array.push(qqq);
         final.questions = array;
         final.notes = notes;
-       
        {(index)<=14?setIndex(index + 1):setIndex("")}
       }
     }
@@ -133,7 +132,9 @@ const CreateExam = () => {
   return (
     <div>
       <h2>Question {inde ? inde + 1 : index}</h2>
-      {index === 1 ? (
+      {subjectName ? (
+        subjectName
+      ) : (
         val? 
           subject
          : 
@@ -143,9 +144,6 @@ const CreateExam = () => {
             required={true}
             onChange={handleChange}
           />
-        
-      ) : (
-        subjectName
       )}
       <Form
         template={template}

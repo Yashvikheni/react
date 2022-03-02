@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import Form from "../shared/Form";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
+import axios from 'axios'
+import { useSelector, useDispatch } from "react-redux";
+import {signInRequest,signInSuccess,signInFailure} from '../store/Actions/Action'
 function LogIn() {
+
   const [msg, setMsg] = useState(null)
+  const state = useSelector((state) => state.SignIn)
+ const dispatch= useDispatch();
   let history = useNavigate();
   let template = {
     title: "Log IN",
@@ -34,22 +39,30 @@ function LogIn() {
     ],
     buttonName: "Log In",
   };
-  async function handle(values) {
+  async function handle(values){
+    console.log(values);
+   dispatch(signInRequest())
       await axios
         .post(`${baseUrl}users/Login`, values)
         .then((response) => {
-          setMsg("Successfully logged in")
+          alert(response.data.message)
+          dispatch(signInSuccess(response.data.data))
           localStorage.setItem("userIn", response.data.data.token);
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("role", response.data.data.role);
           if (response.data.data.role === "teacher") {
-             history("/teacherDashboard");
+             history("/teacherdashboard");
+          }else {
+            history("/studentdashboard");
           }
         })
-        .catch(function (err) {
-         console.log('err', err.message)
+        .catch(function (error) {
+          dispatch(signInFailure(error.message))
+         alert(error.message)
       }); 
   }
+
+ 
     return (
       <div>
         <Form template={template} handle={handle}  msg={msg}/>

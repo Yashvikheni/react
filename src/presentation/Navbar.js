@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const history = useNavigate()
   const [role, setRole] = useState(null);
   const [navbar, setNavbar] = useState([]);
-  useEffect(() => {
+const [token, setToken] = useState("")
+  setInterval(() => {
+    const token=localStorage.getItem("userIn")
     const rolee = localStorage.getItem("role");
+    setToken(token);
     setRole(rolee);
-  });
+  },1000);
   const back = () => {
+    history("/login")
    localStorage.clear();
+   setToken(null)
   };
   useEffect(() => {
-    if (role === "teacher") {
+    if (token) {
       setNavbar(() => {
         return (
           <div>
@@ -25,36 +31,40 @@ function Navbar() {
                     to="/login"
                     className="logout_btn"
                     refresh="true"
-                    onClick={back}
+                    onClick={()=>back()}
                   >
                     LogOut
                   </Link>
                 </li>
                 <li>
+                   <Link to="/resetpassword">Reset password</Link>
+                </li>
+                {role==="teacher"?
+                <div>
+                <li>
                   <Link to="/studentdata">Student Data</Link>
                 </li>
                 <li>
-      
                   <Link to="/createexam">Create Exam</Link>
                 </li>
                 <li>
              
                   <Link to="/viewexam">View Exam</Link>
+                </li></div>:role==='student'?                 
+                <>
+                <li>
+                  <Link to="/allexam">AllExam</Link>
                 </li>
                 <li>
-                   <Link to="/resetpassword">Reset password</Link>
-                </li>
+                  <Link to="/studentdetail">student Details</Link>
+                </li></>:null}
+               
               </ul>
             </nav>
           </div>
         );
       });
     }
-    // else if (role === 'student'){
-    //   return (
-    //     <div>student</div>
-    //   )
-    // }
     else {
       setNavbar(() => {
         return (

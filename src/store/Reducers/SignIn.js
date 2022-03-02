@@ -4,20 +4,20 @@ const initialState = {
     error: "",
   };
   
-  const SignUpReducer = (state = initialState, action) => {
+  const LogIn = (state = initialState, action) => {
     switch (action.type) {
-      case "SIGN_UP":
+      case "SIGN_IN":
         return {
           loading: true,
           user:[]
         };
-      case "SIGN_UP_SUCCESS":
+      case "SIGN_IN_SUCCESS":
         return {
           loading: false,
           user: action.payload,
           error: "",
         };
-      case "SIGN_UP_FAILURE":   
+      case "SIGN_IN_FAILURE":   
         return {
           loading: false,
           user: [],
@@ -27,4 +27,4 @@ const initialState = {
         return state;
     }
   }
-  export default SignUpReducer;
+  export default LogIn;
