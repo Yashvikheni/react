@@ -5,6 +5,7 @@ import { baseUrl } from "../utils/Constant";
 import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux";
 import {signInRequest,signInSuccess,signInFailure} from '../store/Actions/Action'
+import {Email,Password} from '../container/UseFields'
 function LogIn() {
 
   const [msg, setMsg] = useState(null)
@@ -14,19 +15,7 @@ function LogIn() {
   let template = {
     title: "Log IN",
     fields: [
-      {
-        title: "Email",
-        type: "email",
-        name: "email",
-        placeholder: "email",
-      },
-      {
-        title: "Password",
-        type: "password",
-        name: "password",
-        autoComplete:'on',
-        placeholder: "password",
-      }],
+      Email,Password],
       link:[
       {
         path: "/signUp",

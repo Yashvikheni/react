@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from "@material-ui/core/Button";
 const Table = ({ tableData, headingColumns ,button,handle}) => {
+
   const data = tableData?tableData.map((row, index) => {
    let rowData = [];
     let i = 0;
@@ -17,10 +18,8 @@ const Table = ({ tableData, headingColumns ,button,handle}) => {
       {button?<td><Button onClick={()=>handle(rowData)}>{button}</Button></td>:null}
     </tr>
   }):null;
-
   return(
     <div>
-    
       <table >
         <thead>
           <tr>

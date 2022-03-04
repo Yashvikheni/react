@@ -6,14 +6,14 @@ const InputField = ({placeholder, type ,onChange,...fields}) => {
     return (
         <div>
             {type === 'radio'? (
-               <>
+           
                 <input
                     type="radio"
                     onChange={onChange}
                     {...fields}
                 />
-                <label>{fields.value}</label>
-                </>
+              
+                
             ) : (
                 <>
                 <label>{fields.name}</label>

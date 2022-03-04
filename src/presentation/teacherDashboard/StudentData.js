@@ -15,6 +15,7 @@ function TeacherDashboard() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.Users);
   const { loading, student, error } = state;
+  console.log(state);
   useEffect(() => {
     setCheck(false);
   },[])
@@ -39,7 +40,6 @@ function TeacherDashboard() {
     await axios.get(`${baseUrl}${api}`,{headers:{'access-token':`${token}`}})
    .then((response)=>{
        const user=response.data.data
-       console.log(response.data.data);
        dispatch(fetchUsersSuccess(user))
    }).catch((error)=>{
        dispatch(fetchUsersFailure(error.message))
