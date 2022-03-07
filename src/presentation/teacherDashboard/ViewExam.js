@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { viewExamRequest,viewExamSuccess,viewExamFailure } from "../../store/Actions/Action";
 import Button from "@material-ui/core/Button";
 import {baseUrl} from "../../utils/Constant"
+import Table from "../../shared/Table"
 import axios from 'axios';
 const ViewExam = () => {
    const state = useSelector((state) => state.Exam);
    const { loading, exam, error } = state;
+   const key = exam && exam.length ? Object.keys(exam[0]) : []
    const dispatch = useDispatch();
   // const [showComp, setShowComp] = useState(false);
   // const history = useNavigate();
@@ -32,7 +34,8 @@ const ViewExam = () => {
   //   localStorage.setItem("examId", id);
   //   localStorage.setItem("subjectName", subjectName);
   // };
-//  async function del(id){
+ async function del(data){
+   console.log(data);
 //    const token = localStorage.getItem("userIn")
 //      await axios.delete(`${baseUrl}dashboard/Teachers/deleteExam?id=${id}`,{headers:{'access-token':`${token}`}})
 //      .then(response =>{
@@ -42,14 +45,14 @@ const ViewExam = () => {
 //       }
 //       alert(response.data.message)})
 //       .catch(error =>alert(error.message))
-//   }
+  }
   // useEffect(() => {
   //   if (showComp) {
   //     history("viewexamdetails");
   //   }
   // }, [showComp]);
   return (
-    <div>Viewxam
+    <div>Viewxam <Table tableData={exam} headingColumns={key} button="Delete" handle={del}></Table>
       {/* {loading ? (
         <div>Loading...</div>
       ) : error ? (
