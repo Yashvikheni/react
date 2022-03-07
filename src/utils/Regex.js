@@ -16,3 +16,11 @@ const a=value===""?true:false
 return a
 }
 
+export const reset=(state) => {
+    const newObj = Object.keys(state).reduce(
+      (accumulator, current) => {
+        accumulator[current] = ""; 
+        return accumulator
+      }, {});
+      return newObj;
+  }

@@ -5,9 +5,9 @@ import axios from "axios";
 import { baseUrl } from "../utils/Constant";
 import {useSelector, useDispatch} from 'react-redux'
 import {signUpRequest,signUpSuccess,signUpFailure} from '../store/Actions/Action'
-import {text,Email,Password} from '../container/UseFields'
+import {text,Email,Password} from '../container/useFields'
 function SignUp(props) {
-  const state = useSelector((signup) => signup.SignUpReducer)
+  const state = useSelector((signup) => signup.SignUp)
   const dispatch = useDispatch();
   const history = useNavigate();
   let template = {
@@ -23,7 +23,7 @@ function SignUp(props) {
    link:
    [
      {
-      path: "/logIN",
+      path: "login",
       linkName: "Already have an Account ?",
      }
    ],
@@ -31,6 +31,7 @@ function SignUp(props) {
   };
   
  async function handle(value){
+   console.log(value);
   dispatch(signUpRequest())
   await axios
         .post(`${baseUrl}users/SignUp`, value)
@@ -38,7 +39,7 @@ function SignUp(props) {
           const user=response.data.data
           dispatch(signUpSuccess(user))
            alert(response.data.message)
-            history("/login");
+            history("../login");
           })
           .catch(function (error) {
             dispatch(signUpFailure(error.message))

@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import Form from '../shared/Form'
 import axios from 'axios'
-import {Email} from '../container/UseFields'
+import {Email} from '../container/useFields'
 function ForgotPassword() {
   const [msg, setMsg] = useState(null)
   let template = {

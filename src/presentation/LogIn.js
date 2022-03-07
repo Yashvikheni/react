@@ -5,7 +5,7 @@ import { baseUrl } from "../utils/Constant";
 import axios from 'axios'
 import { useSelector, useDispatch } from "react-redux";
 import {signInRequest,signInSuccess,signInFailure} from '../store/Actions/Action'
-import {Email,Password} from '../container/UseFields'
+import {Email,Password} from '../container/useFields'
 function LogIn() {
 
   const [msg, setMsg] = useState(null)
@@ -18,11 +18,11 @@ function LogIn() {
       Email,Password],
       link:[
       {
-        path: "/signUp",
+        path: "signup",
         linkName: `Don't have an Account ?`,
       },
       {
-        path: "/forgotPassword",
+        path: "forgotPassword",
         linkName: "forgot Password?",
       },
     ],
@@ -40,9 +40,12 @@ function LogIn() {
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("role", response.data.data.role);
           if (response.data.data.role === "teacher") {
-             history("/teacherdashboard");
+            console.log(
+              'nun'
+            )
+            window.location="/teacherdashboard";
           }else {
-            history("/studentdashboard");
+            window.location="/studentdashboard";
           }
         })
         .catch(function (error) {
@@ -50,8 +53,6 @@ function LogIn() {
          alert(error.message)
       }); 
   }
-
- 
     return (
       <div>
         <Form template={template} handle={handle}  msg={msg}/>

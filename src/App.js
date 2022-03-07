@@ -4,6 +4,7 @@ import Navbar from './presentation/Navbar'
 import {BrowserRouter as Router,Routes,Route} from 'react-router-dom'
 import SignUp from './presentation/SignUp'
 import LogIn from './presentation/LogIn'
+import Logout from './presentation/Logout'
 import ForgotPassword from './presentation/ForgotPassword'
 import TeacherDashboard from './presentation/teacherDashboard/TeacherDashboard'
 import ResetPassword from './presentation/teacherDashboard/ResetPassword'
@@ -26,24 +27,32 @@ function App() {
     <div className="App">
      
         <Router>
-        <Navbar/>
            <Routes>
-              <Route path='/signup' element={<ProtectedRoute comp={SignUp} />}></Route>
-              <Route  path='/login'element={!Auth && <ProtectedRoute comp={LogIn }/>} > </Route>
-              <Route  path='/forgotPassword' element={<ProtectedRoute comp={ForgotPassword} />}></Route>
-            <Route path="/teacherdashboard" element={<ProtectedRoute comp={TeacherDashboard} />}></Route>
-            <Route path="/studentdata" element={<ProtectedRoute comp={StudentData} />}></Route>
-            <Route path="/resetpassword" element={<ProtectedRoute comp={ResetPassword} />}></Route>
+              <Route exact path='/' element={<ProtectedRoute comp={Navbar} />}>
+              <Route exact path='signup' element={<ProtectedRoute comp={SignUp} />}></Route>
+              <Route exact path='login'element={!Auth && <ProtectedRoute comp={LogIn }/>} > </Route>
+              <Route exact path='forgotPassword' element={<ProtectedRoute comp={ForgotPassword} />}></Route>
+              
+            <Route
+              exact
+              path="logout"
+              element={<ProtectedRoute comp={Logout}/>}
+            />
+            <Route exact path="resetpassword" element={<ProtectedRoute comp={ResetPassword} />}></Route> 
+            <Route exact path="teacherdashboard" element={<ProtectedRoute comp={TeacherDashboard} />}>
+            <Route path="studentdata" element={<ProtectedRoute comp={StudentData} />}></Route>
+            <Route path="studentdetails" element={<ProtectedRoute comp={StudentDetails} />}></Route>
+            <Route path="createexam" element={<ProtectedRoute comp={CreateExam} />}></Route>
+            <Route path="viewexam" element={<ProtectedRoute comp={ViewExam} />}></Route>
+            <Route path="viewexamdetails" element={<ProtectedRoute comp={ViewExamDetails} />}></Route>
+            </Route>
+            <Route exact path="studentdashboard" element={<ProtectedRoute comp={StudentDashboard} />}>
+            <Route path="allexam" element={<ProtectedRoute comp={AllExam} />}></Route>
+            <Route path="studentdetail" element={<ProtectedRoute comp={StudentDetail} />}></Route>
+            <Route path="exampaper" element={<ProtectedRoute comp={ExamPaper} />}></Route>
+            </Route>
+            </Route>
             <Route path="/newpassword" element={<NewPassword/>}></Route>
-            <Route path="/studentdetails" element={<ProtectedRoute comp={StudentDetails} />}></Route>
-            <Route path="/createexam" element={<ProtectedRoute comp={CreateExam} />}></Route>
-            <Route path="/viewexam" element={<ProtectedRoute comp={ViewExam} />}></Route>
-            <Route path="/viewexamdetails" element={<ProtectedRoute comp={ViewExamDetails} />}></Route>
-            <Route path="/studentdashboard" element={<ProtectedRoute comp={StudentDashboard} />}></Route>
-            <Route path="/allexam" element={<ProtectedRoute comp={AllExam} />}></Route>
-            <Route path="/studentdetail" element={<ProtectedRoute comp={StudentDetail} />}></Route>
-            <Route path="/exampaper" element={<ProtectedRoute comp={ExamPaper} />}></Route>
-         
             </Routes>
            
             

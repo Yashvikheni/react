@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Validators, Validation } from "../utils/Validators";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
 import "../App.css";
-function Form({ template, msg, handle, vall, setVall, Prev, Next, indexx }) {
+import { reset } from "../utils/Regex";
+import { Validators, Validation } from "../utils/Validators";
+function Form({
+  template,
+  msg,
+  handle,
+  valuee,
+  setValuee,
+  Prev,
+  Next,
+  indexx,
+}) {
   const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
-
   useEffect(() => {
     fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
   }, []);
   const renderFields = (fields) => {
     return fields.map((field, index) => {
       let { type, name, value, options } = field;
-
       <label htmlFor={name}>{title}</label>;
       if (type === "text" || type === "password" || type === "email") {
         return (
@@ -25,12 +33,12 @@ function Form({ template, msg, handle, vall, setVall, Prev, Next, indexx }) {
               fullWidth={true}
               variant="outlined"
               {...field}
-              value={
+              value={valuee?
                 name === "answer"
-                  ? state[name]
-                  : vall
-                  ? vall[name]
-                  : state[name]
+                  ? valuee
+                    ? valuee[name]
+                    : state[name]
+                  : valuee[name]:value
               }
               onChange={handleChange}
               disabled={name === "answer" ? true : false}
@@ -52,46 +60,64 @@ function Form({ template, msg, handle, vall, setVall, Prev, Next, indexx }) {
                         }}
                         type="radio"
                         name={name}
+                        checked={
+                          valuee
+                            ? valuee[name]
+                              ? valuee[element.name] === valuee[name]
+                                ? true
+                                : false
+                              : false
+                            : null
+                        }
+                        onChange={handleChange}
                         value={
                           typeof element === "string"
                             ? element
+                            : valuee
+                            ? valuee[element.name]
                             : state[element.name]
                         }
-                        onChange={handleChange}
                       />
                       <label>
                         {typeof element === "string" ? (
                           element
                         ) : (
+                          <div key={i}>
                           <TextField
                             onChange={handleChange}
-                            key={i}
-                            value={state[element.name]}
+                       
+                            value={
+                              valuee
+                                ? valuee[element.name]
+                                : state[element.name]
+                            }
                             name={element.name}
                             variant="outlined"
                             fullWidth={true}
                             type={element.type}
                             placeholder={element.placeholder}
                           />
+                          <span className="error">{error[name]}</span>
+                          </div>
                         )}
                       </label>
+                   
                     </div>
                   );
                 })
               : null}
-
             <span className="error">{error[name]}</span>
           </div>
         );
       } else if (type === "dropDown") {
         return (
+          <div key={index}>
           <select
             style={{ width: "100%", height: "50px" }}
-            disabled={indexx === 1 ? false : true}
+            disabled={indexx === 1 ? false : state[name]===""? false:true}
             onChange={handleChange}
             value={state[name]}
             name={name}
-            key={index}
           >
             {options.map((option) => (
               <option key={option} value={option}>
@@ -99,6 +125,8 @@ function Form({ template, msg, handle, vall, setVall, Prev, Next, indexx }) {
               </option>
             ))}
           </select>
+            <span className="error">{error[name]}</span>
+            </div>
         );
       } else {
         return <div key={index}>Invalid Field</div>;
@@ -125,15 +153,16 @@ function Form({ template, msg, handle, vall, setVall, Prev, Next, indexx }) {
   }
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-    if (vall) {
-      setVall((prev) => ({ ...prev, [name]: value }));
+    if (valuee) {
+      setValuee((prev) => ({ ...prev, [name]: value }));
     }
     setState((prev) => ({ ...prev, [name]: value }));
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   };
   const Cancel = () => {
-    fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
+    setState(reset(state));
+    valuee && setValuee(reset(valuee))
   };
   return (
     <div>

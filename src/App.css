@@ -65,11 +65,26 @@ nav ul li {
 }
 
   
-.table{
- 
+table{
+  margin-left: auto;
+  margin-right: auto;
     border: 1px solid;
 
 }
 th td{
   border: 1px solid;
 }
+.tablee{ margin-left: 200px;
+}
+.sidebar{
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color:#c3ccec;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+  list-style-type: none;
+  margin-block-start: 0;
+}
+

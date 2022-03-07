@@ -42,33 +42,17 @@ export const fetchUsersFailure=(error)=>{
         type:'FETCH_USERS_FAILURE' ,
         payload:error   }
 }
-
-
-
-export const fetchUsers=({api})=>
-async(dispatch)=>{
-        dispatch(signUpRequest())
-        const token=localStorage.getItem('userIn');
-       await axios.get(`${baseUrl}${api}`,{headers:{'access-token':`${token}`}})
-       .then((response)=>{
-           const user=response.data.data
-           dispatch(signUpSuccess(user))
-       }).catch((error)=>{
-           dispatch(signUpFailure(error.message))
-       })
-    
+export const viewExamRequest=()=>{
+    return {
+        type:'VIEW_EXAM'    }
 }
-// export const postData=({api},{values})=>
-
-//     async(dispatch)=>{
-//      console.log({api});
-//         dispatch(signUpRequest)
-//         await axios
-//         .post(`${baseUrl}${api}`, values)
-//         .then((response) => {
-//           dispatch(signUpSuccess(response.data))
-//         })
-//         .catch(function (error) {
-//             dispatch(signUpFailure(error.message))
-//       }); 
-//     }
+export const viewExamSuccess=(exam)=>{
+    return {
+        type:'VIEW_EXAM_SUCCESS',
+      payload:exam    }
+}
+export const viewExamFailure=(error)=>{
+    return {
+        type:'VIEW_EXAM_FAILURE' ,
+        payload:error   }
+}

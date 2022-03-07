@@ -4,7 +4,7 @@ const initialState = {
     error: "",
   };
   
-  const SignUpReducer = (state = initialState, action) => {
+  const SignUp = (state = initialState, action) => {
     switch (action.type) {
       case "SIGN_UP":
         return {
@@ -27,4 +27,4 @@ const initialState = {
         return state;
     }
   }
-  export default SignUpReducer;
+  export default SignUp;
