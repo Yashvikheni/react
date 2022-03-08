@@ -18,11 +18,11 @@ function LogIn() {
       Email,Password],
       link:[
       {
-        path: "signup",
+        path: "../signup",
         linkName: `Don't have an Account ?`,
       },
       {
-        path: "forgotPassword",
+        path: "../forgotPassword",
         linkName: "forgot Password?",
       },
     ],

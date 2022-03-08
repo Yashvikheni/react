@@ -7,7 +7,7 @@ const history=useNavigate()
   useEffect(() => {
      const isAuthenticated = localStorage.getItem("userIn");
      if(!isAuthenticated){
-       history("/login")
+       history("../login")
      }
   },[])
 

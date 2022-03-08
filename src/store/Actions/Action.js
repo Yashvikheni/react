@@ -14,6 +14,8 @@ export const signUpFailure=(error)=>{
         type:'SIGN_UP_FAILURE' ,
         payload:error   }
 }
+
+
 export const signInRequest=()=>{
     return {
         type:'SIGN_IN'    }
@@ -28,6 +30,8 @@ export const signInFailure=(error)=>{
         type:'SIGN_IN_FAILURE' ,
         payload:error   }
 }
+
+
 export const fetchUsersRequest=()=>{
     return {
         type:'FETCH_USERS'    }
@@ -42,6 +46,8 @@ export const fetchUsersFailure=(error)=>{
         type:'FETCH_USERS_FAILURE' ,
         payload:error   }
 }
+
+
 export const viewExamRequest=()=>{
     return {
         type:'VIEW_EXAM'    }

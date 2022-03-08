@@ -52,7 +52,7 @@ const ViewExam = () => {
   //   }
   // }, [showComp]);
   return (
-    <div>Viewxam <Table tableData={exam} headingColumns={key} button="Delete" handle={del}></Table>
+    <div>View Exam <Table tableData={exam} headingColumns={key} button="Delete" handle={del}></Table>
       {/* {loading ? (
         <div>Loading...</div>
       ) : error ? (

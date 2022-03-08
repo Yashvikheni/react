@@ -22,7 +22,6 @@ export const Validation = (name, value, data, type, error) => {
   } else {
     if (name === "name") {
       if (!nameValidation(value)) {
-
         error[name] = "enter the character only"
       }
     }
@@ -36,8 +35,6 @@ export const Validation = (name, value, data, type, error) => {
         error[name] = "enter valid password"
       }
     }
-
     }    
-
   return error;
 }

@@ -4,11 +4,10 @@ import Button from "@material-ui/core/Button";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
 import "../App.css";
-import { reset } from "../utils/Regex";
+import { isNullish, reset } from "../utils/Regex";
 import { Validators, Validation } from "../utils/Validators";
 function Form({
   template,
-  msg,
   handle,
   valuee,
   setValuee,
@@ -21,6 +20,15 @@ function Form({
   let { title, fields, buttonName, link, button } = template;
   useEffect(() => {
     fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
+    fields.map((key) =>
+      key.value
+        ? Array.isArray(key.value)
+          ? key.value.map((value) =>
+              setState((prev) => ({ ...prev, [value.name]: "" }))
+            )
+          : null
+        : null
+    );
   }, []);
   const renderFields = (fields) => {
     return fields.map((field, index) => {
@@ -33,12 +41,12 @@ function Form({
               fullWidth={true}
               variant="outlined"
               {...field}
-              value={valuee?
-                name === "answer"
-                  ? valuee
+              value={
+                valuee
+                  ? !isNullish(valuee)
                     ? valuee[name]
                     : state[name]
-                  : valuee[name]:value
+                  : state[name]
               }
               onChange={handleChange}
               disabled={name === "answer" ? true : false}
@@ -62,19 +70,23 @@ function Form({
                         name={name}
                         checked={
                           valuee
-                            ? valuee[name]
-                              ? valuee[element.name] === valuee[name]
-                                ? true
+                            ? !isNullish(valuee)
+                              ? valuee[name]
+                                ? valuee[element.name] === valuee[name]
+                                  ? true
+                                  : false
                                 : false
-                              : false
-                            : null
+                              : null
+                            : state[element.name]===""?false:null
                         }
                         onChange={handleChange}
                         value={
                           typeof element === "string"
                             ? element
                             : valuee
-                            ? valuee[element.name]
+                            ? !isNullish(valuee)
+                              ? valuee[element.name]
+                              : state[element.name]
                             : state[element.name]
                         }
                       />
@@ -83,50 +95,54 @@ function Form({
                           element
                         ) : (
                           <div key={i}>
-                          <TextField
-                            onChange={handleChange}
-                       
-                            value={
-                              valuee
-                                ? valuee[element.name]
-                                : state[element.name]
-                            }
-                            name={element.name}
-                            variant="outlined"
-                            fullWidth={true}
-                            type={element.type}
-                            placeholder={element.placeholder}
-                          />
-                          <span className="error">{error[name]}</span>
+                            <TextField
+                              onChange={handleChange}
+                              value={
+                                valuee
+                                  ? !isNullish(valuee)
+                                    ? valuee[element.name]
+                                    : state[element.name]
+                                  : state[element.name]
+                              }
+                              name={element.name}
+                              variant="outlined"
+                              fullWidth={true}
+                              type={element.type}
+                              placeholder={element.placeholder}
+                            />
+                            <span className="error">{error[element.name]}</span>
                           </div>
                         )}
                       </label>
-                   
                     </div>
                   );
                 })
               : null}
-            <span className="error">{error[name]}</span>
+              {name==="role"?
+            <span className="error">{error[name]}</span>:null}
           </div>
         );
       } else if (type === "dropDown") {
         return (
           <div key={index}>
-          <select
-            style={{ width: "100%", height: "50px" }}
-            disabled={indexx === 1 ? false : state[name]===""? false:true}
-            onChange={handleChange}
-            value={state[name]}
-            name={name}
-          >
-            {options.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            <select
+              style={{ width: "100%", height: "50px" }}
+              disabled={
+                indexx === 1 ? false : state[name] === "" ? false : true
+              }
+              onChange={handleChange}
+              value={state[name]}
+              name={name}
+            >
+              <option value="">Select Subject</option>
+              {options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
             <span className="error">{error[name]}</span>
-            </div>
+          </div>
         );
       } else {
         return <div key={index}>Invalid Field</div>;
@@ -144,29 +160,44 @@ function Form({
     });
   };
   function handleSubmit(e, values) {
+console.log(values);
     e.preventDefault();
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
       handle(values);
+      Cancel();
     }
   }
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     if (valuee) {
-      setValuee((prev) => ({ ...prev, [name]: value }));
+      if(!isNullish(valuee)){
+         setValuee((prev) => ({ ...prev, [name]: value }));
+         setState(valuee)
+      }
     }
     setState((prev) => ({ ...prev, [name]: value }));
+    console.log(state);
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   };
   const Cancel = () => {
-    setState(reset(state));
-    valuee && setValuee(reset(valuee))
+      const newObj = Object.keys(state).reduce(
+        (accumulator, current) => {
+        if(current!=="subjectName"){
+
+          accumulator[current] = ""; 
+          }
+          return accumulator
+        }, {});
+     setState(newObj)
+    
+    valuee && setValuee(reset(valuee));
   };
+
   return (
     <div>
-      {msg}
       <form className="form-outer-wrapper">
         <h4>{title}</h4>
         {renderFields(fields)}
@@ -185,6 +216,17 @@ function Form({
                         ? Next()
                         : Cancel();
                     }}
+                    disabled={
+                      btn === "Prev"
+                        ? indexx === 1
+                          ? true
+                          : false
+                        : btn === "Next"
+                        ? indexx === 15
+                          ? true
+                          : false
+                        : false
+                    }
                   >
                     {btn}
                   </Button>

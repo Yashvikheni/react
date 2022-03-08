@@ -24,3 +24,19 @@ export const reset=(state) => {
       }, {});
       return newObj;
   }
+
+  export const isNullish =(obj)=> {
+    const isnull=Object.values(obj).every(value => {
+    if (value === "") {
+      return true;
+    }
+    return false;
+   
+  }) 
+ return isnull
+};
+
+export const EqualObj=(obj1,obj2)=> {
+  const a= JSON.stringify(obj1) === JSON.stringify(obj2) ?true : false;
+  return a;
+}

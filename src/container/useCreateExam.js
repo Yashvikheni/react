@@ -1,14 +1,15 @@
-import React,{ useState}from 'react'
-import { useNavigate } from "react-router-dom";
+import { useState,useEffect} from 'react'
+;
 import { baseUrl } from "../utils/Constant"
 import axios from "axios";
+import {isNullish,EqualObj} from '../utils/Regex'
 const useCreateExam = () => {
-    const [index, setIndex] = useState(1);
-  const [notes, setNotes] = useState(["10mins exam", "start time 10am"]);
+
+  const [index, setIndex] = useState(1);
   const [final, setFinal] = useState({
     subjectName: "",
     questions: "",
-    notes: "",
+    notes: ["10mins exam", "start time 10am"]
   });
   const [array, setArray] = useState([]);
   let qqq = {};
@@ -21,9 +22,7 @@ const useCreateExam = () => {
     ans3: "",
     ans4: "",
   });
-  const [val, setval] = useState(null);
-  const history = useNavigate();
-  const [ind, setInd] = useState(0);
+  const [ind, setInd] = useState(-1);
   const Next = () => {
     if (index <= 15 && array.at(index)) {
       setIndex(index + 1);
@@ -35,11 +34,14 @@ const useCreateExam = () => {
     if (index >= 2 && array.at(ind-1)) {
       setIndex(index - 1);
       setInd(ind - 1);
+      console.log(ind);
       fetch(ind);
     }
   };
+const [pre,setPre]=useState({})
   const fetch = (i) => {
-    const preQ = array.at(i);
+    const preQ=array.at(i)
+     setPre(preQ)
     setValuee({
       question: preQ.question,
       answer: preQ.answer,
@@ -49,7 +51,7 @@ const useCreateExam = () => {
       ans4: preQ.options[3],
     });
   };
-  let template = {
+  let template = {  
     fields: [
       {
         title: "subjectName",
@@ -98,31 +100,50 @@ const useCreateExam = () => {
         placeholder: "answer",
       },
     ],
-    buttonName: "ADD",
+    buttonName: isNullish(valuee) ?"ADD":"Update",
     button: ["Prev", "Next", "Cancel"],
   };
 
   const handle = (values) => {
-    const result = val
-      ? values.question === val.question
-        ? true
-        : false
-      : null;
-    if (result) {
-      alert("no need to update");
-      return;
-    }
+    // console.log(valuee);
+    // console.log(pre);
+    // const result = EqualObj(pre,valuee)
+    // console.log(result);
+    // //   ? values[index-1].question === valuee.question
+    // //     ? true
+    // //     : false
+    // //   : null;
+    // if (result) {
+    //   alert("no need to update");
+      
+    // }
+    console.log(pre);
+  //  if(!isNullish(valuee)){
+  //   values=valuee
+  //  }
     if (index <= 15) {
       const { ans1, ans2, ans3, ans4 } = values;
       options.push(ans1, ans2, ans3, ans4);
       qqq.question = values.question;
       qqq.answer = values.answer;
       qqq.options = options;
+    
+    
+      if(!isNullish(pre)){
+        const result = EqualObj(pre,qqq)
+        if (result) {
+          alert("no need to update");
+          return;
+      }else{
+        array[index-1]=qqq
+      }
+    }else {
       array.push(qqq);
       final.subjectName = values.subjectName;
-      final.questions = array;
-      final.notes = notes;
-      array.length === 15 && submit(final);
+    }
+    final.questions = array;
+    console.log(final);
+    array.length === 15 && submit(final);
       {
         index <= 14 && setIndex(index + 1);
       }
