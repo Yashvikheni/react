@@ -1,16 +1,17 @@
 import "./App.css";
-import Navbar from "./presentation/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./presentation/Navbar";
 import SignUp from "./presentation/SignUp";
 import LogIn from "./presentation/LogIn";
 import Logout from "./presentation/Logout";
 import ForgotPassword from "./presentation/ForgotPassword";
+import NewPassword from "./presentation/NewPassword";
+
 import TeacherDashboard from "./presentation/teacherDashboard/TeacherDashboard";
 import ResetPassword from "./presentation/teacherDashboard/ResetPassword";
 import StudentData from "./presentation/teacherDashboard/StudentData";
 import StudentDetails from "./presentation/teacherDashboard/StudentDetails";
 import CreateExam from "./presentation/teacherDashboard/CreateExam";
-import NewPassword from "./presentation/NewPassword";
 import ViewExam from "./presentation/teacherDashboard/ViewExam";
 import ViewExamDetails from "./presentation/teacherDashboard/ViewExamDetails";
 import ProtectedRoute from "./ProtectedRoute";

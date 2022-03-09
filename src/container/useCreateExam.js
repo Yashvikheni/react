@@ -1,26 +1,26 @@
-import { useState,useEffect} from 'react'
-;
-import { baseUrl } from "../utils/Constant"
+import { useState } from "react";
+import { baseUrl } from "../utils/Constant";
 import axios from "axios";
-import {isNullish,EqualObj} from '../utils/Regex'
-const useCreateExam = () => {
+import { isNullish, EqualObj, reset,hasDuplicates } from "../utils/Regex";
 
+const useCreateExam = () => {
   const [index, setIndex] = useState(1);
   const [final, setFinal] = useState({
     subjectName: "",
     questions: "",
-    notes: ["10mins exam", "start time 10am"]
+    notes: ["10mins exam", "start time 10am"],
   });
-  const [array, setArray] = useState([]);
+
   let qqq = {};
   let options = [];
+  const [array, setArray] = useState([]);
   const [valuee, setValuee] = useState({
     question: "",
     answer: "",
     ans1: "",
     ans2: "",
     ans3: "",
-    ans4: "",
+    ans4: ""
   });
   const [ind, setInd] = useState(-1);
   const Next = () => {
@@ -31,17 +31,16 @@ const useCreateExam = () => {
     }
   };
   const Prevs = () => {
-    if (index >= 2 && array.at(ind-1)) {
+    if (index >= 2 && array.at(ind - 1)) {
       setIndex(index - 1);
       setInd(ind - 1);
-      console.log(ind);
       fetch(ind);
     }
   };
-const [pre,setPre]=useState({})
+  const [pre, setPre] = useState({});
   const fetch = (i) => {
-    const preQ=array.at(i)
-     setPre(preQ)
+    const preQ = array.at(i);
+    setPre(preQ);
     setValuee({
       question: preQ.question,
       answer: preQ.answer,
@@ -51,13 +50,13 @@ const [pre,setPre]=useState({})
       ans4: preQ.options[3],
     });
   };
-  let template = {  
+  let template = {
     fields: [
       {
         title: "subjectName",
         type: "dropDown",
         name: "subjectName",
-        options: ["English", "Maths", "Science"],
+        options: ["English", "Maths", "Science", "physics", "history"],
         placeholder: "subjectName",
       },
       {
@@ -100,85 +99,93 @@ const [pre,setPre]=useState({})
         placeholder: "answer",
       },
     ],
-    buttonName: isNullish(valuee) ?"ADD":"Update",
-    button: ["Prev", "Next", "Cancel"],
+    buttonName: isNullish(valuee) ? "ADD" : "Update",
+    button: ["Prev", "Next", "Clear"],
   };
-
+  const queCheck = (values) => {
+    let a;
+    let arr = final.questions && final.questions.map((key) => key.question);
+    arr &&
+      arr.map((value) => {
+        if (value === values.question) {
+          a = true;
+        }
+      });
+    return a;
+  };
   const handle = (values) => {
-    // console.log(valuee);
-    // console.log(pre);
-    // const result = EqualObj(pre,valuee)
-    // console.log(result);
-    // //   ? values[index-1].question === valuee.question
-    // //     ? true
-    // //     : false
-    // //   : null;
-    // if (result) {
-    //   alert("no need to update");
-      
-    // }
-    console.log(pre);
-  //  if(!isNullish(valuee)){
-  //   values=valuee
-  //  }
     if (index <= 15) {
       const { ans1, ans2, ans3, ans4 } = values;
       options.push(ans1, ans2, ans3, ans4);
       qqq.question = values.question;
       qqq.answer = values.answer;
       qqq.options = options;
-    
-    
-      if(!isNullish(pre)){
-        const result = EqualObj(pre,qqq)
+      if (isNullish(pre)) {
+        if (queCheck(values)) {
+          alert("Question already exist");
+          return;
+        }else if(hasDuplicates(options)){
+          alert("options should be unique")
+          return;
+        }   
+        else{
+          if (index === 1) {
+            final.subjectName = values.subjectName;
+          }
+          array.push(qqq);
+          {
+            index <= 14 && setIndex(index + 1);
+          }
+          {
+            ind <= 13 && setInd(ind + 1);
+          }
+      }}
+      else {
+        const result = EqualObj(pre, qqq);
+        console.log(result);
         if (result) {
           alert("no need to update");
-          return;
-      }else{
-        array[index-1]=qqq
-      }
-    }else {
-      array.push(qqq);
-      final.subjectName = values.subjectName;
-    }
-    final.questions = array;
-    console.log(final);
-    array.length === 15 && submit(final);
-      {
-        index <= 14 && setIndex(index + 1);
-      }
-      {
-        ind <= 13 && setInd(ind + 1) ;  
-      }
+          setPre(reset(pre));
+        } else if (queCheck(values)) {
+          alert("Question already exist");
+        }
+       else if(hasDuplicates(options)){
+          alert("options should be unique")
+        }else 
+        {
+          const ans = window.confirm("Are you sure you want to update")
+            ? true
+            : false;
+          if (ans) {
+            array[index - 1] = qqq;
+
+            setPre(reset(pre));
+          } else {
+            setPre(reset(pre));
+          }
+        }
+        setIndex(final.questions.length + 1);
+        setInd(final.questions.length - 1);
+      } 
+      final.questions = array;
+      console.log(final);
+      array.length === 15 && submit(final);
     }
   };
-  const token = localStorage.getItem("userIn");
-  async function update() {
-    //   await axios
-    //     .put(`${baseUrl}dashboard/Teachers/editExam?id=${idd}`, final, {
-    //       headers: { "access-token": `${token}` },
-    //     })
-    //     .then((response) => {
-    //       alert("Update exam successfully");
-    //       history("viewexamdetails");
-    //     })
-    //     .catch((error) => alert(error.message));
-  }
   async function submit(final) {
+    const token = localStorage.getItem("userIn");
     console.log(final);
     await axios
       .post(`${baseUrl}dashboard/Teachers/Exam`, final, {
         headers: { "access-token": `${token}` },
       })
       .then((response) => {
-          alert(response.data.message);
+        alert(response.data.message);
       })
       .catch((error) => {
         alert(error.message);
       });
   }
-
-  return [{template,handle,valuee,index,setValuee,Prevs,Next,index}]
-}
-
-export default useCreateExam
+  return [{ template, handle, valuee, index, setValuee, Prevs, Next, index }];
+};
+export default useCreateExam;

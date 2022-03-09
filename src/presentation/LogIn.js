@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Form from "../shared/Form";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {signInRequest,signInSuccess,signInFailure} from '../store/Actions/Action'
 import {Email,Password} from '../container/useFields'
 function LogIn() {
-
   const [msg, setMsg] = useState(null)
   const state = useSelector((state) => state.SignIn)
  const dispatch= useDispatch();
@@ -40,9 +39,6 @@ function LogIn() {
           localStorage.setItem("isAuthenticated", true);
           localStorage.setItem("role", response.data.data.role);
           if (response.data.data.role === "teacher") {
-            console.log(
-              'nun'
-            )
             window.location="/teacherdashboard";
           }else {
             window.location="/studentdashboard";

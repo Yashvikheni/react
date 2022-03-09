@@ -44,9 +44,9 @@ function Form({
               value={
                 valuee
                   ? !isNullish(valuee)
-                    ? valuee[name]
-                    : state[name]
-                  : state[name]
+                    ? valuee[name] 
+                    : state[name]?state[name]:""
+                  : state[name]?state[name]:""
               }
               onChange={handleChange}
               disabled={name === "answer" ? true : false}
@@ -68,7 +68,8 @@ function Form({
                         }}
                         type="radio"
                         name={name}
-                        checked={
+                        checked={name==="answer"?
+                          state[element.name]?state[name]===state[element.name]?true:false:
                           valuee
                             ? !isNullish(valuee)
                               ? valuee[name]
@@ -76,8 +77,7 @@ function Form({
                                   ? true
                                   : false
                                 : false
-                              : null
-                            : state[element.name]===""?false:null
+                              : false:false:null 
                         }
                         onChange={handleChange}
                         value={
@@ -86,8 +86,8 @@ function Form({
                             : valuee
                             ? !isNullish(valuee)
                               ? valuee[element.name]
+                              : state[element.name] ? state[element.name]:""
                               : state[element.name]
-                            : state[element.name]
                         }
                       />
                       <label>
@@ -101,8 +101,8 @@ function Form({
                                 valuee
                                   ? !isNullish(valuee)
                                     ? valuee[element.name]
-                                    : state[element.name]
-                                  : state[element.name]
+                                    : state[element.name] ? state[element.name]:""
+                                  : state[element.name] 
                               }
                               name={element.name}
                               variant="outlined"
@@ -128,7 +128,7 @@ function Form({
             <select
               style={{ width: "100%", height: "50px" }}
               disabled={
-                indexx === 1 ? false : state[name] === "" ? false : true
+                indexx === 1 ? false : state[name] !== ""? true : false
               }
               onChange={handleChange}
               value={state[name]}
@@ -160,16 +160,20 @@ function Form({
     });
   };
   function handleSubmit(e, values) {
-console.log(values);
-    e.preventDefault();
+    e.preventDefault();  
+    if (valuee) {
+      if(!isNullish(valuee)){
+         values=valuee
+      }
+    }
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
       handle(values);
-      Cancel();
+        Cancel();
     }
   }
-  const handleChange = (e) => {
+  const handleChange =(e)=> {
     const { name, value, type } = e.target;
     if (valuee) {
       if(!isNullish(valuee)){
@@ -178,24 +182,26 @@ console.log(values);
       }
     }
     setState((prev) => ({ ...prev, [name]: value }));
-    console.log(state);
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   };
   const Cancel = () => {
+    console.log(indexx);
+    if(indexx!==1){
+      console.log("object");
       const newObj = Object.keys(state).reduce(
         (accumulator, current) => {
         if(current!=="subjectName"){
-
           accumulator[current] = ""; 
           }
           return accumulator
         }, {});
-     setState(newObj)
-    
+        setState(newObj)
+    }else{
+      setState(reset(state))
+    }
     valuee && setValuee(reset(valuee));
   };
-
   return (
     <div>
       <form className="form-outer-wrapper">

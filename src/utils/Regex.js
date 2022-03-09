@@ -1,4 +1,5 @@
-export const emailValidation = email => {
+import { confirmAlert } from "react-confirm-alert";
+ export const emailValidation = email => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email.toLowerCase());
 }
@@ -16,8 +17,8 @@ const a=value===""?true:false
 return a
 }
 
-export const reset=(state) => {
-    const newObj = Object.keys(state).reduce(
+export const reset=(obj) => {
+    const newObj = Object.keys(obj).reduce(
       (accumulator, current) => {
         accumulator[current] = ""; 
         return accumulator
@@ -39,4 +40,8 @@ export const reset=(state) => {
 export const EqualObj=(obj1,obj2)=> {
   const a= JSON.stringify(obj1) === JSON.stringify(obj2) ?true : false;
   return a;
+}
+
+export const hasDuplicates=(array)=> {
+  return (new Set(array)).size !== array.length;
 }

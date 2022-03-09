@@ -1,4 +1,5 @@
- import { emailValidation, passwordValidation, nameValidation ,isEmpty} from "./Regex";
+
+import { emailValidation, passwordValidation, nameValidation ,isEmpty} from "./Regex";
 
 export const Validators = (values, error, setError) => {
 
