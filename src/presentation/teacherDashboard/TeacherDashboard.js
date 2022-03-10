@@ -4,7 +4,8 @@ import '../../App.css'
 const TeacherDashboard = () => {  
  
   return (
-    <div>
+    <>
+         <div>Teacher Dashboard</div>
        <div className="sidebar">
               <ul>              
                 <li>
@@ -19,7 +20,10 @@ const TeacherDashboard = () => {
                 </li>
                
               </ul>
-            </div><Outlet/></div>
+            </div><Outlet/>
+            
+            </>
+         
   )
 
 }

@@ -1,18 +1,14 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { baseUrl } from "../utils/Constant";
 import axios from "axios";
 import { isNullish, EqualObj, reset,hasDuplicates } from "../utils/Regex";
 
-const useCreateExam = () => {
+const useCreateExam = ({final, setFinal}) => {
   const [index, setIndex] = useState(1);
-  const [final, setFinal] = useState({
-    subjectName: "",
-    questions: "",
-    notes: ["10mins exam", "start time 10am"],
-  });
 
-  let qqq = {};
-  let options = [];
+  // let qqq = {};
+  // let options = [];
+  const [pre, setPre] = useState({});
   const [array, setArray] = useState([]);
   const [valuee, setValuee] = useState({
     question: "",
@@ -24,22 +20,22 @@ const useCreateExam = () => {
   });
   const [ind, setInd] = useState(-1);
   const Next = () => {
-    if (index <= 15 && array.at(index)) {
+   const a=final.questions.at(index);
+    if (index <= 15 && a.question!=="") {
       setIndex(index + 1);
       setInd(ind + 1);
       fetch(index);
     }
   };
   const Prevs = () => {
-    if (index >= 2 && array.at(ind - 1)) {
+    if (index >= 2 && final.questions.at(ind - 1)) {
       setIndex(index - 1);
       setInd(ind - 1);
       fetch(ind);
     }
   };
-  const [pre, setPre] = useState({});
   const fetch = (i) => {
-    const preQ = array.at(i);
+    const preQ = final.questions.at(i);
     setPre(preQ);
     setValuee({
       question: preQ.question,
@@ -66,7 +62,7 @@ const useCreateExam = () => {
         placeholder: "question",
       },
       {
-        title: "Option1",
+        title: "Option",
         type: "radio",
         name: "answer",
         value: [
@@ -99,57 +95,57 @@ const useCreateExam = () => {
         placeholder: "answer",
       },
     ],
-    buttonName: isNullish(valuee) ? "ADD" : "Update",
+    buttonName: isNullish(pre) ? "ADD" : "Update",
     button: ["Prev", "Next", "Clear"],
   };
   const queCheck = (values) => {
     let a;
     let arr = final.questions && final.questions.map((key) => key.question);
     arr &&
-      arr.map((value) => {
-        if (value === values.question) {
-          a = true;
-        }
+      arr.map((value,index) => {
+        if(index!==ind+1){
+          if (value === values.question) {
+            a = true;
+          }
+        } 
       });
     return a;
   };
+  console.log(final);
   const handle = (values) => {
     if (index <= 15) {
-      const { ans1, ans2, ans3, ans4 } = values;
-      options.push(ans1, ans2, ans3, ans4);
-      qqq.question = values.question;
-      qqq.answer = values.answer;
-      qqq.options = options;
-      if (isNullish(pre)) {
+  const { ans1, ans2, ans3, ans4 } = values;
+        const value=final.questions.at(index-1)
+        value.options.push(ans1, ans2, ans3, ans4);
+        value.question = values.question;
+        value.answer = values.answer;
+       if (isNullish(pre)) {
         if (queCheck(values)) {
           alert("Question already exist");
           return;
-        }else if(hasDuplicates(options)){
-          alert("options should be unique")
-          return;
-        }   
+       }
+        //else if(hasDuplicates(value.options)){
+        //   alert("options should be unique")
+        //   return;
+        // }   
         else{
-          if (index === 1) {
-            final.subjectName = values.subjectName;
-          }
-          array.push(qqq);
+          //array.push(qqq);
           {
             index <= 14 && setIndex(index + 1);
           }
           {
             ind <= 13 && setInd(ind + 1);
           }
-      }}
-      else {
-        const result = EqualObj(pre, qqq);
-        console.log(result);
-        if (result) {
-          alert("no need to update");
-          setPre(reset(pre));
+       }}
+       else {
+        const result = EqualObj(pre, value);
+         if(result) {
+          alert("no need to update question");
+           setPre(reset(pre));
         } else if (queCheck(values)) {
           alert("Question already exist");
         }
-       else if(hasDuplicates(options)){
+       else if(hasDuplicates(value.options)){
           alert("options should be unique")
         }else 
         {
@@ -157,19 +153,24 @@ const useCreateExam = () => {
             ? true
             : false;
           if (ans) {
-            array[index - 1] = qqq;
-
+            final.questions[index - 1] = value;
+           
             setPre(reset(pre));
           } else {
             setPre(reset(pre));
           }
+          
         }
-        setIndex(final.questions.length + 1);
-        setInd(final.questions.length - 1);
+      setIndex(final.questions.length + 1);
+      setInd(final.questions.length - 1);
       } 
-      final.questions = array;
-      console.log(final);
-      array.length === 15 && submit(final);
+      if (index === 1) {
+        if(values.subjectName){
+          final.subjectName = values.subjectName;
+        }
+      }
+      //console.log(final);
+      //final.questions.length === 15 && submit(final);
     }
   };
   async function submit(final) {

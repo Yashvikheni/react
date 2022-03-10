@@ -29,7 +29,7 @@ function Form({
           : null
         : null
     );
-  }, []);
+  },[]);
   const renderFields = (fields) => {
     return fields.map((field, index) => {
       let { type, name, value, options } = field;
@@ -128,7 +128,7 @@ function Form({
             <select
               style={{ width: "100%", height: "50px" }}
               disabled={
-                indexx === 1 ? false : state[name] !== ""? true : false
+                indexx === 1 ? false : state[name] !== ""? true :false
               }
               onChange={handleChange}
               value={state[name]}
@@ -170,7 +170,7 @@ function Form({
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
       handle(values);
-        Cancel();
+      add();
     }
   }
   const handleChange =(e)=> {
@@ -185,20 +185,36 @@ function Form({
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   };
-  const Cancel = () => {
-    console.log(indexx);
-    if(indexx!==1){
-      console.log("object");
-      const newObj = Object.keys(state).reduce(
-        (accumulator, current) => {
-        if(current!=="subjectName"){
-          accumulator[current] = ""; 
-          }
-          return accumulator
-        }, {});
-        setState(newObj)
-    }else{
+// useEffect(() => {
+//   if(valuee) {
+//     if(!isNullish(valuee)){
+//      setError(reset(error))
+//        Validators(valuee, error, setError);
+//      }
+//   }
+// },[state])
+   
+   
+  const ccc=()=>{
+    const obj=Object.keys(state).reduce(
+    (accumulator, current) => {
+      if(current!=="subjectName"){
+        accumulator[current]="";   
+      }
+      return accumulator
+    }, {})  ; return obj}
+  const add=() => {
+    const newObj = ccc();
+    setState(newObj)
+    valuee && setValuee(reset(valuee));
+    } 
+  const cancel = () => {
+    if(indexx===1){
+      state.subjectName=""
       setState(reset(state))
+    }else{
+      const newObj = ccc();
+      setState(newObj)
     }
     valuee && setValuee(reset(valuee));
   };
@@ -220,7 +236,7 @@ function Form({
                         ? Prev()
                         : btn === "Next"
                         ? Next()
-                        : Cancel();
+                        : cancel();
                     }}
                     disabled={
                       btn === "Prev"
@@ -252,5 +268,4 @@ function Form({
     </div>
   );
 }
-
 export default React.memo(Form);
