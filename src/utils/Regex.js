@@ -38,6 +38,7 @@ export const reset=(obj) => {
 };
 
 export const EqualObj=(obj1,obj2)=> {
+  
   const a= JSON.stringify(obj1) === JSON.stringify(obj2) ?true : false;
   return a;
 }

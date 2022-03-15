@@ -19,7 +19,6 @@ const CreateExam = () => {
     }
    }
   },[])
-
   const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final, setFinal})
   return (
     <div>

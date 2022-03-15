@@ -6,15 +6,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import { isNullish, reset } from "../utils/Regex";
 import { Validators, Validation } from "../utils/Validators";
-function Form({
-  template,
-  handle,
-  valuee,
-  setValuee,
-  Prev,
-  Next,
-  indexx,
-}) {
+function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
   const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
@@ -29,7 +21,7 @@ function Form({
           : null
         : null
     );
-  },[]);
+  }, []);
   const renderFields = (fields) => {
     return fields.map((field, index) => {
       let { type, name, value, options } = field;
@@ -44,9 +36,13 @@ function Form({
               value={
                 valuee
                   ? !isNullish(valuee)
-                    ? valuee[name] 
-                    : state[name]?state[name]:""
-                  : state[name]?state[name]:""
+                    ? valuee[name]
+                    : state[name]
+                    ? state[name]
+                    : ""
+                  : state[name]
+                  ? state[name]
+                  : ""
               }
               onChange={handleChange}
               disabled={name === "answer" ? true : false}
@@ -68,16 +64,22 @@ function Form({
                         }}
                         type="radio"
                         name={name}
-                        checked={name==="answer"?
-                          state[element.name]?state[name]===state[element.name]?true:false:
-                          valuee
-                            ? !isNullish(valuee)
-                              ? valuee[name]
-                                ? valuee[element.name] === valuee[name]
-                                  ? true
+                        checked={
+                          name === "answer"
+                            ? state[element.name]
+                              ? state[name] === state[element.name]
+                                ? true
+                                : false
+                              : valuee
+                              ? !isNullish(valuee)
+                                ? valuee[name]
+                                  ? valuee[element.name] === valuee[name]
+                                    ? true
+                                    : false
                                   : false
                                 : false
-                              : false:false:null 
+                              : false
+                            : null
                         }
                         onChange={handleChange}
                         value={
@@ -86,8 +88,10 @@ function Form({
                             : valuee
                             ? !isNullish(valuee)
                               ? valuee[element.name]
-                              : state[element.name] ? state[element.name]:""
                               : state[element.name]
+                              ? state[element.name]
+                              : ""
+                            : state[element.name]
                         }
                       />
                       <label>
@@ -101,8 +105,10 @@ function Form({
                                 valuee
                                   ? !isNullish(valuee)
                                     ? valuee[element.name]
-                                    : state[element.name] ? state[element.name]:""
-                                  : state[element.name] 
+                                    : state[element.name]
+                                    ? state[element.name]
+                                    : ""
+                                  : state[element.name]
                               }
                               name={element.name}
                               variant="outlined"
@@ -118,8 +124,9 @@ function Form({
                   );
                 })
               : null}
-              {name==="role"?
-            <span className="error">{error[name]}</span>:null}
+            {name === "role" ? (
+              <span className="error">{error[name]}</span>
+            ) : null}
           </div>
         );
       } else if (type === "dropDown") {
@@ -128,7 +135,7 @@ function Form({
             <select
               style={{ width: "100%", height: "50px" }}
               disabled={
-                indexx === 1 ? false : state[name] !== ""? true :false
+                indexx === 1 ? false : state[name] !== "" ? true : false
               }
               onChange={handleChange}
               value={state[name]}
@@ -160,61 +167,64 @@ function Form({
     });
   };
   function handleSubmit(e, values) {
-    e.preventDefault();  
+    e.preventDefault();
     if (valuee) {
-      if(!isNullish(valuee)){
-         values=valuee
+      if (!isNullish(valuee)) {
+        values = valuee;
       }
     }
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
-      handle(values);
-      add();
+      handle(values, add);
     }
   }
-  const handleChange =(e)=> {
+  const handleChange = (e) => {
     const { name, value, type } = e.target;
     if (valuee) {
-      if(!isNullish(valuee)){
-         setValuee((prev) => ({ ...prev, [name]: value }));
-         setState(valuee)
+      if (!isNullish(valuee)) {
+        setValuee((prev) => ({ ...prev, [name]: value }));
+        setState(valuee);
       }
     }
     setState((prev) => ({ ...prev, [name]: value }));
     const ans = Validation(name, value, state, type, error);
+
     setError(ans);
   };
-// useEffect(() => {
-//   if(valuee) {
-//     if(!isNullish(valuee)){
-//      setError(reset(error))
-//        Validators(valuee, error, setError);
-//      }
-//   }
-// },[state])
-   
-   
-  const ccc=()=>{
-    const obj=Object.keys(state).reduce(
-    (accumulator, current) => {
-      if(current!=="subjectName"){
-        accumulator[current]="";   
+  useEffect(() => {
+    if (!valuee) return;
+    else {
+      if (!isNullish(valuee)) {
+        setError(reset(error));
+        const newObj = ccc();
+        setState(newObj);
+        Validators(valuee, error, setError);
       }
-      return accumulator
-    }, {})  ; return obj}
-  const add=() => {
+    }
+  }, [valuee]);
+
+  const ccc = () => {
+    const obj = Object.keys(state).reduce((accumulator, current) => {
+      if (current !== "subjectName") {
+        accumulator[current] = "";
+      }
+      return accumulator;
+    }, {});
+    return obj;
+  };
+  const add = () => {
     const newObj = ccc();
-    setState(newObj)
+    setState(newObj);
     valuee && setValuee(reset(valuee));
-    } 
+  };
   const cancel = () => {
-    if(indexx===1){
-      state.subjectName=""
-      setState(reset(state))
-    }else{
+    if (indexx === 1) {
+      state.subjectName = "";
+      setState(reset(state));
+    } else {
       const newObj = ccc();
-      setState(newObj)
+      setState(newObj);
     }
     valuee && setValuee(reset(valuee));
   };
@@ -244,7 +254,7 @@ function Form({
                           ? true
                           : false
                         : btn === "Next"
-                        ? indexx === 15
+                        ? indexx === 15 || buttonName === "ADD"
                           ? true
                           : false
                         : false

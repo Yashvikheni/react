@@ -1,50 +1,54 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { baseUrl } from "../utils/Constant";
+import {useNavigate} from 'react-router-dom'
 import axios from "axios";
-import { isNullish, EqualObj, reset,hasDuplicates } from "../utils/Regex";
+import { isNullish, EqualObj, reset, hasDuplicates } from "../utils/Regex";
 
-const useCreateExam = ({final, setFinal}) => {
+const useCreateExam = ({ final}) => {
+  const history=useNavigate()
   const [index, setIndex] = useState(1);
-
-  // let qqq = {};
-  // let options = [];
+  const [ind, setInd] = useState(-1);
   const [pre, setPre] = useState({});
-  const [array, setArray] = useState([]);
   const [valuee, setValuee] = useState({
     question: "",
     answer: "",
     ans1: "",
     ans2: "",
     ans3: "",
-    ans4: ""
+    ans4: "",
   });
-  const [ind, setInd] = useState(-1);
   const Next = () => {
-   const a=final.questions.at(index);
-    if (index <= 15 && a.question!=="") {
+    if (index <= 15) {
       setIndex(index + 1);
       setInd(ind + 1);
       fetch(index);
     }
   };
   const Prevs = () => {
-    if (index >= 2 && final.questions.at(ind - 1)) {
+    if (index >= 2) {
       setIndex(index - 1);
       setInd(ind - 1);
       fetch(ind);
     }
   };
   const fetch = (i) => {
-    const preQ = final.questions.at(i);
+    const preQ = final.questions.at(i); 
     setPre(preQ);
-    setValuee({
-      question: preQ.question,
-      answer: preQ.answer,
-      ans1: preQ.options[0],
-      ans2: preQ.options[1],
-      ans3: preQ.options[2],
-      ans4: preQ.options[3],
-    });
+    handleAlert();
+     if(preQ.options[0]){ 
+      setValuee({
+        question: preQ.question,
+        answer: preQ.answer,
+        ans1: preQ.options[0],
+        ans2: preQ.options[1],
+        ans3: preQ.options[2],
+        ans4: preQ.options[3],
+      });
+     }
+     else{
+       setValuee(reset(valuee))
+       setPre(reset(pre))
+     }
   };
   let template = {
     fields: [
@@ -102,86 +106,98 @@ const useCreateExam = ({final, setFinal}) => {
     let a;
     let arr = final.questions && final.questions.map((key) => key.question);
     arr &&
-      arr.map((value,index) => {
-        if(index!==ind+1){
+      arr.map((value, index) => {
+        if (index !== ind + 1) {
           if (value === values.question) {
             a = true;
           }
-        } 
+        }
       });
     return a;
   };
-  console.log(final);
-  const handle = (values) => {
+  const handleOptions = (values) => {
+    const { ans1, ans2, ans3, ans4 } = values;
+    let option = [];
+    option[0] = ans1;
+    option[1] = ans2;
+    option[2] = ans3;
+    option[3] = ans4;
+    return option;
+  };
+  const handleAlert = () => {
+    if (!isNullish(valuee)) {
+      const val={...valuee}
+      val.options = handleOptions(val);
+      if (!isNullish(final.questions.at(index - 1)) || !isNullish(valuee)) {
+        ["ans1", "ans2", "ans3", "ans4","subjectName"].forEach((e) => delete val[e]);
+        const result = EqualObj(val, final.questions.at(index - 1));
+        if (!result ) {
+          alert("you are losing your data");
+        }
+      }
+    }
+  };
+  const Format = (values) => {
+    const value = final.questions.at(index - 1);
+    value.options = handleOptions(values);
+    value.question = values.question;
+    value.answer = values.answer;
+  };
+  const handle = (values,add) => {
+    let options = handleOptions(values);
     if (index <= 15) {
-  const { ans1, ans2, ans3, ans4 } = values;
-        const value=final.questions.at(index-1)
-        value.options.push(ans1, ans2, ans3, ans4);
-        value.question = values.question;
-        value.answer = values.answer;
-       if (isNullish(pre)) {
-        if (queCheck(values)) {
-          alert("Question already exist");
-          return;
-       }
-        //else if(hasDuplicates(value.options)){
-        //   alert("options should be unique")
-        //   return;
-        // }   
-        else{
-          //array.push(qqq);
-          {
-            index <= 14 && setIndex(index + 1);
-          }
-          {
-            ind <= 13 && setInd(ind + 1);
-          }
-       }}
-       else {
-        const result = EqualObj(pre, value);
-         if(result) {
-          alert("no need to update question");
-           setPre(reset(pre));
-        } else if (queCheck(values)) {
-          alert("Question already exist");
-        }
-       else if(hasDuplicates(value.options)){
-          alert("options should be unique")
-        }else 
+      if (queCheck(values)) {
+        alert("Question already exist");
+        return;
+      } else if (hasDuplicates(options)) {
+        alert("options should be unique");
+        return;
+      }
+      if (isNullish(pre)) {
+        Format(values);
+        add();
         {
-          const ans = window.confirm("Are you sure you want to update")
-            ? true
-            : false;
-          if (ans) {
-            final.questions[index - 1] = value;
-           
-            setPre(reset(pre));
-          } else {
-            setPre(reset(pre));
-          }
-          
+          index <= 14 && setIndex(index + 1);
         }
-      setIndex(final.questions.length + 1);
-      setInd(final.questions.length - 1);
-      } 
+        {
+          ind <= 13 && setInd(ind + 1);
+        }
+      } else {
+        const ans = window.confirm("Are you sure you want to update")
+          ? true
+          : false;
+        if (ans) {
+          Format(values);
+          Next();
+        }
+        else{
+          return;
+        }
+      }
       if (index === 1) {
-        if(values.subjectName){
+        if (values.subjectName) {
           final.subjectName = values.subjectName;
         }
       }
-      //console.log(final);
-      //final.questions.length === 15 && submit(final);
+      console.log(final);
+      const ff = final.questions[14];
+      if (ff.question !== "") {
+        submit(final);
+      }
     }
+  
   };
   async function submit(final) {
     const token = localStorage.getItem("userIn");
-    console.log(final);
     await axios
       .post(`${baseUrl}dashboard/Teachers/Exam`, final, {
         headers: { "access-token": `${token}` },
       })
       .then((response) => {
         alert(response.data.message);
+        if(response.data.statusCode ===200){
+          history("../viewexam")
+        }
       })
       .catch((error) => {
         alert(error.message);

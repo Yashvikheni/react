@@ -2,7 +2,6 @@
 import { emailValidation, passwordValidation, nameValidation ,isEmpty,reset} from "./Regex";
 
 export const Validators = (values, error, setError) => {
-  
   Object.keys(values).map((key) => {
     if (isEmpty(values[key])) {
       error[key] = "required"
