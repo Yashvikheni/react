@@ -1,22 +1,20 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Navbar from './Navbar'
-
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const Logout = () => {
-    const history = useNavigate()
+  const history = useNavigate();
 
-    useEffect(() => {
-        history('../login') 
-    },[])
+  useEffect(() => {
+    history("../login");
+  }, []);
 
-    return (
-        <div>
-            <Navbar />
-         {localStorage.clear()}
+  return (
+    <div>
+      <Navbar />
+      {localStorage.clear()}
+    </div>
+  );
+};
 
-        </div>
-    )
-}
-
-export default Logout
+export default Logout;

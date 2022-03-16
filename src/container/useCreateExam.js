@@ -32,7 +32,8 @@ const useCreateExam = ({ final}) => {
     }
   };
   const fetch = (i) => {
-    const preQ = final.questions.at(i); 
+    const preQ =final.questions.at(i); 
+    console.log(preQ);
     setPre(preQ);
     handleAlert();
      if(preQ.options[0]){ 
@@ -56,7 +57,7 @@ const useCreateExam = ({ final}) => {
         title: "subjectName",
         type: "dropDown",
         name: "subjectName",
-        options: ["English", "Maths", "Science", "physics", "history"],
+        options: ["English", "Maths", "Node", "React", "Flutter"],
         placeholder: "subjectName",
       },
       {
@@ -144,6 +145,7 @@ const useCreateExam = ({ final}) => {
     value.answer = values.answer;
   };
   const handle = (values,add) => {
+   
     let options = handleOptions(values);
     if (index <= 15) {
       if (queCheck(values)) {
@@ -185,7 +187,6 @@ const useCreateExam = ({ final}) => {
         submit(final);
       }
     }
-  
   };
   async function submit(final) {
     const token = localStorage.getItem("userIn");
@@ -197,12 +198,15 @@ const useCreateExam = ({ final}) => {
         alert(response.data.message);
         if(response.data.statusCode ===200){
           history("../viewexam")
+        }else{
+          window.location.reload();
         }
       })
       .catch((error) => {
         alert(error.message);
+        window.location.reload();
       });
   }
-  return [{ template, handle, valuee, index, setValuee, Prevs, Next, index }];
+  return [{ template, handle, valuee, index, setValuee, Prevs, Next ,final}];
 };
 export default useCreateExam;

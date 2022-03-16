@@ -9,7 +9,7 @@ function TeacherDashboard() {
   const {student}=state
   const key = student && student.length ? Object.keys(student[0]) : []
   return (
-    <div>
+    <div style={{marginLeft:"200px"}}>
       <Button style={{ width: "15%" }} onClick={() => setCheck(false)}>Verified Student Data</Button>
       <Button  style={{ width: "15%" }}onClick={() => setCheck(true)}> All Student Data</Button>
       {loading ? (

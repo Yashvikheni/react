@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import { isNullish, reset } from "../utils/Regex";
 import { Validators, Validation } from "../utils/Validators";
-function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
+function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final}) {
   const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
@@ -166,6 +166,7 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
       );
     });
   };
+
   function handleSubmit(e, values) {
     e.preventDefault();
     if (valuee) {
@@ -193,7 +194,8 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
     setError(ans);
   };
   useEffect(() => {
-    if (!valuee) return;
+    if (!valuee || !indexx) return;
+
     else {
       if (!isNullish(valuee)) {
         setError(reset(error));
@@ -202,7 +204,7 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
         Validators(valuee, error, setError);
       }
     }
-  }, [valuee]);
+  }, [valuee,indexx]);
 
   const ccc = () => {
     const obj = Object.keys(state).reduce((accumulator, current) => {
@@ -228,6 +230,12 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
     }
     valuee && setValuee(reset(valuee));
   };
+  const cV=() => {
+    Validators(state, error, setError);
+    const a = Object.values(error).map((ok) => ok);
+    return a.every((val) => val === "")
+  }
+;
   return (
     <div>
       <form className="form-outer-wrapper">
@@ -243,10 +251,9 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx }) {
                     key={index}
                     onClick={() => {
                       btn === "Prev"
-                        ? Prev()
+                        ? final.questions.at(indexx-1).question===""? Prev() : cV(valuee) && Prev()
                         : btn === "Next"
-                        ? Next()
-                        : cancel();
+                        ? cV(valuee) && Next() : cancel();
                     }}
                     disabled={
                       btn === "Prev"

@@ -4,25 +4,23 @@ import '../../App.css'
 const TeacherDashboard = () => {  
  
   return (
-    <>
-         <div>Teacher Dashboard</div>
+    <div>
+         <div style={{marginLeft:"200px"}}>Teacher Dashboard</div>
        <div className="sidebar">
-              <ul>              
-                <li>
+              <div>
                   <Link to="studentdata">Student Data</Link>
-                </li>
-                <li>
+                  </div>
+                  <div>
                   <Link to="createexam">Create Exam</Link>
-                </li>
-                <li>
-             
+                  </div>
+                
+                  <div>
                   <Link to="viewexam">View Exam</Link>
-                </li>
-               
-              </ul>
-            </div><Outlet/>
+                  </div>     
+            </div>
+            <Outlet/>
             
-            </>
+            </div>
          
   )
 

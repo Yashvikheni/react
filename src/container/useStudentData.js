@@ -26,7 +26,7 @@ const useStudentData = ({check,setCheck}) => {
   const handle = (data) => {
     setShowComp(true);
     data.map((user,index)=>
-    user.key==='id'?localStorage.setItem("studentid",user.val):null
+    user.key==='_id'?localStorage.setItem("studentid",user.val):null
  )
   };
   async function fetch(){
@@ -42,7 +42,8 @@ const useStudentData = ({check,setCheck}) => {
   }
   useEffect(() => {
     if (showComp) {
-      history(`../studentdetails`);
+      const id=localStorage.getItem("studentid")
+      history(`../studentdetails?id=${id}`);
     }
   }, [showComp]);
  

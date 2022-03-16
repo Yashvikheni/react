@@ -3,6 +3,7 @@ import axios from 'axios';
 import {baseUrl} from "../utils/Constant"
 const useStudentDetails = ({api}) => {
     const [student, setStudent] = useState([])
+    const key = student && student.length>0 ? Object.keys(student[0]) : []
 useEffect(() => {
   fetch();
  },[])
@@ -15,6 +16,6 @@ useEffect(() => {
  }).catch((error)=>{
     alert(error.message)
  })}
-  return [{student}]
+  return [{student,key}]
 }
 export default useStudentDetails

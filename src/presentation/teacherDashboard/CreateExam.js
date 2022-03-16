@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from "react";
+import {useLocation} from 'react-router-dom'
 import Form from "../../shared/Form";
 import useCreateExam from "../../container/useCreateExam"
 
 const CreateExam = () => {
+  //const { state } = useLocation();
   const [final, setFinal] = useState({
     subjectName: "",
     questions:[],
@@ -21,7 +23,7 @@ const CreateExam = () => {
   },[])
   const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final, setFinal})
   return (
-    <div>
+    <div style={{marginLeft:"200px"}}>
       <h2>{index<=15?`Question ${index}`:null}</h2>
       <Form
         template={template}
@@ -31,6 +33,7 @@ const CreateExam = () => {
         Prev={Prevs}
         Next={Next}
         indexx={index}
+        final={final}
       />
     </div>
   );
