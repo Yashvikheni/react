@@ -33,12 +33,12 @@ const ResetPassword = () => {
        await axios
        .post(`${baseUrl}users/ResetPassword`, values,{headers:{'access-token':`${token}`}})
        .then((response)=>
-       console.log(response.data))
+       alert(response.data.message))
        .catch((error)=>
-       console.log(error.message))
+       alert(error.message))
         }
   return (
-    <div> <Form template={template} handle={handle}/></div>
+    <div><Form template={template} handle={handle}/></div>
   )
 }
 

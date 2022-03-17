@@ -26,7 +26,6 @@ async function fetch({api}){
     dispatch(viewExamFailure(error.message))
 })
 }
-
 async function del(data){
 data.map((user,index)=>
 user.key==='_id'?localStorage.setItem("examId",user.val):""
@@ -39,13 +38,16 @@ const token = localStorage.getItem("userIn")
      alert('Exam deleted successfully')
      const api = `dashboard/Teachers/viewExam`;
      fetch({ api });
-   }
-   alert(response.data.message)})
+   }})
    .catch(error =>alert(error.message))
 }
 async function viewDetails(data){
- data.map((user,index)=>
- user.key==='_id'?localStorage.setItem("examId",user.val):""
+ data.map((user,index)=>{
+ if(user.key==='_id'){
+localStorage.setItem("examId",user.val)}
+if(user.key==='subjectName'){
+  localStorage.setItem("subject",user.val)}
+}
 )
 const id=localStorage.getItem("examId")
 history(`../viewexamdetails?id=${id}`)

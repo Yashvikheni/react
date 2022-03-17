@@ -16,7 +16,10 @@ export const isEmpty=value=>{
 const a=value===""?true:false
 return a
 }
-
+export const whitespace=value=>{
+  const reg= /^\s*$/
+  return reg.test(value)
+}
 export const reset=(obj) => {
     const newObj = Object.keys(obj).reduce(
       (accumulator, current) => {

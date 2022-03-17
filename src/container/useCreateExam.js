@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { baseUrl } from "../utils/Constant";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { isNullish, EqualObj, reset, hasDuplicates } from "../utils/Regex";
 
-const useCreateExam = ({ final}) => {
-  const history=useNavigate()
-  const [index, setIndex] = useState(1);
+const useCreateExam = ({ final, state }) => {
+  const history = useNavigate();
+  const [index, setIndex] = useState(state?state.index:1);
   const [ind, setInd] = useState(-1);
   const [pre, setPre] = useState({});
   const [valuee, setValuee] = useState({
@@ -17,26 +17,35 @@ const useCreateExam = ({ final}) => {
     ans3: "",
     ans4: "",
   });
-  const Next = () => {
+  useEffect(() => {
+    if (!state) return;
+    if(state){
+      final.questions=state.eQuestions;
+    final.subjectName=state.subject}
+    fetch(index-1);
+    setInd(index-2)
+
+  }, []);
+  const Next = (data1) => {
     if (index <= 15) {
       setIndex(index + 1);
       setInd(ind + 1);
-      fetch(index);
+      fetch(index, data1);
     }
   };
-  const Prevs = () => {
+  const Prevs = (data1) => {
     if (index >= 2) {
       setIndex(index - 1);
       setInd(ind - 1);
-      fetch(ind);
+      fetch(ind, data1);
     }
   };
-  const fetch = (i) => {
-    const preQ =final.questions.at(i); 
-    console.log(preQ);
+  const fetch = (i, data1) => {
+    console.log(i);
+    const preQ = final.questions.at(i);
     setPre(preQ);
-    handleAlert();
-     if(preQ.options[0]){ 
+    handleAlert(data1);
+    if (preQ.options[0]) {
       setValuee({
         question: preQ.question,
         answer: preQ.answer,
@@ -45,15 +54,14 @@ const useCreateExam = ({ final}) => {
         ans3: preQ.options[2],
         ans4: preQ.options[3],
       });
-     }
-     else{
-       setValuee(reset(valuee))
-       setPre(reset(pre))
-     }
+    } else {
+      setValuee(reset(valuee));
+      setPre(reset(pre));
+    }
   };
   let template = {
     fields: [
-      {
+      state ?{}: {
         title: "subjectName",
         type: "dropDown",
         name: "subjectName",
@@ -86,7 +94,7 @@ const useCreateExam = ({ final}) => {
             name: "ans3",
             placeholder: "Option3",
           },
-          {
+           {
             type: "text",
             name: "ans4",
             placeholder: "Option4",
@@ -100,7 +108,7 @@ const useCreateExam = ({ final}) => {
         placeholder: "answer",
       },
     ],
-    buttonName: isNullish(pre) ? "ADD" : "Update",
+    buttonName: state?"Update":index===15?"CREATE":isNullish(pre) ? "ADD" : "Update",
     button: ["Prev", "Next", "Clear"],
   };
   const queCheck = (values) => {
@@ -125,16 +133,26 @@ const useCreateExam = ({ final}) => {
     option[3] = ans4;
     return option;
   };
-  const handleAlert = () => {
+  const handleAlert = (data1) => {
     if (!isNullish(valuee)) {
-      const val={...valuee}
-      val.options = handleOptions(val);
-      if (!isNullish(final.questions.at(index - 1)) || !isNullish(valuee)) {
-        ["ans1", "ans2", "ans3", "ans4","subjectName"].forEach((e) => delete val[e]);
-        const result = EqualObj(val, final.questions.at(index - 1));
-        if (!result ) {
-          alert("you are losing your data");
-        }
+      const val = { ...valuee };
+      !state && showAlert(val);
+    } else if (data1) {
+      if (!isNullish(data1)) {
+        const val = { ...data1 };
+        showAlert(val);
+      }
+    }
+  };
+  const showAlert = (val) => {
+    val.options = handleOptions(val);
+    if (!isNullish(final.questions.at(index - 1)) || !isNullish(valuee)) {
+      ["ans1", "ans2", "ans3", "ans4", "subjectName"].forEach(
+        (e) => delete val[e]
+      );
+      const result = EqualObj(val, final.questions.at(index - 1));
+      if (!result) {
+        alert("you are losing your data");
       }
     }
   };
@@ -144,8 +162,8 @@ const useCreateExam = ({ final}) => {
     value.question = values.question;
     value.answer = values.answer;
   };
-  const handle = (values,add) => {
-   
+  const handle = (values, add) => {
+    
     let options = handleOptions(values);
     if (index <= 15) {
       if (queCheck(values)) {
@@ -171,12 +189,14 @@ const useCreateExam = ({ final}) => {
         if (ans) {
           Format(values);
           Next();
-        }
-        else{
+        } else {
           return;
         }
       }
-      if (index === 1) {
+      if(state){
+        final.subjectName=state.subject
+      }
+      else if (index === 1) {
         if (values.subjectName) {
           final.subjectName = values.subjectName;
         }
@@ -184,7 +204,7 @@ const useCreateExam = ({ final}) => {
       console.log(final);
       const ff = final.questions[14];
       if (ff.question !== "") {
-        submit(final);
+        state?update(final):submit(final);
       }
     }
   };
@@ -196,9 +216,9 @@ const useCreateExam = ({ final}) => {
       })
       .then((response) => {
         alert(response.data.message);
-        if(response.data.statusCode ===200){
-          history("../viewexam")
-        }else{
+        if (response.data.statusCode === 200) {
+          history("../viewexam");
+        } else {
           window.location.reload();
         }
       })
@@ -207,6 +227,25 @@ const useCreateExam = ({ final}) => {
         window.location.reload();
       });
   }
-  return [{ template, handle, valuee, index, setValuee, Prevs, Next ,final}];
+  async function update(final) {
+    const token = localStorage.getItem("userIn");
+    const id=localStorage.getItem("examId")
+    await axios
+      .put(`${baseUrl}dashboard/Teachers/editExam?id=${id}`, final, {
+        headers: { "access-token": `${token}` },
+      })
+      .then((response) => {
+        alert(response.data.message); 
+        if (response.data.statusCode === 200) {
+          history(`../viewexamdetails?id=${id}`);
+        }
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+  return [
+    { template, handle, valuee, index, setValuee, Prevs, Next, final },
+  ];
 };
 export default useCreateExam;

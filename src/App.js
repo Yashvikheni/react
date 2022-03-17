@@ -6,7 +6,6 @@ import LogIn from "./presentation/LogIn";
 import Logout from "./presentation/Logout";
 import ForgotPassword from "./presentation/ForgotPassword";
 import NewPassword from "./presentation/NewPassword";
-
 import TeacherDashboard from "./presentation/teacherDashboard/TeacherDashboard";
 import ResetPassword from "./presentation/teacherDashboard/ResetPassword";
 import StudentData from "./presentation/teacherDashboard/StudentData";

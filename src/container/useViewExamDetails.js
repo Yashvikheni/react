@@ -22,11 +22,13 @@ const useViewExamDetails = () => {
       setData(response.data.data.questions);
        })
     .catch(error =>alert(error.message))}
-  const Edit=(val) => {
+  const Edit=(val,index) => {
+    const subject=localStorage.getItem('subject')
       state.options=val[0].val
       state.question=val[1].val
       state.answer=val[2].val
-    history('../createexam', { state: state })
+      const ind=index+1
+    history('../createexam', { state: {data:state,index:ind,eQuestions:data,subject:subject}})
   }
   return [{data,Edit,key}]
 }

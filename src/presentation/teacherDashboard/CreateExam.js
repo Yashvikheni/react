@@ -4,7 +4,7 @@ import Form from "../../shared/Form";
 import useCreateExam from "../../container/useCreateExam"
 
 const CreateExam = () => {
-  //const { state } = useLocation();
+  const { state } = useLocation();
   const [final, setFinal] = useState({
     subjectName: "",
     questions:[],
@@ -21,10 +21,12 @@ const CreateExam = () => {
     }
    }
   },[])
-  const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final, setFinal})
+
+  const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final,state})
   return (
     <div style={{marginLeft:"200px"}}>
       <h2>{index<=15?`Question ${index}`:null}</h2>
+      <h2>{state?`subject:${state.subject}`:null}</h2>
       <Form
         template={template}
         handle={handle}
@@ -34,6 +36,7 @@ const CreateExam = () => {
         Next={Next}
         indexx={index}
         final={final}
+        subject={state&&state.subject}
       />
     </div>
   );

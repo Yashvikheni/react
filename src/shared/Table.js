@@ -9,7 +9,6 @@ const Table = ({
   button2,
   handle2,
 }) => {
-
   const data = tableData
     ? tableData.map((row, index) => {
         let rowData = [];
@@ -25,28 +24,41 @@ const Table = ({
           <tr className="tablee" key={index}>
             {rowData.map((data, index) => (
               <td key={index} data-heading={data.key}>
-               {Array.isArray(data.val) && data.val.every((val) => typeof val === 'object')?
-                   <div key={index}>
-                      <Table
-                         tableData={data.val}
-                    headingColumns={
+                {Array.isArray(data.val) &&
+                data.val.every((val) => typeof val === "object") ? (
+                  <div key={index}>
+                    <Table
+                      tableData={data.val}
+                      headingColumns={
                         data.val.length ? Object.keys(data.val[0]) : []
                       }
-                ></Table>
-                </div>:Array.isArray(data.val)
-                ? data.val.map((ok, index) =>
-                    `${ok} `)
-                : data.val}
+                    ></Table>
+                  </div>
+                ) : Array.isArray(data.val) ? (
+                  data.val.map((ok, index) => `${ok} `)
+                ) : (
+                  data.val
+                )}
               </td>
             ))}
             {button2 ? (
               <td>
-                <Button style={{backgroundColor:"#E8E7E8"}} onClick={() => handle2(rowData)}>{button2}</Button>
+                <Button
+                  style={{ backgroundColor: "#E8E7E8" }}
+                  onClick={() => handle2(rowData)}
+                >
+                  {button2}
+                </Button>
               </td>
             ) : null}
             {button ? (
               <td>
-                <Button style={{backgroundColor:"#E8E7E8"}} onClick={() => handle(rowData)}>{button}</Button>
+                <Button
+                  style={{ backgroundColor: "#E8E7E8" }}
+                  onClick={() => handle(rowData, index)}
+                >
+                  {button}
+                </Button>
               </td>
             ) : null}
           </tr>
@@ -68,11 +80,4 @@ const Table = ({
     </div>
   );
 };
-
-// Table.propTypes = {
-//   tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
-//   headingColumns: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-// }
-
 export default Table;

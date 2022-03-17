@@ -6,7 +6,17 @@ import { Link } from "react-router-dom";
 import "../App.css";
 import { isNullish, reset } from "../utils/Regex";
 import { Validators, Validation } from "../utils/Validators";
-function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final}) {
+function Form({
+  template,
+  handle,
+  valuee,
+  setValuee,
+  Prev,
+  Next,
+  indexx,
+  final,
+  subject
+}) {
   const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
@@ -134,14 +144,17 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
           <div key={index}>
             <select
               style={{ width: "100%", height: "50px" }}
-              disabled={
-                indexx === 1 ? false : state[name] !== "" ? true : false
+              disabled={ indexx === 1
+                  ? false
+                  : state[name] !== ""
+                  ? true
+                  : false
               }
               onChange={handleChange}
               value={state[name]}
               name={name}
             >
-              <option value="">Select Subject</option>
+              <option value=" ">Select Subject</option>
               {options.map((option) => (
                 <option key={option} value={option}>
                   {option}
@@ -151,9 +164,7 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
             <span className="error">{error[name]}</span>
           </div>
         );
-      } else {
-        return <div key={index}>Invalid Field</div>;
-      }
+      } 
     });
   };
   const renderLinks = (link) => {
@@ -166,7 +177,6 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
       );
     });
   };
-
   function handleSubmit(e, values) {
     e.preventDefault();
     if (valuee) {
@@ -174,6 +184,7 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
         values = valuee;
       }
     }
+   subject?Validators(valuee, error, setError):
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
@@ -190,21 +201,22 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
     }
     setState((prev) => ({ ...prev, [name]: value }));
     const ans = Validation(name, value, state, type, error);
-
     setError(ans);
   };
   useEffect(() => {
     if (!valuee || !indexx) return;
-
     else {
       if (!isNullish(valuee)) {
         setError(reset(error));
         const newObj = ccc();
         setState(newObj);
         Validators(valuee, error, setError);
+      } else if (indexx !== 1) {
+        const newObj = ccc();
+        setState(newObj);
       }
     }
-  }, [valuee,indexx]);
+  }, [valuee, indexx]);
 
   const ccc = () => {
     const obj = Object.keys(state).reduce((accumulator, current) => {
@@ -222,7 +234,7 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
   };
   const cancel = () => {
     if (indexx === 1) {
-      state.subjectName = "";
+      state.subjectName = " ";
       setState(reset(state));
     } else {
       const newObj = ccc();
@@ -230,12 +242,20 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
     }
     valuee && setValuee(reset(valuee));
   };
-  const cV=() => {
-    Validators(state, error, setError);
+  const cV = () => {
+    if(subject){
+
+      Validators(valuee, error, setError);
+      Validators(state, error, setError);
+    }
+   else if (isNullish(state) && !isNullish(valuee)) {
+      Validators(valuee, error, setError);
+    } else {
+      Validators(state, error, setError);
+    }
     const a = Object.values(error).map((ok) => ok);
-    return a.every((val) => val === "")
-  }
-;
+    return a.every((val) => val === "");
+  };
   return (
     <div>
       <form className="form-outer-wrapper">
@@ -251,13 +271,16 @@ function Form({ template, handle, valuee, setValuee, Prev, Next, indexx ,final})
                     key={index}
                     onClick={() => {
                       btn === "Prev"
-                        ? final.questions.at(indexx-1).question===""? Prev() : cV(valuee) && Prev()
+                        ? final.questions.at(indexx - 1).question === ""
+                          ? Prev(state)
+                          : cV(valuee) && Prev(state)
                         : btn === "Next"
-                        ? cV(valuee) && Next() : cancel();
+                        ? cV(valuee) && Next(state)
+                        : cancel();
                     }}
                     disabled={
                       btn === "Prev"
-                        ? indexx === 1
+                        ?  indexx === 1
                           ? true
                           : false
                         : btn === "Next"
