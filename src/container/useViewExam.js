@@ -42,15 +42,18 @@ const token = localStorage.getItem("userIn")
    .catch(error =>alert(error.message))
 }
 async function viewDetails(data){
+let notes;
  data.map((user,index)=>{
  if(user.key==='_id'){
 localStorage.setItem("examId",user.val)}
 if(user.key==='subjectName'){
   localStorage.setItem("subject",user.val)}
-}
+if(user.key==='notes'){
+  notes = user.val
+}}
 )
 const id=localStorage.getItem("examId")
-history(`../viewexamdetails?id=${id}`)
+history(`../viewexamdetails?id=${id}`,{state:{notes:notes}})
 }
 return [{loading,error,exam,viewDetails,del,key}]
 }

@@ -18,6 +18,7 @@ import StudentDashboard from "./presentation/studentDashboard/StudentDashboard";
 import AllExam from "./presentation/studentDashboard/AllExam";
 import StudentDetail from "./presentation/studentDashboard/StudentDetail";
 import ExamPaper from "./presentation/studentDashboard/ExamPaper";
+import PagedRoute from './presentation/PagedRoute'
 function App() {
   const Auth = localStorage.getItem("userIn");
   return (
@@ -26,30 +27,25 @@ function App() {
         <Routes>
           <Route exact path="/" element={<ProtectedRoute comp={Navbar} />}>
             <Route
-              exact
               path="signup"
               element={<ProtectedRoute comp={SignUp} />}
             ></Route>
             <Route
-              exact
               path="login"
-              element={!Auth && <ProtectedRoute comp={LogIn} />}
+              element={<LogIn />}
             >
               {" "}
             </Route>
             <Route
-              exact
               path="forgotPassword"
               element={<ProtectedRoute comp={ForgotPassword} />}
             ></Route>
 
             <Route
-              exact
               path="logout"
               element={<ProtectedRoute comp={Logout} />}
             />
             <Route
-              exact
               path="resetpassword"
               element={<ProtectedRoute comp={ResetPassword} />}
             ></Route>
@@ -99,6 +95,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/newpassword" element={<NewPassword />}></Route>
+          <Route path="*" element={<PagedRoute />}></Route>
         </Routes>
       </Router>
     </div>

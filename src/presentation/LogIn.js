@@ -11,7 +11,6 @@ import {
 } from "../store/Actions/Action";
 import { Email, Password } from "../container/useFields";
 function LogIn() {
-  const [msg, setMsg] = useState(null);
   const state = useSelector((state) => state.SignIn);
   const dispatch = useDispatch();
   let history = useNavigate();
@@ -52,6 +51,6 @@ function LogIn() {
         alert(error.message);
       });
   }
-  return <Form template={template} handle={handle} msg={msg} />;
+  return <div><Form template={template} handle={handle}/></div>;
 }
 export default LogIn;

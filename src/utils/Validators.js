@@ -3,13 +3,16 @@ import { emailValidation, passwordValidation, nameValidation ,isEmpty,reset,whit
 
 export const Validators = (values, error, setError) => {
   Object.keys(values).map((key) => {
-    if (isEmpty(values[key]) || whitespace(values[key])) {
-      error[key] = "required"
-      setError((prev) => ({ ...prev, [key]: "required" }))
+    if(key==="notes"){
+      setError((prev) => ({ ...prev, [key]: "" }))
     }
+    else if (isEmpty(values[key]) || whitespace(values[key])) {
+        error[key] = "required"
+        setError((prev) => ({ ...prev, [key]: "required" }))
+      }
+    } )
   }
-  )
-};
+  
 
 export const Validation = (name, value, data, type, error) => {
   Object.keys(data).map((key) => {
@@ -17,11 +20,16 @@ export const Validation = (name, value, data, type, error) => {
         error[key] = ""
     }  
   })
-  if (isEmpty(value)) {
+  if(name==="notes"){
+    error[name] = ""
+  }
+  else if (isEmpty(value)) {
+      error[name] = "required"
+  }
+  else if(whitespace(value)){
     error[name] = "required"
-  }else if(whitespace(value)){
-    error[name] = "required"
-  } else {
+  } 
+  else {
     if (name === "name") {
       if (!nameValidation(value)) {
         error[name] = "enter the character only"

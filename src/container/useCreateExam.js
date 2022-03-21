@@ -16,12 +16,15 @@ const useCreateExam = ({ final, state }) => {
     ans2: "",
     ans3: "",
     ans4: "",
+    notes:""
   });
   useEffect(() => {
     if (!state) return;
     if(state){
       final.questions=state.eQuestions;
-    final.subjectName=state.subject}
+    final.subjectName=state.subject
+   final.notes=state.notes
+  }
     fetch(index-1);
     setInd(index-2)
 
@@ -41,27 +44,33 @@ const useCreateExam = ({ final, state }) => {
     }
   };
   const fetch = (i, data1) => {
-    console.log(i);
-    const preQ = final.questions.at(i);
+    let preQ;
+     preQ = final.questions.at(i);
     setPre(preQ);
     handleAlert(data1);
-    if (preQ.options[0]) {
-      setValuee({
-        question: preQ.question,
-        answer: preQ.answer,
-        ans1: preQ.options[0],
-        ans2: preQ.options[1],
-        ans3: preQ.options[2],
-        ans4: preQ.options[3],
-      });
-    } else {
-      setValuee(reset(valuee));
-      setPre(reset(pre));
-    }
+    if(preQ) {
+      if (preQ.options[0]) {
+        setValuee({
+          question: preQ.question,
+          answer: preQ.answer,
+          ans1: preQ.options[0],
+          ans2: preQ.options[1],
+          ans3: preQ.options[2],
+          ans4: preQ.options[3],
+         notes: final.notes[i] ? final.notes[i] : " "
+        });
+      } else {
+        setValuee(reset(valuee));
+        setPre(reset(pre));
+      }
+    }  
+   
   };
   let template = {
     fields: [
-      state ?{}: {
+      state ? {
+        type:null
+      }:{
         title: "subjectName",
         type: "dropDown",
         name: "subjectName",
@@ -107,8 +116,14 @@ const useCreateExam = ({ final, state }) => {
         name: "answer",
         placeholder: "answer",
       },
+      {
+        title: "notes",
+        type: "text",
+        name: "notes",
+        placeholder: "notes",
+      },
     ],
-    buttonName: state?"Update":index===15?"CREATE":isNullish(pre) ? "ADD" : "Update",
+    buttonName: state?"Update":index===15? "CREATE":isNullish(pre) ? "ADD" : "Update",
     button: ["Prev", "Next", "Clear"],
   };
   const queCheck = (values) => {
@@ -134,9 +149,15 @@ const useCreateExam = ({ final, state }) => {
     return option;
   };
   const handleAlert = (data1) => {
+  if(valuee.question!==""){
+    if(valuee.notes===""){
+    alert("you are losing your data");
+  }}
+    valuee.notes===" " && delete valuee["notes"]
+    data1 && data1.notes===" " && delete data1["notes"]
     if (!isNullish(valuee)) {
       const val = { ...valuee };
-      !state && showAlert(val);
+       showAlert(val);
     } else if (data1) {
       if (!isNullish(data1)) {
         const val = { ...data1 };
@@ -146,24 +167,26 @@ const useCreateExam = ({ final, state }) => {
   };
   const showAlert = (val) => {
     val.options = handleOptions(val);
+    const notes=val.notes
     if (!isNullish(final.questions.at(index - 1)) || !isNullish(valuee)) {
-      ["ans1", "ans2", "ans3", "ans4", "subjectName"].forEach(
+      ["ans1", "ans2", "ans3", "ans4", "subjectName","notes"].forEach(
         (e) => delete val[e]
       );
       const result = EqualObj(val, final.questions.at(index - 1));
-      if (!result) {
+      const r2=notes ? notes===final.notes[index - 1]?true:false:""
+      if (!result || r2===false) {
         alert("you are losing your data");
       }
     }
   };
   const Format = (values) => {
     const value = final.questions.at(index - 1);
-    value.options = handleOptions(values);
     value.question = values.question;
     value.answer = values.answer;
+    value.options = handleOptions(values);
+    final.notes[index-1]=values.notes ? values.notes:" "
   };
   const handle = (values, add) => {
-    
     let options = handleOptions(values);
     if (index <= 15) {
       if (queCheck(values)) {
@@ -182,6 +205,7 @@ const useCreateExam = ({ final, state }) => {
         {
           ind <= 13 && setInd(ind + 1);
         }
+       
       } else {
         const ans = window.confirm("Are you sure you want to update")
           ? true
@@ -203,12 +227,13 @@ const useCreateExam = ({ final, state }) => {
       }
       console.log(final);
       const ff = final.questions[14];
-      if (ff.question !== "") {
-        state?update(final):submit(final);
+      if (index===15) {
+        state ? Update(final) : submit(final);
       }
     }
   };
   async function submit(final) {
+    console.log(final);
     const token = localStorage.getItem("userIn");
     await axios
       .post(`${baseUrl}dashboard/Teachers/Exam`, final, {
@@ -227,7 +252,7 @@ const useCreateExam = ({ final, state }) => {
         window.location.reload();
       });
   }
-  async function update(final) {
+ async function Update(final) {
     const token = localStorage.getItem("userIn");
     const id=localStorage.getItem("examId")
     await axios
@@ -237,7 +262,7 @@ const useCreateExam = ({ final, state }) => {
       .then((response) => {
         alert(response.data.message); 
         if (response.data.statusCode === 200) {
-          history(`../viewexamdetails?id=${id}`);
+          history(`../viewexam`);
         }
       })
       .catch((error) => {

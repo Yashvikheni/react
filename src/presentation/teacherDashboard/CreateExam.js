@@ -8,7 +8,7 @@ const CreateExam = () => {
   const [final, setFinal] = useState({
     subjectName: "",
     questions:[],
-    notes: ["10mins exam", "start time 10am"],
+    notes: [],
   });
  useEffect(() => {
    if(final.questions.length<15){

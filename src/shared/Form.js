@@ -17,12 +17,13 @@ function Form({
   final,
   subject
 }) {
-  const [error, setError] = useState({});
+ const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
   useEffect(() => {
-    fields.map((key) => setState((prev) => ({ ...prev, [key.name]: "" })));
+    fields.map((key) => key.type!==null &&  setState((prev) => ({ ...prev, [key.name]: "" })))
     fields.map((key) =>
+    key.type!==null &&
       key.value
         ? Array.isArray(key.value)
           ? key.value.map((value) =>
@@ -46,7 +47,7 @@ function Form({
               value={
                 valuee
                   ? !isNullish(valuee)
-                    ? valuee[name]
+                    ? !valuee[name]===" " ? valuee[name] :""
                     : state[name]
                     ? state[name]
                     : ""
@@ -184,7 +185,6 @@ function Form({
         values = valuee;
       }
     }
-   subject?Validators(valuee, error, setError):
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
@@ -204,8 +204,8 @@ function Form({
     setError(ans);
   };
   useEffect(() => {
-    if (!valuee || !indexx) return;
-    else {
+    if (!valuee || !indexx ) return; 
+    else if(!subject){
       if (!isNullish(valuee)) {
         setError(reset(error));
         const newObj = ccc();
@@ -241,14 +241,10 @@ function Form({
       setState(newObj);
     }
     valuee && setValuee(reset(valuee));
+ 
   };
   const cV = () => {
-    if(subject){
-
-      Validators(valuee, error, setError);
-      Validators(state, error, setError);
-    }
-   else if (isNullish(state) && !isNullish(valuee)) {
+   if (isNullish(state) && !isNullish(valuee)) {
       Validators(valuee, error, setError);
     } else {
       Validators(state, error, setError);

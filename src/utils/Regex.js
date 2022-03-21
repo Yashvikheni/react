@@ -41,11 +41,11 @@ export const reset=(obj) => {
 };
 
 export const EqualObj=(obj1,obj2)=> {
-  
-  const a= JSON.stringify(obj1) === JSON.stringify(obj2) ?true : false;
+  const b={}
+  Object.keys(obj1).forEach(key=>b[key]=obj2[key])
+  const a=JSON.stringify(obj1) === JSON.stringify(b) ? true : false;
   return a;
 }
-
 export const hasDuplicates=(array)=> {
   return (new Set(array)).size !== array.length;
 }
