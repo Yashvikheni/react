@@ -1,21 +1,16 @@
 import React,{ useEffect,useState} from 'react'
-
-
+import useAllExam from "../../container/useAllExam"
 import Table from '../../shared/Table'
-import { useNavigate } from 'react-router-dom';
-const AllExam = () => {
-   
-  const history=useNavigate();
 
-  const handle=(data) =>{
-  data.map((user,index)=>
-     user.key==='id'?localStorage.setItem("examId",user.val):null
-     )
-     history("exampaper")
-}
+const AllExam = () => {
+  const [{loading,error,exam,handle,key}]=useAllExam();
   return (
-    <div>
-    {/* <Table tableData={users} headingColumns={['id','notes','subjectName','email','Results','Give Exam']} title="All Exam" button="Exam Paper" handle={handle}></Table> */}
+    <div style={{marginLeft:"200px"}}>All Exam 
+    {loading ? (
+       <h2>Loading...</h2>
+     ) : error ? (
+       <h2>{error}</h2>):
+    (<Table tableData={exam} headingColumns={key}  button="Exam Paper" handle={handle}></Table>)}
   </div>
   )
 }

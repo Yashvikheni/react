@@ -16,11 +16,11 @@ import ViewExamDetails from "./presentation/teacherDashboard/ViewExamDetails";
 import ProtectedRoute from "./ProtectedRoute";
 import StudentDashboard from "./presentation/studentDashboard/StudentDashboard";
 import AllExam from "./presentation/studentDashboard/AllExam";
-import StudentDetail from "./presentation/studentDashboard/StudentDetail";
+import Student from "./presentation/studentDashboard/Student";
+import EditStudent from "./presentation/studentDashboard/EditStudent";
 import ExamPaper from "./presentation/studentDashboard/ExamPaper";
 import PagedRoute from './presentation/PagedRoute'
 function App() {
-  const Auth = localStorage.getItem("userIn");
   return (
     <div className="App">
       <Router>
@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/" element={<ProtectedRoute comp={Navbar} />}>
             <Route
               path="signup"
-              element={<ProtectedRoute comp={SignUp} />}
+              element={<SignUp />}
             ></Route>
             <Route
               path="login"
@@ -38,9 +38,8 @@ function App() {
             </Route>
             <Route
               path="forgotPassword"
-              element={<ProtectedRoute comp={ForgotPassword} />}
+              element={<ForgotPassword  />}
             ></Route>
-
             <Route
               path="logout"
               element={<ProtectedRoute comp={Logout} />}
@@ -84,13 +83,18 @@ function App() {
                 path="allexam"
                 element={<ProtectedRoute comp={AllExam} />}
               ></Route>
-              <Route
-                path="studentdetail"
-                element={<ProtectedRoute comp={StudentDetail} />}
-              ></Route>
+             
               <Route
                 path="exampaper"
                 element={<ProtectedRoute comp={ExamPaper} />}
+              ></Route>
+               <Route
+                path="student"
+                element={<ProtectedRoute comp={Student} />}
+              ></Route>
+               <Route
+                path="editstudent"
+                element={<ProtectedRoute comp={EditStudent} />}
               ></Route>
             </Route>
           </Route>

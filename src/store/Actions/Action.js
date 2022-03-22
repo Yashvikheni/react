@@ -1,5 +1,4 @@
-import axios from 'axios';
-import {baseUrl} from '../../utils/Constant'
+
 export const signUpRequest=()=>{
     return {
         type:'SIGN_UP'    }
@@ -60,5 +59,20 @@ export const viewExamSuccess=(exam)=>{
 export const viewExamFailure=(error)=>{
     return {
         type:'VIEW_EXAM_FAILURE' ,
+        payload:error   }
+}
+
+export const studentDetailRequest=()=>{
+    return {
+        type:'STUDENT_DETAIL'    }
+}
+export const studentDetailSuccess=(student)=>{
+    return {
+        type:'STUDENT_DETAIL_SUCCESS',
+      payload:student    }
+}
+export const studentDetailFailure=(error)=>{
+    return {
+        type:'STUDENT_DETAIL_FAILURE' ,
         payload:error   }
 }

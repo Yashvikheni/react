@@ -13,7 +13,6 @@ export const Validators = (values, error, setError) => {
     } )
   }
   
-
 export const Validation = (name, value, data, type, error) => {
   Object.keys(data).map((key) => {
     if (key === name) {

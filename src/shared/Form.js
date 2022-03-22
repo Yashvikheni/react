@@ -15,16 +15,18 @@ function Form({
   Next,
   indexx,
   final,
-  subject
+  subject,
 }) {
- const [error, setError] = useState({});
+  const [error, setError] = useState({});
   const [state, setState] = useState({});
   let { title, fields, buttonName, link, button } = template;
   useEffect(() => {
-    fields.map((key) => key.type!==null &&  setState((prev) => ({ ...prev, [key.name]: "" })))
+    fields.map(
+      (key) =>
+        key.type !== null && setState((prev) => ({ ...prev, [key.name]: "" }))
+    );
     fields.map((key) =>
-    key.type!==null &&
-      key.value
+      key.type !== null && key.value
         ? Array.isArray(key.value)
           ? key.value.map((value) =>
               setState((prev) => ({ ...prev, [value.name]: "" }))
@@ -47,7 +49,11 @@ function Form({
               value={
                 valuee
                   ? !isNullish(valuee)
-                    ? !valuee[name]===" " ? valuee[name] :""
+                    ? valuee[name]
+                      ? valuee[name] !== " "
+                        ? valuee[name]
+                        : ""
+                      : ""
                     : state[name]
                     ? state[name]
                     : ""
@@ -96,7 +102,7 @@ function Form({
                         value={
                           typeof element === "string"
                             ? element
-                            : valuee
+                            :valuee
                             ? !isNullish(valuee)
                               ? valuee[element.name]
                               : state[element.name]
@@ -145,11 +151,8 @@ function Form({
           <div key={index}>
             <select
               style={{ width: "100%", height: "50px" }}
-              disabled={ indexx === 1
-                  ? false
-                  : state[name] !== ""
-                  ? true
-                  : false
+              disabled={
+                indexx === 1 ? false : state[name] !== "" ? true : false
               }
               onChange={handleChange}
               value={state[name]}
@@ -165,7 +168,7 @@ function Form({
             <span className="error">{error[name]}</span>
           </div>
         );
-      } 
+      }
     });
   };
   const renderLinks = (link) => {
@@ -191,7 +194,7 @@ function Form({
       handle(values, add);
     }
   }
-  const handleChange = (e) => {
+  const handleChange = React.useCallback((e) => {
     const { name, value, type } = e.target;
     if (valuee) {
       if (!isNullish(valuee)) {
@@ -202,10 +205,10 @@ function Form({
     setState((prev) => ({ ...prev, [name]: value }));
     const ans = Validation(name, value, state, type, error);
     setError(ans);
-  };
+  });
   useEffect(() => {
-    if (!valuee || !indexx ) return; 
-    else if(!subject){
+    if (!valuee || !indexx) return;
+    else if (!subject) {
       if (!isNullish(valuee)) {
         setError(reset(error));
         const newObj = ccc();
@@ -216,7 +219,7 @@ function Form({
         setState(newObj);
       }
     }
-  }, [valuee, indexx]);
+  }, [valuee,indexx]);
 
   const ccc = () => {
     const obj = Object.keys(state).reduce((accumulator, current) => {
@@ -241,7 +244,6 @@ function Form({
       setState(newObj);
     }
     valuee && setValuee(reset(valuee));
- 
   };
   const cV = () => {
    if (isNullish(state) && !isNullish(valuee)) {
@@ -276,7 +278,7 @@ function Form({
                     }}
                     disabled={
                       btn === "Prev"
-                        ?  indexx === 1
+                        ? indexx === 1
                           ? true
                           : false
                         : btn === "Next"

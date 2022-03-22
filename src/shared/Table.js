@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import Button from "@material-ui/core/Button";
 import "../App.css";
+
 const Table = ({
   tableData,
   headingColumns,
@@ -9,6 +10,8 @@ const Table = ({
   button2,
   handle2,
 }) => {
+
+ 
   const data = tableData
     ? tableData.map((row, index) => {
         let rowData = [];
@@ -62,6 +65,7 @@ const Table = ({
               </td>
             ) : null}
           </tr>
+       
         );
       })
     : null;

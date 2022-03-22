@@ -28,7 +28,10 @@ export const reset=(obj) => {
       }, {});
       return newObj;
   }
-
+  export const checkAns=(options,answer)=>{
+    const anscheck = options.some((val) => val === answer);
+    return anscheck;
+  }
   export const isNullish =(obj)=> {
     const isnull=Object.values(obj).every(value => {
     if (value === "") {

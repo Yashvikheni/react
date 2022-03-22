@@ -5,6 +5,8 @@ import useCreateExam from "../../container/useCreateExam"
 
 const CreateExam = () => {
   const { state } = useLocation();
+  const { states } = useLocation();
+  console.log(states);
   const [final, setFinal] = useState({
     subjectName: "",
     questions:[],

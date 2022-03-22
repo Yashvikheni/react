@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from '../../shared/Table'
 import Button from "@material-ui/core/Button";
 import useStudentData from "../../container/useStudentData"

@@ -4,7 +4,6 @@ import Table from "../../shared/Table"
 
 const ViewExam = () => {
   const [{loading,error,exam,del,viewDetails,key}]=useViewExam();
-
   return (
     <div style={{marginLeft:"200px"}}>View Exam 
      {loading ? (

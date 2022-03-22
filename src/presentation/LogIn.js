@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Form from "../shared/Form";
-import { useNavigate } from "react-router-dom";
+
 import { baseUrl } from "../utils/Constant";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import {useDispatch } from "react-redux";
 import {
   signInRequest,
   signInSuccess,
@@ -11,9 +11,7 @@ import {
 } from "../store/Actions/Action";
 import { Email, Password } from "../container/useFields";
 function LogIn() {
-  const state = useSelector((state) => state.SignIn);
   const dispatch = useDispatch();
-  let history = useNavigate();
   let template = {
     title: "Log IN",
     fields: [Email, Password],

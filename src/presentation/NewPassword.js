@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Form from "../shared/Form";
 import { useLocation } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
 import axios from "axios";
 const NewPassword = (props) => {
-    const [msg, setMsg] = useState(null);
     const location = useLocation();
     const template = {
       title: "New password",
@@ -27,8 +26,6 @@ const NewPassword = (props) => {
       buttonName: "Submit",
     };
     async function handle( values) {
-       console.log('values', values)
-    
           const token = location.search.replace("?token=", "");
           await axios
           .get(`${baseUrl}users/newPassword`, {headers:{'access-token':`${token}`}})
@@ -36,8 +33,7 @@ const NewPassword = (props) => {
             headers: { "access-token": `${token}` },
           })
           .then((response) => {
-            setMsg(response.data.message);
-            console.log("first");
+            alert(response.data.message);
             if (response.data.statusCode === 200) {
               axios
                 .post(
@@ -45,10 +41,8 @@ const NewPassword = (props) => {
                   values
                 )
                 .then((response) => {
-                  setMsg(response.data.message);
-                  console.log(response.data);
                 })
-                .catch((error) => setMsg(error.message));
+                .catch((error) => alert(error.message));
             }
           })
           .catch(function (err) {
@@ -60,7 +54,6 @@ const NewPassword = (props) => {
     <Form
       template={template}
       handle={handle}
-      msg={msg}
     />
   );
 };

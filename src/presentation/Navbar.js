@@ -11,15 +11,13 @@ function Navbar() {
         <>
         <li>
           <Link to="logout">Logout</Link>&nbsp;&nbsp;</li>
-          <li> <Link to="resetpassword">Reset Password</Link></li>
-               
+          <li> <Link to="resetpassword">Reset Password</Link></li>      
         </>
       ) : (
         <>
         <li>
           <Link to="login">Login</Link> &nbsp;&nbsp;</li>
-        <li>  <Link to="signup">SignUp</Link> &nbsp;&nbsp;</li>
-        
+        <li><Link to="signup">SignUp</Link> &nbsp;&nbsp;</li>        
         </>
       )}
       </ul>
