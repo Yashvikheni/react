@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { isNullish, EqualObj, reset, hasDuplicates,checkAns } from "../utils/Regex";
 import { Update,submit } from "../container/useApiCall";
+import {Exam} from '../container/useFields'
 const useCreateExam = ({ final, state }) => {
   const [index, setIndex] = useState(state ? state.index : 1);
   const [ind, setInd] = useState(-1);
@@ -14,6 +15,7 @@ const useCreateExam = ({ final, state }) => {
     ans4: "",
     notes: "",
   });
+
   useEffect(() => {
     if (!state) return;
     if (state) {
@@ -99,45 +101,9 @@ const useCreateExam = ({ final, state }) => {
             options: ["English", "Maths", "Node", "React", "Flutter"],
             placeholder: "subjectName",
           },
-      {
-        title: "question",
-        type: "text",
-        name: "question",
-        placeholder: "question",
-      },
-      {
-        title: "Option",
-        type: "radio",
-        name: "answer",
-        value: [
-          {
-            type: "text",
-            name: "ans1",
-            placeholder: "Option1",
-          },
-          {
-            type: "text",
-            name: "ans2",
-            placeholder: "Option2",
-          },
-          {
-            type: "text",
-            name: "ans3",
-            placeholder: "Option3",
-          },
-          {
-            type: "text",
-            name: "ans4",
-            placeholder: "Option4",
-          },
-        ],
-      },
-      {
-        title: "answer",
-        type: "text",
-        name: "answer",
-        placeholder: "answer",
-      },
+      {...Exam.question},
+      {...Exam.option},
+      {...Exam.answer},
       {
         title: "notes",
         type: "text",

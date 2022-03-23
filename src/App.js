@@ -20,15 +20,17 @@ import Student from "./presentation/studentDashboard/Student";
 import EditStudent from "./presentation/studentDashboard/EditStudent";
 import ExamPaper from "./presentation/studentDashboard/ExamPaper";
 import PagedRoute from './presentation/PagedRoute'
+
+
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route exact path="/" element={<ProtectedRoute comp={Navbar} />}>
+          <Route exact path="/" element={<Navbar />}>
             <Route
               path="signup"
-              element={<SignUp />}
+              element={<SignUp />} 
             ></Route>
             <Route
               path="login"
@@ -102,6 +104,7 @@ function App() {
           <Route path="*" element={<PagedRoute />}></Route>
         </Routes>
       </Router>
+  
     </div>
   );
 }

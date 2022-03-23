@@ -24,4 +24,4 @@ return (
 </div>
 )
 }
-export default ForgotPassword
+export default React.memo(ForgotPassword)

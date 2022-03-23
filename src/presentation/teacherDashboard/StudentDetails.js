@@ -13,4 +13,4 @@ const StudentDetails = () => {
     </div>
   );
 };
-export default StudentDetails;
+export default React.memo(StudentDetails);

@@ -40,6 +40,9 @@ nav ul li {
   margin-right: 16px;
   float:right;
 }
+.fields{
+  margin-bottom: 2px;
+}
 
 
 @keyframes App-logo-spin {

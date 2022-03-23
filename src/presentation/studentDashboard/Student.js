@@ -15,4 +15,4 @@ const Student = () => {
     </div>
   )
 }
-export default Student
+export default React.memo(Student)

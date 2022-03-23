@@ -18,4 +18,4 @@ const StudentDashboard = () => {
   )
 }
 
-export default StudentDashboard
+export default React.memo(StudentDashboard)

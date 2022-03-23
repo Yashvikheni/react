@@ -15,4 +15,4 @@ const ViewExam = () => {
   );
 };
 
-export default ViewExam;
+export default React.memo(ViewExam);

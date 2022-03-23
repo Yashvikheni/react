@@ -17,4 +17,4 @@ const Logout = () => {
   );
 };
 
-export default Logout;
+export default React.memo(Logout);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputField from "./InputField";
@@ -16,6 +16,7 @@ function Form({
   indexx,
   final,
   subject,
+  disabled,
 }) {
   const [error, setError] = useState({});
   const [state, setState] = useState({});
@@ -25,16 +26,20 @@ function Form({
       (key) =>
         key.type !== null && setState((prev) => ({ ...prev, [key.name]: "" }))
     );
+   
     fields.map((key) =>
       key.type !== null && key.value
         ? Array.isArray(key.value)
           ? key.value.map((value) =>
-              setState((prev) => ({ ...prev, [value.name]: "" }))
+              typeof value === "string"
+                ? null
+                : setState((prev) => ({ ...prev, [value.name]: "" }))
             )
           : null
         : null
     );
   }, []);
+
   const renderFields = (fields) => {
     return fields.map((field, index) => {
       let { type, name, value, options } = field;
@@ -43,6 +48,7 @@ function Form({
         return (
           <div key={index}>
             <TextField
+              id={name}
               fullWidth={true}
               variant="outlined"
               {...field}
@@ -61,8 +67,8 @@ function Form({
                   ? state[name]
                   : ""
               }
-              onChange={handleChange}
-              disabled={name === "answer" ? true : false}
+              onChange={(e) => handleChange(e)}
+              disabled={name === "answer" ? true : disabled ? true : false}
             />
             <span className="error">{error[name]}</span>
           </div>
@@ -98,11 +104,11 @@ function Form({
                               : false
                             : null
                         }
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e)}
                         value={
                           typeof element === "string"
                             ? element
-                            :valuee
+                            : valuee
                             ? !isNullish(valuee)
                               ? valuee[element.name]
                               : state[element.name]
@@ -117,7 +123,7 @@ function Form({
                         ) : (
                           <div key={i}>
                             <TextField
-                              onChange={handleChange}
+                              onChange={(e) => handleChange(e)}
                               value={
                                 valuee
                                   ? !isNullish(valuee)
@@ -132,6 +138,7 @@ function Form({
                               fullWidth={true}
                               type={element.type}
                               placeholder={element.placeholder}
+                              disabled={disabled ? true : false}
                             />
                             <span className="error">{error[element.name]}</span>
                           </div>
@@ -154,7 +161,7 @@ function Form({
               disabled={
                 indexx === 1 ? false : state[name] !== "" ? true : false
               }
-              onChange={handleChange}
+              onChange={(e) => handleChange(e)}
               value={state[name]}
               name={name}
             >
@@ -188,13 +195,16 @@ function Form({
         values = valuee;
       }
     }
+    if (disabled) {
+      state.answer = "";
+    }
     Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
       handle(values, add);
     }
   }
-  const handleChange = React.useCallback((e) => {
+  const handleChange =useCallback((e) => {
     const { name, value, type } = e.target;
     if (valuee) {
       if (!isNullish(valuee)) {
@@ -206,6 +216,7 @@ function Form({
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   });
+
   useEffect(() => {
     if (!valuee || !indexx) return;
     else if (!subject) {
@@ -219,7 +230,7 @@ function Form({
         setState(newObj);
       }
     }
-  }, [valuee,indexx]);
+  }, [valuee, indexx]);
 
   const ccc = () => {
     const obj = Object.keys(state).reduce((accumulator, current) => {
@@ -246,7 +257,7 @@ function Form({
     valuee && setValuee(reset(valuee));
   };
   const cV = () => {
-   if (isNullish(state) && !isNullish(valuee)) {
+    if (isNullish(state) && !isNullish(valuee)) {
       Validators(valuee, error, setError);
     } else {
       Validators(state, error, setError);

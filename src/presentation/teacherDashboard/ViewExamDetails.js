@@ -15,4 +15,4 @@ const ViewExamDetails = () => {
   )
 }
 
-export default ViewExamDetails
+export default React.memo(ViewExamDetails)

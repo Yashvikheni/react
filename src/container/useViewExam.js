@@ -36,6 +36,10 @@ const useViewExam = () => {
     data.map((user, index) =>
       user.key === "_id" ? localStorage.setItem("examId", user.val) : ""
     );
+    const confirm=window.confirm("Are you sure you want to update")
+    ? true
+    : false;
+    if(confirm){
     const id = localStorage.getItem("examId");
     const token = localStorage.getItem("userIn");
     await axios
@@ -49,7 +53,7 @@ const useViewExam = () => {
           fetch({ api });
         }
       })
-      .catch((error) => alert(error.message));
+      .catch((error) => alert(error.message));}
   }
   async function viewDetails(data) {
     let notes;

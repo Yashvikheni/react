@@ -51,4 +51,4 @@ function LogIn() {
   }
   return <div><Form template={template} handle={handle}/></div>;
 }
-export default LogIn;
+export default React.memo(LogIn);

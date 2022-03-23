@@ -58,4 +58,4 @@ const NewPassword = (props) => {
   );
 };
 
-export default NewPassword;  
+export default React.memo(NewPassword);  

@@ -10,4 +10,4 @@ const EditStudent = () => {
   )
 }
 
-export default EditStudent
+export default React.memo(EditStudent)

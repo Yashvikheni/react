@@ -17,11 +17,9 @@ const InputField = ({placeholder, type ,onChange,...fields}) => {
             ) : (
                 <>
                 <label>{fields.name}</label>
-                <input
-                    
+                <input     
                     placeholder={placeholder}
                    onChange={onChange}
-             
                     {...fields}
                 /></>
             )}

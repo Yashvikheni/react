@@ -47,4 +47,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default React.memo(ResetPassword);

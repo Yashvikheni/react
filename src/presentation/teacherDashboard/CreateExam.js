@@ -5,8 +5,6 @@ import useCreateExam from "../../container/useCreateExam"
 
 const CreateExam = () => {
   const { state } = useLocation();
-  const { states } = useLocation();
-  console.log(states);
   const [final, setFinal] = useState({
     subjectName: "",
     questions:[],
@@ -23,7 +21,7 @@ const CreateExam = () => {
     }
    }
   },[])
-
+  
   const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final,state})
   return (
     <div style={{marginLeft:"200px"}}>
@@ -44,4 +42,4 @@ const CreateExam = () => {
   );
 };
 
-export default CreateExam;
+export default React.memo(CreateExam);

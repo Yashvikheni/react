@@ -15,4 +15,4 @@ const AllExam = () => {
   )
 }
 
-export default AllExam
+export default React.memo(AllExam)

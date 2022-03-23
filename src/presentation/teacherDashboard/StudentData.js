@@ -25,4 +25,4 @@ function TeacherDashboard() {
   );
 }
 
-export default TeacherDashboard;
+export default React.memo(TeacherDashboard);

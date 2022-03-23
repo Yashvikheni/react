@@ -6,4 +6,4 @@ const PagedRoute = () => {
   )
 }
 
-export default PagedRoute
+export default React.memo(PagedRoute)
