@@ -1,31 +1,30 @@
 const initialState = {
     loading: false,
-    user: {},
+    data:{},
     error: "",
   };
   
-  const SignUp = (state = initialState, action) => {
-   
+  const ExamPaper = (state = initialState, action) => {
     switch (action.type) {
-      case "SIGN_UP":
+      case "EXAM_PAPER":
         return {
           loading: true,
-          user:{}
+          data:{},
         };
-      case "SIGN_UP_SUCCESS":
+      case "EXAM_PAPER_SUCCESS":
         return {
           loading: false,
-          user: action.payload,
+          data: action.payload,
           error: "",
         };
-      case "SIGN_UP_FAILURE":     
+      case "EXAM_PAPER_FAILURE":   
         return {
           loading: false,
-          user: {},
+          data:{},
           error: action.payload
         };
       default:
         return state;
     }
   }
-  export default SignUp;
+  export default ExamPaper;

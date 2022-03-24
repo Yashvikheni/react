@@ -1,11 +1,9 @@
 import Form from "../shared/Form";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { baseUrl } from "../utils/Constant";
 import {useDispatch} from 'react-redux'
-import {signUpRequest,signUpSuccess,signUpFailure} from '../store/Actions/Action'
+import {signUpRequest} from '../store/Actions/postAction'
 import {text,Email,Password} from '../container/useFields'
+import {useNavigate} from "react-router-dom";
 function SignUp(props) {
   const dispatch = useDispatch();
   const history = useNavigate();
@@ -29,20 +27,9 @@ function SignUp(props) {
     buttonName: "Sign Up",
   };
   
- async function handle(value){
-  dispatch(signUpRequest())
-  await axios
-        .post(`${baseUrl}users/SignUp`, value)
-        .then((response) => {
-          const user=response.data.data
-          dispatch(signUpSuccess(user))
-           alert(response.data.message)
-            history("../login");
-          })
-          .catch(function (error) {
-            dispatch(signUpFailure(error.message))
-            alert(error.message)
-        });
+ async function handle(values){
+   const api=`users/SignUp`
+  dispatch(signUpRequest({api,values,history}))
     }
   return (
     <Form

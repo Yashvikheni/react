@@ -42,7 +42,10 @@ export const reset=(obj) => {
   }) 
  return isnull
 };
-
+export const EqualArray=(a, b) => {
+const result=JSON.stringify(a) === JSON.stringify(b)?true:false;
+return result;
+}
 export const EqualObj=(obj1,obj2)=> {
   const b={}
   Object.keys(obj1).forEach(key=>b[key]=obj2[key])

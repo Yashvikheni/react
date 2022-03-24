@@ -1,31 +1,30 @@
 const initialState = {
     loading: false,
-    user: {},
+    student:[],
     error: "",
   };
   
-  const SignUp = (state = initialState, action) => {
-   
+  const StudentDetail = (state = initialState, action) => {
     switch (action.type) {
-      case "SIGN_UP":
+      case "STUDENT_DETAIL":
         return {
           loading: true,
-          user:{}
+          student:[],
         };
-      case "SIGN_UP_SUCCESS":
+      case "STUDENT_DETAIL_SUCCESS":
         return {
           loading: false,
-          user: action.payload,
+          student: action.payload,
           error: "",
         };
-      case "SIGN_UP_FAILURE":     
+      case "STUDENT_DETAIL_FAILURE":   
         return {
           loading: false,
-          user: {},
+          student:[],
           error: action.payload
         };
       default:
         return state;
     }
   }
-  export default SignUp;
+  export default StudentDetail;

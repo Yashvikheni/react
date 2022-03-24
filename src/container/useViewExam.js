@@ -1,9 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  viewExamRequest,
-  viewExamSuccess,
-  viewExamFailure,
+  viewExam
 } from "../store/Actions/Action";
 import { useEffect } from "react";
 import { baseUrl } from "../utils/Constant";
@@ -11,32 +9,20 @@ import axios from "axios";
 
 const useViewExam = () => {
   const state = useSelector((state) => state.Exam);
-  const { loading, exam, error } = state;
+  let { loading, exam, error } = state;
   const key = exam && exam.length ? Object.keys(exam[0]) : [];
   const dispatch = useDispatch();
   const history = useNavigate();
   useEffect(() => {
     const api = `dashboard/Teachers/viewExam`;
-    fetch({ api });
+    dispatch(viewExam({ api }))
   }, [dispatch]);
-  async function fetch({ api }) {
-    dispatch(viewExamRequest());
-    const token = localStorage.getItem("userIn");
-    await axios
-      .get(`${baseUrl}${api}`, { headers: { "access-token": `${token}` } })
-      .then((response) => {
-        const user = response.data.data;
-        dispatch(viewExamSuccess(user));
-      })
-      .catch((error) => {
-        dispatch(viewExamFailure(error.message));
-      });
-  }
+
   async function del(data) {
     data.map((user, index) =>
       user.key === "_id" ? localStorage.setItem("examId", user.val) : ""
     );
-    const confirm=window.confirm("Are you sure you want to update")
+    const confirm=window.confirm("Are you sure you want to Delete")
     ? true
     : false;
     if(confirm){
@@ -50,7 +36,7 @@ const useViewExam = () => {
         if (response.data.statusCode === 200) {
           alert("Exam deleted successfully");
           const api = `dashboard/Teachers/viewExam`;
-          fetch({ api });
+          dispatch(viewExam({ api }))
         }
       })
       .catch((error) => alert(error.message));}

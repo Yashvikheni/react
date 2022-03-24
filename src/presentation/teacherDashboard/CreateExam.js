@@ -22,7 +22,7 @@ const CreateExam = () => {
    }
   },[])
   
-  const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final,state})
+  const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final})
   return (
     <div style={{marginLeft:"200px"}}>
       <h2>{index<=15?`Question ${index}`:null}</h2>
@@ -36,7 +36,7 @@ const CreateExam = () => {
         Next={Next}
         indexx={index}
         final={final}
-        subject={state&&state.subject}
+        //subject={state&&state.subject}
       />
     </div>
   );

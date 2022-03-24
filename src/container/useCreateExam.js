@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { isNullish, EqualObj, reset, hasDuplicates,checkAns } from "../utils/Regex";
 import { Update,submit } from "../container/useApiCall";
 import {Exam} from '../container/useFields'
+import {useNavigate} from 'react-router-dom'
 const useCreateExam = ({ final, state }) => {
   const [index, setIndex] = useState(state ? state.index : 1);
   const [ind, setInd] = useState(-1);
   const [pre, setPre] = useState({});
+  const history = useNavigate()
   const [valuee, setValuee] = useState({
     question: "",
     answer: "",
@@ -225,7 +227,7 @@ const useCreateExam = ({ final, state }) => {
       }
       console.log(final);
       if (index === 15) {
-        state ? Update(final) : submit(final);
+        state ? Update(final,history) : submit(final,history);
       }
     }
   }; 

@@ -13,6 +13,7 @@ import StudentDetails from "./presentation/teacherDashboard/StudentDetails";
 import CreateExam from "./presentation/teacherDashboard/CreateExam";
 import ViewExam from "./presentation/teacherDashboard/ViewExam";
 import ViewExamDetails from "./presentation/teacherDashboard/ViewExamDetails";
+import EditExam from "./presentation/teacherDashboard/EditExam"
 import ProtectedRoute from "./ProtectedRoute";
 import StudentDashboard from "./presentation/studentDashboard/StudentDashboard";
 import AllExam from "./presentation/studentDashboard/AllExam";
@@ -23,14 +24,15 @@ import PagedRoute from './presentation/PagedRoute'
 
 
 function App() {
+  const auth=localStorage.getItem("isAuthenticated")
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route exact path="/" element={<Navbar />}>
+          <Route exact path="/" element={<Navbar auth={auth}/>}>
             <Route
               path="signup"
-              element={<SignUp />} 
+              element={<SignUp/>} 
             ></Route>
             <Route
               path="login"
@@ -40,7 +42,7 @@ function App() {
             </Route>
             <Route
               path="forgotPassword"
-              element={<ForgotPassword  />}
+              element={<ForgotPassword />}
             ></Route>
             <Route
               path="logout"
@@ -48,7 +50,7 @@ function App() {
             />
             <Route
               path="resetpassword"
-              element={<ProtectedRoute comp={ResetPassword} />}
+              element={<ProtectedRoute comp={ResetPassword }/>}
             ></Route>
             <Route
               exact
@@ -74,6 +76,10 @@ function App() {
               <Route
                 path="viewexamdetails"
                 element={<ProtectedRoute comp={ViewExamDetails} />}
+              ></Route>
+                <Route
+                path="editexam"
+                element={<ProtectedRoute comp={EditExam} />}
               ></Route>
             </Route>
             <Route

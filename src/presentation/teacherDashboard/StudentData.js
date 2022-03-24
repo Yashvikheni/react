@@ -6,8 +6,8 @@ import useStudentData from "../../container/useStudentData"
 function TeacherDashboard() {
   const [check, setCheck] = useState(null);
   const [{loading,error,state,handle}]=useStudentData({check,setCheck});
-  const {student}=state
-  const key = student && student.length ? Object.keys(student[0]) : []
+  const {students}=state
+  const key = students&& students.length ? Object.keys(students[0]) : []
   return (
     <div style={{marginLeft:"200px"}}>
       <Button style={{ width: "15%" }} onClick={() => setCheck(false)}>Verified Student Data</Button>
@@ -18,7 +18,7 @@ function TeacherDashboard() {
         <h2>{error}</h2>
       ) : (
         <div>
-          <Table tableData={student} headingColumns={key} button="View Details" handle={handle}></Table>
+          <Table tableData={students} headingColumns={key} button="View Details" handle={handle}></Table>
         </div>
       )}
     </div>

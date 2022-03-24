@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import "../App.css";
 
@@ -11,23 +11,22 @@ const Table = ({
   handle2,
 }) => {
 
- 
-  const data = tableData
+  const data =  tableData
     ? tableData.map((row, index) => {
         let rowData = [];
         let i = 0;
         for (const key in row) {
           rowData.push({
             key: headingColumns[i],
-            val: row[key],
+            val: row[headingColumns[i]],
           });
           i++;
         }
         return (
           <tr className="tablee" key={index}>
             {rowData.map((data, index) => (
-              <td key={index} data-heading={data.key}>
-                {Array.isArray(data.val) &&
+              <td key={index} data-heading={data.key}>               
+                {Array.isArray(data.val) &&              
                 data.val.every((val) => typeof val === "object") ? (
                   <div key={index}>
                     <Table
@@ -38,7 +37,7 @@ const Table = ({
                     ></Table>
                   </div>
                 ) : Array.isArray(data.val) ? (
-                  data.val.map((ok, index) => `${ok} `)
+                  data.val.map((ok, index) => <div key={index}>{ok}</div>)
                 ) : (
                   data.val
                 )}

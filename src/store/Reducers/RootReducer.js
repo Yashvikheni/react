@@ -4,12 +4,20 @@ import SignIn from './SignIn'
 import Users from './Users'
 import Exam from './Exam'
 import Student from './Student'
+import StudentDetail from'./StudentDetail'
+import ExamDetail from './ExamDetail'
+import ExamPaper from './ExamPaper'
 const RootReducers = combineReducers({
     SignUp,
     SignIn,
     Users,
+    StudentDetail,
     Exam,
-    Student
+    ExamDetail,
+    ExamPaper,
+    Student,
+
+     
    
 })
 export default RootReducers

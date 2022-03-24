@@ -1,10 +1,11 @@
 import React from "react";
 import Form from "../shared/Form";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { baseUrl } from "../utils/Constant";
 import axios from "axios";
 const NewPassword = (props) => {
     const location = useLocation();
+    const history = useNavigate();
     const template = {
       title: "New password",
       fields: [
@@ -41,6 +42,10 @@ const NewPassword = (props) => {
                   values
                 )
                 .then((response) => {
+                  if(response.data.statusCode === 200){
+                    alert(response.data.message);
+                    history('../login')
+                  }
                 })
                 .catch((error) => alert(error.message));
             }

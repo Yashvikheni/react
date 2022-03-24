@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {baseUrl} from '../utils/Constant'
 
-export async function Update(final) {
+export async function Update(final,history) {
     const token = localStorage.getItem("userIn");
     const id=localStorage.getItem("examId")
     await axios
@@ -11,14 +11,15 @@ export async function Update(final) {
       .then((response) => {
         alert(response.data.message); 
         if (response.data.statusCode === 200) {
-         window.location="/teacherdashboard/viewexam"
+         history("../viewexam")
         }
       })
       .catch((error) => {
         alert(error.message);
       });
   }
- export async function submit(final) {
+
+ export async function submit(final,history) {
     console.log(final);
     const token = localStorage.getItem("userIn");
     await axios
@@ -28,13 +29,13 @@ export async function Update(final) {
       .then((response) => {
         alert(response.data.message);
         if (response.data.statusCode === 200) {
-          window.location="/teacherdashboard/viewexam"
+          history("../viewexam")
         } else {
-          window.location.reload();
+           history("../createexam")
         }
       })
       .catch((error) => {
         alert(error.message);
-        window.location.reload();
+        history("../createexam")
       });
   }

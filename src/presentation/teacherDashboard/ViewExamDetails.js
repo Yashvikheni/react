@@ -5,11 +5,16 @@ import {useLocation} from 'react-router-dom'
 const ViewExamDetails = () => {
   const {state } = useLocation();
  const {notes}=state
-  const [{data,Edit,key}]=useViewExamDetails({notes});
+  const [{loading,error,exam,Edit,key}]=useViewExamDetails({notes});
 
 
   return (
-    <div style={{marginLeft:"200px"}}>View Exam Details <Table tableData={data.length>0 && data} headingColumns={key} button="Edit" handle={Edit}></Table>
+    <div style={{marginLeft:"200px"}}>View Exam Details 
+     {loading ? (
+        <h2>Loading...</h2>
+      ) : error ? (
+        <h2>{error}</h2>
+      ) : (<Table tableData={exam.length>0 && exam} headingColumns={key} button="Edit" handle={Edit}></Table>)}
    
     </div>
   )

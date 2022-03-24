@@ -4,9 +4,14 @@ import axios from "axios";
 import { reset } from "../utils/Regex";
 import { useNavigate } from "react-router-dom";
 import { Exam } from "../container/useFields";
+import { useSelector, useDispatch } from "react-redux";
+import {ViewExamPaper} from '../store/Actions/Action'
 const useExamPaper = () => {
   const history = useNavigate();
-  const [data, setData] = useState({});
+  //const [data, setData] = useState({});
+  const dispatch = useDispatch();
+  const state= useSelector((state) => state.ExamPaper)
+  const {loading,data,error}=state
   const [index, setIndex] = useState(1);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [final, setFinal] = useState([]);
@@ -19,21 +24,21 @@ const useExamPaper = () => {
     ans4: "",
     answer: "",
   });
+  const [obj, setObj] = useState({ question: "", answer: "" });
+  const ids= localStorage.getItem("examId");
   let template = {
     fields: [{ ...Exam.question }, { ...Exam.option }, { ...Exam.answer }],
     buttonName: index === 7 ? "GiveExam" : "Next",
   };
-  const [obj, setObj] = useState({ question: "", answer: "" });
   useEffect(() => {
     const api = `student/examPaper`;
-    fetch({ api });
-    return () => {
-      setDisabled(true) // This worked for me
-    };
-  }, []);
-  useEffect(() => {
+    dispatch(ViewExamPaper({ api,ids,history }));
     Next(index);
-  }, [data]);
+    return () => {
+      setDisabled(true)
+    };
+  }, [dispatch]);
+
   const Next = (ind) => {
     const preQ = data && data[index - 1];
     if (preQ) {
@@ -51,29 +56,11 @@ const useExamPaper = () => {
       }
     }
   };
-  const id = localStorage.getItem("examId");
+ 
   const token = localStorage.getItem("userIn");
-  async function fetch({ api }) {
-    await axios
-      .get(`${baseUrl}${api}?id=${id}`, {
-        headers: { "access-token": `${token}` },
-      })
-      .then((response) => {
-        setData(response.data.data);
-        if (response.data.statusCode === 500){
-          alert(response.data.message)
-          history('../allexam')
-        }
-      })
-      .catch((error) => {
-      alert(error.message)
-      history('../allexam')
-      }
-      );
-  }
   async function postExam({ api, final }) {
     await axios
-      .post(`${baseUrl}${api}?id=${id}`, final, {
+      .post(`${baseUrl}${api}?id=${ids}`, final, {
         headers: { "access-token": `${token}` },
       })
       .then((response) => {

@@ -6,18 +6,18 @@ const initialState = {
   
   const Student = (state = initialState, action) => {
     switch (action.type) {
-      case "STUDENT_DETAIL":
+      case "STUDENT_PROFILE":
         return {
           loading: true,
           student:[],
         };
-      case "STUDENT_DETAIL_SUCCESS":
+      case "STUDENT_PROFILE_SUCCESS":
         return {
           loading: false,
           student: action.payload,
           error: "",
         };
-      case "STUDENT_DETAIL_FAILURE":   
+      case "STUDENT_PROFILE_FAILURE":   
         return {
           loading: false,
           student:[],

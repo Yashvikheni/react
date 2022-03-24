@@ -1,45 +1,33 @@
 import { useState, useEffect }  from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import {baseUrl} from "../utils/Constant"
-import {fetchUsersRequest,fetchUsersSuccess,fetchUsersFailure} from "../store/Actions/Action"
+import {fetchUsers} from "../store/Actions/Action"
 const useStudentData = ({check,setCheck}) => {
     const history = useNavigate();
     const [api, setApi] = useState('')
   const [showComp, setShowComp] = useState(false);
   const dispatch = useDispatch();
   const state = useSelector((state) => state.Users);
-  const { loading, student, error } = state;
+  const { loading, students, error } = state;
   useEffect(() => {
     setCheck(false);
   },[])
   useEffect(() => {
     if (check === false) {
       setApi(`dashboard/Teachers`);
-      fetch()
+      dispatch(fetchUsers({api}))
     } else {
       setApi(`dashboard/Teachers/StudentForExam`);
-      fetch()
+      dispatch(fetchUsers({api}))
     }
-  }, [dispatch, check]);
+  }, [dispatch,check]);
   const handle = (data) => {
     setShowComp(true);
     data.map((user,index)=>
     user.key==='_id'?localStorage.setItem("studentid",user.val):null
  )
   };
-  async function fetch(){
-    dispatch(fetchUsersRequest());
-    const token=localStorage.getItem('userIn');
-    await axios.get(`${baseUrl}${api}`,{headers:{'access-token':`${token}`}})
-   .then((response)=>{
-       const user=response.data.data
-       dispatch(fetchUsersSuccess(user))
-   }).catch((error)=>{
-       dispatch(fetchUsersFailure(error.message))
-   })
-  }
+
   useEffect(() => {
     if (showComp) {
       const id=localStorage.getItem("studentid")
