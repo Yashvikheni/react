@@ -36,7 +36,6 @@ const CreateExam = () => {
         Next={Next}
         indexx={index}
         final={final}
-        //subject={state&&state.subject}
       />
     </div>
   );

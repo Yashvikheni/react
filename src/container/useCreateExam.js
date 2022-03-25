@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
-import { isNullish, EqualObj, reset, hasDuplicates,checkAns } from "../utils/Regex";
-import { Update,submit } from "../container/useApiCall";
-import {Exam} from '../container/useFields'
-import {useNavigate} from 'react-router-dom'
+import {
+  isNullish,
+  EqualObj,
+  reset,
+  hasDuplicates,
+  checkAns,
+} from "../utils/Regex";
+import { Update, submit } from "../container/useApiCall";
+import { Exam } from "../container/useFields";
+import { useNavigate } from "react-router-dom";
 const useCreateExam = ({ final, state }) => {
   const [index, setIndex] = useState(state ? state.index : 1);
   const [ind, setInd] = useState(-1);
   const [pre, setPre] = useState({});
-  const history = useNavigate()
+  const history = useNavigate();
   const [valuee, setValuee] = useState({
     question: "",
     answer: "",
@@ -27,8 +33,8 @@ const useCreateExam = ({ final, state }) => {
     }
     fetch(index - 1);
     setInd(index - 2);
-  }, []);
-  const losingNotes=(data1,valuee)=>{
+  },[]);
+  const losingNotes = (data1, valuee) => {
     if (data1) {
       if (isNullish(data1)) {
         if (valuee.notes === "") {
@@ -36,41 +42,41 @@ const useCreateExam = ({ final, state }) => {
         }
       }
     }
-  }
+  };
   const Next = (data1) => {
-    if (index <= 15) { 
-    
-      const options= handleOptions(valuee)
-      
-      if (!checkAns(options,valuee.answer)) {
+    if (index <= 15) {
+      const options = handleOptions(valuee);
+
+      if (!checkAns(options, valuee.answer)) {
         alert("answer is not matched with options");
         return;
-      }else{
-      setIndex(index + 1);
-      setInd(ind + 1);
+      } else {
+        setIndex(index + 1);
+        setInd(ind + 1);
         fetch(index, data1);
       }
-      
-      losingNotes(data1,valuee)    
+
+      losingNotes(data1, valuee);
+    }
   };
-}
   const Prevs = (data1) => {
     if (index >= 2) {
-      const options= handleOptions(valuee)
-      if (!checkAns(options,valuee.answer)) {
+      const options = handleOptions(valuee);
+      if (!checkAns(options, valuee.answer)) {
         alert("answer is not matched with options");
         return;
-      }else{
-      setIndex(index - 1);
-      setInd(ind - 1);
-      fetch(ind, data1);} 
+      } else {
+        setIndex(index - 1);
+        setInd(ind - 1);
+        fetch(ind, data1);
+      }
     }
   };
   const fetch = (i, data1) => {
     let preQ;
     preQ = final.questions.at(i);
     setPre(preQ);
-    if(data1){
+    if (data1) {
       handleAlert(data1);
     }
     if (preQ) {
@@ -103,9 +109,9 @@ const useCreateExam = ({ final, state }) => {
             options: ["English", "Maths", "Node", "React", "Flutter"],
             placeholder: "subjectName",
           },
-      {...Exam.question},
-      {...Exam.option},
-      {...Exam.answer},
+      { ...Exam.question },
+      { ...Exam.option },
+      { ...Exam.answer },
       {
         title: "notes",
         type: "text",
@@ -173,11 +179,9 @@ const useCreateExam = ({ final, state }) => {
       );
       const result = EqualObj(val, final.questions.at(index - 1));
       const r2 = notes ? (notes === final.notes[index - 1] ? true : false) : "";
-    
-    
+
       if (!result || r2 === false) {
         alert("you are losing your data");
-       
       }
     }
   };
@@ -191,7 +195,7 @@ const useCreateExam = ({ final, state }) => {
   const handle = (values, add) => {
     let options = handleOptions(values);
     if (index <= 15) {
-      if (!checkAns(options,values.answer)) {
+      if (!checkAns(options, values.answer)) {
         alert("answer is not matched with options");
         return;
       }
@@ -227,10 +231,10 @@ const useCreateExam = ({ final, state }) => {
       }
       console.log(final);
       if (index === 15) {
-        state ? Update(final,history) : submit(final,history);
+        state ? Update(final, history) : submit(final, history);
       }
     }
-  }; 
+  };
   return [{ template, handle, valuee, index, setValuee, Prevs, Next, final }];
 };
 export default useCreateExam;

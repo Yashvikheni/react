@@ -1,5 +1,5 @@
 
-import React, {useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import '../App.css'
 const InputField = ({placeholder, type ,onChange,...fields}) => {
@@ -12,8 +12,6 @@ const InputField = ({placeholder, type ,onChange,...fields}) => {
                     onChange={onChange}
                     {...fields}
                 />
-              
-                
             ) : (
                 <>
                 <label>{fields.name}</label>

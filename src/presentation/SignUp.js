@@ -20,7 +20,7 @@ function SignUp(props) {
    link:
    [
      {
-      path: "../login",
+      path: "/login",
       linkName: "Already have an Account ?",
      }
    ],

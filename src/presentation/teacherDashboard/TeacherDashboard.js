@@ -1,8 +1,7 @@
 import React from 'react'
 import { Link,Outlet} from 'react-router-dom'
 import '../../App.css'
-const TeacherDashboard = () => {  
- 
+const TeacherDashboard = () => {
   return (
     <div>
          <div style={{marginLeft:"200px"}}>Teacher Dashboard</div>

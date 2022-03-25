@@ -4,7 +4,7 @@ const initialState = {
     error: "",
   };
   
-  const LogIn = (state = initialState, action) => {
+  const Exam = (state = initialState, action) => {
     switch (action.type) {
       case "VIEW_EXAM":
         return {
@@ -27,4 +27,4 @@ const initialState = {
         return state;
     }
   }
-  export default LogIn;
+  export default Exam;

@@ -9,6 +9,7 @@ const Table = ({
   handle,
   button2,
   handle2,
+  headingColumns2
 }) => {
 
   const data =  tableData
@@ -18,7 +19,7 @@ const Table = ({
         for (const key in row) {
           rowData.push({
             key: headingColumns[i],
-            val: row[headingColumns[i]],
+            val:row[headingColumns[i]],
           });
           i++;
         }
@@ -32,14 +33,14 @@ const Table = ({
                     <Table
                       tableData={data.val}
                       headingColumns={
-                        data.val.length ? Object.keys(data.val[0]) : []
+                        data.val.length ? headingColumns2?headingColumns2:Object.keys(data.val[0]) : []
                       }
                     ></Table>
                   </div>
                 ) : Array.isArray(data.val) ? (
                   data.val.map((ok, index) => <div key={index}>{ok}</div>)
                 ) : (
-                  data.val
+                 data.val && data.val 
                 )}
               </td>
             ))}
@@ -68,6 +69,7 @@ const Table = ({
         );
       })
     : null;
+    console.log(data);
   return (
     <div>
       <table>

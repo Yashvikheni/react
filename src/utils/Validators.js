@@ -18,7 +18,7 @@ export const Validation = (name, value, data, type, error) => {
     if (key === name) {
         error[key] = ""
     }  
-  })
+  })  
   if(name==="notes"){
     error[name] = ""
   }

@@ -5,16 +5,13 @@ import { reset } from "../utils/Regex";
 import { useNavigate } from "react-router-dom";
 import { Exam } from "../container/useFields";
 import { useSelector, useDispatch } from "react-redux";
-import {ViewExamPaper} from '../store/Actions/Action'
+import { ViewExamPaper } from "../store/Actions/Action";
 const useExamPaper = () => {
   const history = useNavigate();
-  //const [data, setData] = useState({});
   const dispatch = useDispatch();
-  const state= useSelector((state) => state.ExamPaper)
-  const {loading,data,error}=state
-  const [index, setIndex] = useState(1);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [final, setFinal] = useState([]);
+  const state = useSelector((state) => state.ExamPaper);
+  const { loading, data, error } = state;
+  const final = JSON.parse(localStorage.getItem("final"));
   const [disabled, setDisabled] = useState(true);
   const [valuee, setValuee] = useState({
     question: "",
@@ -25,24 +22,26 @@ const useExamPaper = () => {
     answer: "",
   });
   const [obj, setObj] = useState({ question: "", answer: "" });
-  const ids= localStorage.getItem("examId");
+  const ids = localStorage.getItem("examId");
+  const inde = Number(localStorage.getItem("index"));
   let template = {
     fields: [{ ...Exam.question }, { ...Exam.option }, { ...Exam.answer }],
-    buttonName: index === 7 ? "GiveExam" : "Next",
+    buttonName: inde === 7 ? "GiveExam" : "Next",
   };
   useEffect(() => {
     const api = `student/examPaper`;
-    dispatch(ViewExamPaper({ api,ids,history }));
-    Next(index);
+    dispatch(ViewExamPaper({ api, ids, history }));
     return () => {
-      setDisabled(true)
+      setDisabled(true);
     };
   }, [dispatch]);
-
+  useEffect(() => {
+    Next(inde);
+  }, [data]);
   const Next = (ind) => {
-    const preQ = data && data[index - 1];
+    const preQ = data && data[ind - 1];
     if (preQ) {
-      if (preQ.question!=="") {
+      if (preQ.question !== "") {
         setValuee({
           question: preQ.question,
           ans1: preQ.options[0],
@@ -56,7 +55,7 @@ const useExamPaper = () => {
       }
     }
   };
- 
+
   const token = localStorage.getItem("userIn");
   async function postExam({ api, final }) {
     await axios
@@ -66,22 +65,21 @@ const useExamPaper = () => {
       .then((response) => {
         if (response.data.statusCode === 200) {
           history("../allexam");
-          alert(response.data.message)
-        
+          alert(response.data.message);
         }
       })
       .catch((error) => alert(error.message));
   }
 
   const handle = (values) => {
-    index < 7 && setIndex(index + 1);
-    Next(index);
+    localStorage.setItem("index", inde + 1);
+    Next(inde + 1);
     obj.question = values.question;
     obj.answer = values.answer;
     final.push(obj);
+    localStorage.setItem("final", JSON.stringify(final));
+    console.log(final);
     setObj(reset(obj));
-    const newQuestion = currentQuestion + 1;
-    setCurrentQuestion(newQuestion);
     if (final.length === 7) {
       const api = `student/giveExam`;
       postExam({ api, final });
@@ -90,11 +88,12 @@ const useExamPaper = () => {
 
   return [
     {
+      loading,
+      error,
       template,
       data,
-      currentQuestion,
+      inde,
       handle,
-      index,
       valuee,
       setValuee,
       disabled,

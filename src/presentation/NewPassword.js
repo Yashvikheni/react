@@ -44,7 +44,7 @@ const NewPassword = (props) => {
                 .then((response) => {
                   if(response.data.statusCode === 200){
                     alert(response.data.message);
-                    history('../login')
+                    history('/login')
                   }
                 })
                 .catch((error) => alert(error.message));

@@ -1,17 +1,17 @@
 import { baseUrl } from "../../utils/Constant";
 import axios from "axios";
 
-const id=localStorage.getItem('studentid')
-const token = localStorage.getItem("userIn");
+
 export const fetchUsers =
   ({ api }) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
     dispatch({ type: "FETCH_USERS" });
     axios
       .get(`${baseUrl}${api}`, { headers: { "access-token": `${token}` } })
-      .then((response) =>
+      .then((response) =>{
         dispatch({ type: "FETCH_USERS_SUCCESS", payload: response.data.data })
-      )
+      })
       .catch((error) =>
         dispatch({ type: "FETCH_USERS_FAILURE", payload: error.message })
       );
@@ -20,6 +20,7 @@ export const fetchUsers =
 export const viewExam =
   ({ api }) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
     dispatch({ type: "VIEW_EXAM" });
     axios
       .get(`${baseUrl}${api}`, { headers: { "access-token": `${token}` } })
@@ -33,6 +34,7 @@ export const viewExam =
 export const studentProfile =
   ({ api }) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
     dispatch({ type: "STUDENT_PROFILE" });
     axios
       .get(`${baseUrl}${api}`, { headers: { "access-token": `${token}` } })
@@ -46,9 +48,12 @@ export const studentProfile =
         dispatch({ type: "STUDENT_PROFILE_FAILURE", payload: error.message })
       );
   };
+
   export const studentDetail =
   ({ api }) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
+    const id=localStorage.getItem('studentid')
     dispatch({ type: "STUDENT_DETAIL" });
     axios
       .get(`${baseUrl}${api}?id=${id}`, { headers: { "access-token": `${token}` } })
@@ -67,6 +72,7 @@ export const studentProfile =
   export const examDetail =
   ({ api ,ids}) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
     dispatch({ type: "EXAM_DETAIL" });
     axios
       .get(`${baseUrl}${api}?id=${ids}`, { headers: { "access-token": `${token}` } })
@@ -83,6 +89,7 @@ export const studentProfile =
   export const ViewExamPaper =
   ({ api ,ids,history}) =>
   (dispatch) => {
+    const token = localStorage.getItem("userIn");
     dispatch({ type: "EXAM_PAPER" });
     axios
       .get(`${baseUrl}${api}?id=${ids}`, { headers: { "access-token": `${token}` } })

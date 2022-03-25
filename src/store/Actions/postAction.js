@@ -1,10 +1,10 @@
 
 import { baseUrl } from "../../utils/Constant";
 import axios from "axios";
-
 export const signInRequest=
   ({ api ,values,history}) =>
   (dispatch) => {
+    
     dispatch({ type: "SIGN_IN" });
     axios
       .post(`${baseUrl}${api}`, values)
@@ -12,12 +12,12 @@ export const signInRequest=
         dispatch({ type: "SIGN_IN_SUCCESS", payload: response.data.data.name })
         if(response.data.statusCode === 200){
             localStorage.setItem("userIn", response.data.data.token);
-            localStorage.setItem("isAuthenticated", true);
+            localStorage.setItem("isAuthenticated", JSON.stringify(true));
             localStorage.setItem("role", response.data.data.role);
             if (response.data.data.role === "teacher") {
-              history("../teacherdashboard")
+              history("/teacherdashboard")
             } else {
-              history( "../studentdashboard")
+              history("/studentdashboard")
             }}}
       )
       .catch((error) =>{
@@ -35,8 +35,7 @@ export const signInRequest=
       .then((response) =>{
         dispatch({ type: "SIGN_UP_SUCCESS", payload: response.data.data })
         alert(response.data.message)
-       
-        history("../login")})
+        history("/login")})
       .catch((error) =>{
         dispatch({ type: "SIGN_UP_FAILURE", payload: error.message })
         alert(error.message)}

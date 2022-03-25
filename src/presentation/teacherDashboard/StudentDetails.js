@@ -6,14 +6,15 @@ import Table from "../../shared/Table";
 
 import "../../App.css";
 const StudentDetails = () => {
-  const api = `dashboard/Teachers/viewStudentDetail`;
+ 
   const dispatch= useDispatch();
   const state= useSelector((state) => state.StudentDetail)
   const {loading,student,error}= state;
   const key = student && student.length>0 ? Object.keys(student[0]) : []
 useEffect(() => {
+  const api = `dashboard/Teachers/viewStudentDetail`
   dispatch(studentDetail({api}))
- },[])
+ },[dispatch])
 
   return (
     <div style={{marginLeft:"200px"}}>
