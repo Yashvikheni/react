@@ -39,3 +39,20 @@ export async function Update(final,history) {
         history("../createexam")
       });
   }
+ 
+  export async function postExam({ api, final ,history}) {
+    const token = localStorage.getItem("userIn");
+    const ids = localStorage.getItem("examId");
+    await axios
+      .post(`${baseUrl}student/giveExam?id=${ids}`, final, {
+        headers: { "access-token": `${token}` },
+      })
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.statusCode === 200) {
+          history("../allexam");
+          alert(response.data.message);
+        }
+      })
+      .catch((error) => alert(error.message));
+  }

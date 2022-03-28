@@ -4,7 +4,7 @@ import useStudent from '../../container/useStudent'
 const Student = () => {
   const [{array,key,handle,loading,error}]=useStudent()
   return (
-    <div style={{marginLeft:"200px"}}>Student Details
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>Student Details
       {loading ? (
         <h2>Loading...</h2>
       ) : error ? (

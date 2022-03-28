@@ -22,7 +22,7 @@ const EditExam = () => {
       },[])
     const [{template,handle,valuee,setValuee,Prevs,Next,index}]=useCreateExam({final,state})
   return (
-    <div style={{marginLeft:"200px"}}>EditExam
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>EditExam
     
     <h2>{index<=15?`Question ${index}`:null}</h2>
     <h2>{state?`subject:${state.subject}`:null}</h2>

@@ -71,6 +71,8 @@ table{
   margin-right: auto;
   width:auto;
   height: auto;
+  z-index:-1
+
 
 }
 tr td{
@@ -89,6 +91,7 @@ tr td{
   list-style-type: none;
   margin-block-start: 0;
 
+
 }
 
 .tableFooter {
@@ -105,13 +108,13 @@ tr td{
   align-items: center;
   justify-content: center;
 }
-.button {
-  border: none;
+button {
+  border: 1px solid #c3ccec;
   padding: 7px 14px;
-  border-radius: 10px;
   cursor: pointer;
-  margin-right: 4px;
-  margin-left: 4px;
+  margin-right: 5px;
+  margin-left: 5px;
+  z-index: 1
 }
 
 .activeButton {

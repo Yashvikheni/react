@@ -10,12 +10,14 @@ const StudentDetails = () => {
   const dispatch= useDispatch();
   const state= useSelector((state) => state.StudentDetail)
   const {loading,student,error}= state;
-  const key = student && student.length>0 ? Object.keys(student[0]) : []
+ // const key = student && student.length>0 ? Object.keys(student[0]) : []
+ //const key2=['studentAnswer','rank','subjectName','resultStatus']
+ const key=['name','email','Result']
 useEffect(() => {
   const api = `dashboard/Teachers/viewStudentDetail`
   dispatch(studentDetail({api}))
  },[dispatch])
-
+console.log(student)
   return (
     <div style={{marginLeft:"200px"}}>
       StudentDetails
@@ -23,7 +25,7 @@ useEffect(() => {
         <h2>Loading...</h2>
       ) : error ? (
         <h2>{error}</h2>
-      ) : (<Table tableData={student} headingColumns={key}></Table>)}
+      ) : (<Table tableData={student}  headingColumns={key}></Table>)}
     </div>
   );
 };

@@ -20,11 +20,10 @@ const useViewExamDetails = ({ notes }) => {
     state.options = val[0].val;
     state.question = val[1].val;
     state.answer = val[2].val;
-    const ind = index + 1;
     history("../editexam", {
       state: {
         data: state,
-        index: ind,
+        index: index+1,
         eQuestions: exam,
         subject: subject,
         notes: notes,

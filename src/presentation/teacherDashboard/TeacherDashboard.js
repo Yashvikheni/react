@@ -4,7 +4,7 @@ import '../../App.css'
 const TeacherDashboard = () => {
   return (
     <div>
-         <div style={{marginLeft:"200px"}}>Teacher Dashboard</div>
+         <div style={{marginLeft:"200px" ,marginTop:"60px"}}>Teacher Dashboard</div>
        <div className="sidebar">
               <div>
                   <Link to="studentdata">Student Data</Link>

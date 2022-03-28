@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./App.css";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation} from "react-router-dom";
 import Navbar from "./presentation/Navbar";
 import SignUp from "./presentation/SignUp";
 import LogIn from "./presentation/LogIn";
@@ -24,6 +24,7 @@ import ExamPaper from "./presentation/studentDashboard/ExamPaper";
 import PagedRoute from "./presentation/PagedRoute";
 import Home from "./presentation/Home"
 import { useEffect } from 'react';
+import Preview from './presentation/studentDashboard/Preview'
 
 function App() {
   let [auth,setAuth]=useState(localStorage.getItem("isAuthenticated"));
@@ -82,6 +83,10 @@ function App() {
               <Route
                 path="allexam"
                 element={<ProtectedRoute comp={AllExam} />}
+              />
+              <Route
+                path="preview"
+                element={<ProtectedRoute comp={Preview} />}
               />
 
               <Route

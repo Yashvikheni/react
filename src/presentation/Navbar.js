@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 const Navbar=({auth})=> {
   const token = localStorage.getItem("userIn");
   return(
-    <nav>
-    <ul>
+    <nav   style={{ position: 'fixed',
+      top: '0',
+      width: '100%' }}>
+    <ul >
       {auth && JSON.parse(auth) && token && token!==null ?(
         <>
           {localStorage.getItem("role") === "teacher" ? (

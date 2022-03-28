@@ -5,12 +5,12 @@ import Navbar from "./Navbar";
 const Logout = () => {
   const history = useNavigate();
   useEffect(() => {
-    localStorage.clear();
     history("/login");
-  }, []);
+    localStorage.clear();
+  },[]);
   return (
     <div>
-      <Navbar auth={false} />
+    
     </div>
   );
 };

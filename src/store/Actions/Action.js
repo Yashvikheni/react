@@ -87,12 +87,13 @@ export const studentProfile =
       );
   };
   export const ViewExamPaper =
-  ({ api ,ids,history}) =>
+  ({ api ,history}) =>
   (dispatch) => {
+    const id = localStorage.getItem("examId");
     const token = localStorage.getItem("userIn");
     dispatch({ type: "EXAM_PAPER" });
     axios
-      .get(`${baseUrl}${api}?id=${ids}`, { headers: { "access-token": `${token}` } })
+      .get(`${baseUrl}${api}?id=${id}`, { headers: { "access-token": `${token}` } })
       .then((response) =>{
         dispatch({
           type: "EXAM_PAPER_SUCCESS",

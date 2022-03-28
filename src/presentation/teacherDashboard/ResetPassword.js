@@ -41,7 +41,7 @@ const ResetPassword = () => {
       .catch((error) => alert(error.message));
   }
   return (
-    <div>
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>
       <Form template={template} handle={handle} />
     </div>
   );

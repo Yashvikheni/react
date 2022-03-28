@@ -5,7 +5,7 @@ import Table from '../../shared/Table'
 const AllExam = () => {
   const [{loading,error,exam,handle,key,key2}]=useAllExam();
   return (
-    <div style={{marginLeft:"200px"}}>All Exam 
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>All Exam 
     {loading ? (
        <h2>Loading...</h2>
      ) : error ? (

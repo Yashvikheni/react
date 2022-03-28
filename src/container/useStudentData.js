@@ -16,9 +16,10 @@ const useStudentData = ({check,setCheck}) => {
       }
     }, [dispatch,check]);
     
-  const handle = (data) => {
+  const handle = (data,_id) => {
+    console.log(_id)
     data.map((user,index)=>
-    user.key==='_id'?localStorage.setItem("studentid",user.val):null)
+    localStorage.setItem("studentid",_id))
     const id=localStorage.getItem("studentid")
       history(`../studentdetails?id=${id}`);
  

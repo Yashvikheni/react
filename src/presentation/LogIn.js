@@ -10,7 +10,7 @@ function LogIn() {
   const dispatch = useDispatch();
   const history = useNavigate();
   useEffect(() => {
-    localStorage.clear();
+    localStorage.getItem('userIn') && history(-1)
   },[])
   let template = {
     title: "Log IN",

@@ -5,7 +5,7 @@ import Form from "../../shared/Form";
 const EditStudent = () => {
   const [{ template, handle }] = useEditStudent();
   return (
-    <div style={{ marginLeft: "200px" }}>
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>
       <Form template={template} handle={handle} />
     </div>
   );

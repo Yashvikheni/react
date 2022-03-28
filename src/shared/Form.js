@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputField from "./InputField";
@@ -26,7 +26,6 @@ function Form({
       (key) =>
         key.type !== null && setState((prev) => ({ ...prev, [key.name]: "" }))
     );
-   
     fields.map((key) =>
       key.type !== null && key.value
         ? Array.isArray(key.value)
@@ -39,7 +38,6 @@ function Form({
         : null
     );
   }, []);
-
   const renderFields = (fields) => {
     return fields.map((field, index) => {
       let { type, name, value, options } = field;
@@ -89,12 +87,13 @@ function Form({
                         name={name}
                         checked={
                           name === "answer"
-                            ? state[element.name]
-                              ? state[name] === state[element.name]
+                            ? state[name]
+                              ? state[element.name] &&
+                                state[name] === state[element.name]
                                 ? true
                                 : false
                               : valuee
-                              ? !isNullish(valuee)
+                              ? valuee.question !== ""
                                 ? valuee[name]
                                   ? valuee[element.name] === valuee[name]
                                     ? true
@@ -197,14 +196,15 @@ function Form({
     }
     if (disabled) {
       state.answer = "";
+    } else {
+      Validators(values, error, setError);
     }
-    Validators(values, error, setError);
     const a = Object.values(error).map((ok) => ok);
     if (a.every((val) => val === "")) {
       handle(values, add);
     }
   }
-  const handleChange =useCallback((e) => {
+  const handleChange = useCallback((e) => {
     const { name, value, type } = e.target;
     if (valuee) {
       if (!isNullish(valuee)) {
@@ -216,10 +216,9 @@ function Form({
     const ans = Validation(name, value, state, type, error);
     setError(ans);
   });
-
   useEffect(() => {
     if (!valuee || !indexx) return;
-    else if (!subject) {
+    else if (!subject && !disabled) {
       if (!isNullish(valuee)) {
         setError(reset(error));
         const newObj = ccc();
@@ -231,7 +230,6 @@ function Form({
       }
     }
   }, [valuee, indexx]);
-
   const ccc = () => {
     const obj = Object.keys(state).reduce((accumulator, current) => {
       if (current !== "subjectName") {
@@ -247,20 +245,31 @@ function Form({
     valuee && setValuee(reset(valuee));
   };
   const cancel = () => {
-    if (indexx === 1) {
-      state.subjectName = " ";
-      setState(reset(state));
+    if (disabled) {
+      setState((prev) => ({ ...prev, answer: "" }));
+      setValuee((prev) => ({ ...prev, answer: "" }));
     } else {
-      const newObj = ccc();
-      setState(newObj);
+      if (indexx === 1) {
+        state.subjectName = " ";
+        setState(reset(state));
+      } else {
+        const newObj = ccc();
+        setState(newObj);
+      }
+      valuee && setValuee(reset(valuee));
     }
-    valuee && setValuee(reset(valuee));
   };
   const cV = () => {
-    if (isNullish(state) && !isNullish(valuee)) {
-      Validators(valuee, error, setError);
+    if (disabled) {
+      setState(reset(state));
+      setError(reset(error));
+      return true;
     } else {
-      Validators(state, error, setError);
+      if (isNullish(state) && !isNullish(valuee)) {
+        Validators(valuee, error, setError);
+      } else {
+        Validators(state, error, setError);
+      }
     }
     const a = Object.values(error).map((ok) => ok);
     return a.every((val) => val === "");
@@ -272,7 +281,7 @@ function Form({
         {renderFields(fields)}
         <br />
         {link ? renderLinks(link) : null}
-        <div style={{ display: "flex" }}>
+        <div style={{ display: button && "flex" }}>
           {button
             ? button.map((btn, index) => {
                 return (
@@ -280,7 +289,9 @@ function Form({
                     key={index}
                     onClick={() => {
                       btn === "Prev"
-                        ? final.questions.at(indexx - 1).question === ""
+                        ? disabled
+                          ? cV(valuee) && Prev(state)
+                          : final.questions.at(indexx - 1).question === ""
                           ? Prev(state)
                           : cV(valuee) && Prev(state)
                         : btn === "Next"
@@ -293,7 +304,11 @@ function Form({
                           ? true
                           : false
                         : btn === "Next"
-                        ? indexx === 15 || buttonName === "ADD"
+                        ? disabled
+                          ? indexx === 7
+                            ? true
+                            : false
+                          : indexx === 15 || buttonName === "ADD"
                           ? true
                           : false
                         : false

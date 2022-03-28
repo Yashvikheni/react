@@ -1,4 +1,4 @@
-import { confirmAlert } from "react-confirm-alert";
+
  export const emailValidation = email => {
     const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return regex.test(email.toLowerCase());
@@ -54,4 +54,10 @@ export const EqualObj=(obj1,obj2)=> {
 }
 export const hasDuplicates=(array)=> {
   return (new Set(array)).size !== array.length;
+}
+export const confirmAlert=(Msg)=>{  
+  const ans = window.confirm(Msg?Msg:"Are you sure you want to update")
+  ? true
+  : false;
+  return ans
 }
