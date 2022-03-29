@@ -7,21 +7,18 @@ const ResetPassword = () => {
     title: "Reset password",
     fields: [
       {
-        title: "Password",
         type: "password",
         name: "oldPassword",
         autoComplete: "on",
         placeholder: "Old password",
       },
       {
-        title: "Password",
         type: "password",
         name: "Password",
         autoComplete: "on",
         placeholder: "New password",
       },
       {
-        title: "confirm password",
         type: "password",
         name: "ConfirmPassword",
         autoComplete: "on",

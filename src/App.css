@@ -23,28 +23,92 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
 
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 .App-link {
   color: #61dafb;
 }
-nav ul {  
+/* .navul {  
   display: flex;
-  background-color:#c3ccec;
   margin-block-start: 0;
   padding: 16px;
-  box-shadow: 0 2px 4px rgb(78, 77, 151);
-  color: white;
+  
+
 }
-nav ul li { 
+.navli { 
   list-style-type: none;
   margin-right: 16px;
   float:right;
-}
+} */
 .fields{
   margin-bottom: 2px;
 }
 
-
+.form-outer-wrapper{
+  width: 20%;
+  margin: 50px auto;
+  padding: 20px 20px 20px 25px;
+  box-shadow: 0px 0pc 9px #c3ccec;
+  border-radius: 10px;
+  background:white
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -53,13 +117,7 @@ nav ul li {
     transform: rotate(360deg);
   }
 }
-.form-outer-wrapper{
-  width: 20%;
-  margin: 50px auto;
-  padding: 20px 20px 20px 25px;
-  box-shadow: 0px 0pc 9px #c3ccec;
-  border-radius: 10px;
-}
+
 .error{
   color:red
 }
@@ -77,10 +135,14 @@ table{
 }
 tr td{
   vertical-align:top;
-  border: 1px solid;
+  border: 1px solid black;
 }
-
-.sidebar{
+nav ul li {
+     list-style-type: none;
+    margin-right: 16px;
+    float:right;
+}
+/* .sidebar{
   margin-top: 5px;
   padding: 0;
   width: 200px;
@@ -91,9 +153,8 @@ tr td{
   list-style-type: none;
   margin-block-start: 0;
 
-
-}
-
+ */
+ /* ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 .tableFooter {
   background-color: #f1f1f1;
   padding: 8px 0px;
@@ -108,14 +169,7 @@ tr td{
   align-items: center;
   justify-content: center;
 }
-button {
-  border: 1px solid #c3ccec;
-  padding: 7px 14px;
-  cursor: pointer;
-  margin-right: 5px;
-  margin-left: 5px;
-  z-index: 1
-}
+
 
 .activeButton {
   color: white;

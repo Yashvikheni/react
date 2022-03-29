@@ -7,7 +7,7 @@ import {
   checkAns,
   confirmAlert,
 } from "../utils/Regex";
-import { Update, submit, postExam } from "../container/useApiCall";
+import { Update, submit } from "../container/useApiCall";
 import { Exam } from "../container/useFields";
 import { useNavigate } from "react-router-dom";
 const useCreateExam = ({ final, state, examIndex, data }) => {
@@ -64,6 +64,7 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
       }
       losingNotes(data1, valuee);
     } else if (data && index <= 6) {
+      final[index - 1].question = valuee.question;
       if (valuee.answer) {
         if (valuee.answer !== final[index - 1].answer) {
           alert("your answer is not saved");
@@ -163,7 +164,7 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
       ? final.length > 0 && final[index - 1].answer !== " "
         ? "UPDATE"
         : index === 7
-        ? "GIVEEXAM"
+        ? "PREVIEW"
         : valuee.answer
         ? "CONFIRM"
         : "SKIP"
@@ -256,15 +257,7 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
         Next();
       }
       if (index === 7) {
-        let a = final.map((key, index) => key.answer === " " && index);
-        let ab=[];
-        for (let i of a){ 
-          let ok=data.filter((key,index) => index===i ? key:null);
-          ab.push(ok[0])
-          i++;
-        }
-        console.log(ab);
-        history("../preview",{state:{data:ab}})
+        history("../preview")
         
      
       }

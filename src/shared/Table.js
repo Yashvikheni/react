@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import Button from "@material-ui/core/Button";
 import "../App.css";
 
@@ -10,7 +10,9 @@ const Table = ({
   button2,
   handle2,
   headingColumns2,
+  ind
 }) => {
+  let [btn,setBtn]=useState(null)
   const data = tableData
     ? tableData.map((row, index) => {
         let rowData = [];
@@ -23,12 +25,14 @@ const Table = ({
                 val: row[headingColumns[i]],
               })
             : id.push(row["_id"]);
-
           i++;
         }
         return (
           <tr className="tablee" key={index}>
+
+            {ind && <td>{index+1}</td>}
             {rowData.map((data, index) => (
+              
               <td key={index} data-heading={data.key}>
                 {Array.isArray(data.val) &&
                 data.val.every((val) => typeof val === "object") ? (
@@ -55,8 +59,7 @@ const Table = ({
             ))}
             {button2 ? (
               <td >
-                <button
-                  style={{ backgroundColor: "#E8E7E8" }}
+                <button className="btn-primary"
                   onClick={() => handle2(rowData)}
                 >
                   {button2}
@@ -65,11 +68,10 @@ const Table = ({
             ) : null}
             {button ? (
               <td>
-                <button
-                  style={{ backgroundColor: "#E8E7E8"}}
-                  onClick={() => handle(rowData, id, index)}
+                <button className="btn-primary"                
+                  onClick={() => handle(rowData, id, index+1)}
                 >
-                  {button}
+                  {ind? rowData[1].val===" " ?"Attempt":"Update":button}
                 </button>
               </td>
             ) : null}
@@ -81,7 +83,7 @@ const Table = ({
     <div>
       <table > 
         <thead>
-          <tr>
+          <tr>{ind && <th>Index</th>}
             {headingColumns.map((col, index) => (
               <th key={index}>{col}</th>
             ))}

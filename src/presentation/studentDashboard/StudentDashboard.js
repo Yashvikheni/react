@@ -2,7 +2,7 @@ import React from 'react'
 import { Link,Outlet } from 'react-router-dom'
 const StudentDashboard = () => {
   return (
-    <div><div style={{marginLeft:"200px" ,marginTop:"60px"}}>Student Dashboard</div>
+    <div><div style={{marginLeft:"200px" ,marginTop:"70px"}}>Student Dashboard</div>
        
        <div className="sidebar">
               <div>

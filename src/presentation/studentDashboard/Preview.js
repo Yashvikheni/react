@@ -1,20 +1,32 @@
-import React from 'react'
-import {useLocation,useNavigate} from "react-router-dom";
+import { Button } from '@material-ui/core';
+import React,{useEffect,useState} from 'react'
+import {useNavigate} from "react-router-dom";
+import { postExam } from '../../container/useApiCall';
 import Table from '../../shared/Table'
 const Preview = () => {
-    const { state } = useLocation();
-    const {data}=state
-    const key=['question','options']
-    let data1=data.filter(key =>key)
-    console.log(data1);
-    const handle = (data) => {
-        console.log(data);
+    const history = useNavigate();
+    const [data, setData] = useState([])
+ 
+    const ind=true
+    const key=['question','answer']
+    useEffect(() => {
+     setData(JSON.parse(localStorage.getItem('final')))
+    },[])
+    const handle = (data,id,index) => {
+        localStorage.setItem('index',index)
+        history('../exampaper')
+    }
+    const giveExam=() => {
+      const final=JSON.parse(localStorage.getItem('final'))
+      console.log(final);
+      postExam({final,history})
     }
   return (
-    <div>Preview
+    <div style={{marginLeft:"200px" ,marginTop:"40px"}}>Preview
           <div>
-          <Table tableData={data1} headingColumns={key} button="attempt" handle={handle}></Table>
+          <Table tableData={data} ind={ind} headingColumns={key} button='attempt' handle={handle}></Table>
         </div>
+        <Button onClick={giveExam}>GIVE EXAM</Button>
     </div>
   )
 }

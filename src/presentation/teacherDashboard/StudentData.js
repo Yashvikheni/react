@@ -11,8 +11,8 @@ function TeacherDashboard() {
   const key=['status','name','email']
   return (
     <div style={{marginLeft:"200px" ,marginTop:"40px"}}>
-      <Button style={{ width: "15%" }} onClick={() => setCheck(false)}> All Student Data</Button>
-      <Button  style={{ width: "15%" }}onClick={() => setCheck(true)}> Verified Student Data</Button>
+      <button className="btn-primary" onClick={() => setCheck(false)}> All Student Data</button>
+      <button className="btn-primary" onClick={() => setCheck(true)}> Verified Student Data</button>
       {check===false?<h3>All Student Data</h3>:<h3>Verified Student Data</h3>}
             {loading ? (        <h2>Loading...</h2>
       ) : error ? (

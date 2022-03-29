@@ -25,22 +25,35 @@ import PagedRoute from "./presentation/PagedRoute";
 import Home from "./presentation/Home"
 import { useEffect } from 'react';
 import Preview from './presentation/studentDashboard/Preview'
-
+import styled,{ThemeProvider} from 'styled-components'
+import useDarkMode from './theme/useDarkMode'
+import { GlobalStyles,lightTheme,darkTheme } from './theme/GlobalStyles';
+import FilterTable from './presentation/FilterTable';
+const Container=styled.div`
+text-align: center;
+`;
 function App() {
+  const [{theme,toggleTheme}]=useDarkMode();
+  const themeMode= theme==='light'?lightTheme:darkTheme;
   let [auth,setAuth]=useState(localStorage.getItem("isAuthenticated"));
   const location = useLocation();
   useEffect(() => {
     setAuth(localStorage.getItem("isAuthenticated"))
   },[location])
   return (
-    <div className="App"> 
-      <Navbar auth={auth}/>
+    <ThemeProvider theme={themeMode}>
+    <Container> 
+      <GlobalStyles/>
+      <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
+  
         <Routes>
             <Route exact path="/" element={<Home />}></Route>
-            <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
+            <Route path="/filtertable" element={<FilterTable />}></Route>
             <Route path="/logout" element={<ProtectedRoute comp={Logout} />} />
+            
             <Route
               path="/resetpassword"
               element={<ProtectedRoute comp={ResetPassword} />}
@@ -107,7 +120,8 @@ function App() {
           <Route path="*" element={<PagedRoute />}></Route>
         </Routes>
      
-    </div>
+    </Container>
+    </ThemeProvider>
   );
 }
 

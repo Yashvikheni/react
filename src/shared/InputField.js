@@ -1,25 +1,35 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import TextField from "@material-ui/core/TextField";
 import '../App.css'
-const InputField = ({placeholder, type ,onChange,...fields}) => {
+const InputField = ({id,name,value,checked,disabled,placeholder, type ,onChange,...field}) => {
     return (
         <div>
-            {type === 'radio'? (
-           
+            {type === 'radio'? ( 
                 <input
                     type="radio"
                     onChange={onChange}
-                    {...fields}
+                    value={value}
+                    checked={checked}
+                    name={name}
+                    {...field}
                 />
             ) : (
                 <>
-                <label>{fields.name}</label>
-                <input     
+                  <TextField
+                    id={id}
+                    onChange={onChange}
+                    value={value}
+                    name={name}
+                    variant="outlined"
+                    fullWidth={true}
+                    type={type}
                     placeholder={placeholder}
-                   onChange={onChange}
-                    {...fields}
-                /></>
+                    disabled={disabled}
+                     className="text-field"
+                    {...field}
+        /></>
             )}
            
         </div>

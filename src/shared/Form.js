@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
@@ -45,10 +44,7 @@ function Form({
       if (type === "text" || type === "password" || type === "email") {
         return (
           <div key={index}>
-            <TextField
-              id={name}
-              fullWidth={true}
-              variant="outlined"
+            <InputField
               {...field}
               value={
                 valuee
@@ -121,7 +117,7 @@ function Form({
                           element
                         ) : (
                           <div key={i}>
-                            <TextField
+                            <InputField
                               onChange={(e) => handleChange(e)}
                               value={
                                 valuee
@@ -133,8 +129,6 @@ function Form({
                                   : state[element.name]
                               }
                               name={element.name}
-                              variant="outlined"
-                              fullWidth={true}
                               type={element.type}
                               placeholder={element.placeholder}
                               disabled={disabled ? true : false}
@@ -154,7 +148,7 @@ function Form({
         );
       } else if (type === "dropDown") {
         return (
-          <div key={index}>
+          <div key={index} >
             <select
               style={{ width: "100%", height: "50px" }}
               disabled={
@@ -206,6 +200,7 @@ function Form({
   }
   const handleChange = useCallback((e) => {
     const { name, value, type } = e.target;
+    console.log(value);
     if (valuee) {
       if (!isNullish(valuee)) {
         setValuee((prev) => ({ ...prev, [name]: value }));
@@ -286,6 +281,7 @@ function Form({
             ? button.map((btn, index) => {
                 return (
                   <Button
+                    className="btn-primary"
                     key={index}
                     onClick={() => {
                       btn === "Prev"
@@ -323,7 +319,6 @@ function Form({
             onClick={(e) => handleSubmit(e, state)}
             type="submit"
             varient="contained"
-            className="btn"
           >
             {buttonName}
           </Button>
