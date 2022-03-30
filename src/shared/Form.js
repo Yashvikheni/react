@@ -200,7 +200,6 @@ function Form({
   }
   const handleChange = useCallback((e) => {
     const { name, value, type } = e.target;
-    console.log(value);
     if (valuee) {
       if (!isNullish(valuee)) {
         setValuee((prev) => ({ ...prev, [name]: value }));

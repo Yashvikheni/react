@@ -10,23 +10,25 @@ const Table = ({
   button2,
   handle2,
   headingColumns2,
-  ind
+  ind,
+
 }) => {
-  let [btn,setBtn]=useState(null)
+
   const data = tableData
     ? tableData.map((row, index) => {
         let rowData = [];
         let id = [];
         let i = 0;
-        for (const key in row) {
+        for (const key in headingColumns) {
           headingColumns[i]
             ? rowData.push({
                 key: headingColumns[i],
-                val: row[headingColumns[i]],
+                val: row[headingColumns[i]] ?row[headingColumns[i]] :
+                "  ",
               })
             : id.push(row["_id"]);
           i++;
-        }
+            }
         return (
           <tr className="tablee" key={index}>
 
@@ -53,12 +55,12 @@ const Table = ({
                 ) : Array.isArray(data.val) ? (
                   data.val.map((ok, index) => <div key={index}>{ok}</div>)
                 ) : (
-                  data.val && data.val
+                  data.val ? data.val: null
                 )}
               </td>
             ))}
             {button2 ? (
-              <td >
+              <td>
                 <button className="btn-primary"
                   onClick={() => handle2(rowData)}
                 >
