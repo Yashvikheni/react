@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../shared/Table";
-import { RemoveDuplicate } from "../utils/Regex";
+import {RemoveDuplicate } from "../utils/Regex";
 import "../App.css";
 import { TextField } from "@material-ui/core";
 const FilterTable = () => {
@@ -12,6 +12,7 @@ const FilterTable = () => {
       category: "one",
       type: "A",
       active: "FALSE",
+   
     },
     {
       id: 2,
@@ -20,6 +21,7 @@ const FilterTable = () => {
       category: "one",
       type: "B",
       active: "FALSE",
+      state:"Gujarat"
     },
     {
       id: 3,
@@ -28,7 +30,7 @@ const FilterTable = () => {
       category: "one",
       type: "B",
       active: "TRUE",
-      // wgrg: "gftwetgwer",
+      state:"Gujarat"
     },
     {
       id: 4,
@@ -37,16 +39,15 @@ const FilterTable = () => {
       category: "two",
       type: "C",
       active: "FALSE",
-      wgrg: "gftwetgwer",
+      state:"Gujarat"
     },
   ];
   const [data, setData] = useState(initial);
   const [filter, setFilter] = useState({});
   const [heading, setHeading] = useState([]);
   const [checked, setChecked] = useState({});
-  const [temp, setTemp] = useState([]);
-  const [arr, setArr] = useState([]);
-  
+  const [arr, setArr] = useState({});
+
   const set = () => {
     return RemoveDuplicate(
       initial.map((key) => Object.keys(key)).flat(Infinity)
@@ -56,80 +57,52 @@ const FilterTable = () => {
   useEffect(() => {
     setKey(set());
   }, []);
-  const checkIf = (checked) => {
-    const a = Object.keys(checked).filter((key) => checked[key] === true);
-    console.log(a);
-    return a;
-  };
-  const handleChange = (key, key1) => {
 
-    if(checked[key]){
+  const handleChange = (key, key1) => {
+    if (checked[key]) {
       checked[key] = false;
       const check = Object.keys(checked).every((key) => checked[key] === false);
-      const a=Object.keys(checked).filter((key) => checked[key] === true)
-           
+      const index=arr[key1].indexOf(key,0) 
+      arr[key1].splice(index, 1);
       if (check === true) {
-            setData(initial);
-          } else{
-            console.log("uhuh");
-            console.log(a);
-            // a.map((key) =>)
-            // a.length>0 && a.map((key) =>)
-          }
-      setData(initial)
-    }else{
+        setData(initial);
+      } else {
+        func(arr);
+      }}
+    else {
+      arr[key1].push(key);
       checked[key] = true;
-      setData(data.filter((key2) => key2[key1] === key));
-     
-    }
-    // if (!checked[key]) {
-    //   checked[key] = true;
-    //   setData(data.filter((key2) => key2[key1] === key));
-    //   temp.push(data);
-    //   setArr(checkIf(checked));
-    //   console.log(arr);
-    // } else {
-    //   checked[key] = false;
-    //   setArr(checkIf(checked));
-    //   const check = Object.keys(checked).every((key) => checked[key] === false);
-    //   if (check === true) {
-    //     setData(initial);
-    //   } else {
-    //     Object.keys(checked).forEach((val) => {
-    //       if (checked[val] === true) {
-    //         const values = RemoveDuplicate(
-    //           initial
-    //             .map((key) =>
-    //               Object.keys(key).filter((value) => key[value[0]] === val)
-    //             )
-    //             .flat(Infinity)
-    //         );
-    //         if (arr.length <= 2) {
-    //           setData(initial.filter((key2) => key2[values[0]] === val));
-    //           setTemp([]);
-    //           console.log(temp);
-    //         } else {
-    //           setData(
-    //             temp
-    //               .at(arr.length - 2)
-    //               .filter((key2) => key2[values[0]] === val)
-    //           );
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
+       func(arr);
+      }
   };
-  const Change =(e)=>{
-    console.log(data);
-   const ok= data.filter((key) =>key.name===e.target.value)
-      console.log(ok);
-  setData(ok)
+
+  const func=(arr)=>{
+    Object.keys(arr).forEach((val) => {
+      if (arr[val].length > 0) {
+        setData(
+          initial.filter(
+            (value) =>
+          (heading.every(ok=>(arr[ok].length === 0 || arr[ok].includes(value[ok]))))
+        ))
+      }
+    });
   }
+  const Change =React.useCallback((e) => {
+    if(e.target.value.length===0){
+      const check = Object.keys(checked).every((key) => checked[key] === false);
+      if(check){ setData(initial)}
+      else{ func(arr)} 
+   }
+    else{
+      setData(data.filter((key) => key.name.includes(e.target.value)))
+    }
+  });
+
   useEffect(() => {
     for (let i of key) {
       if (i !== "id" && i !== "name") {
         filter[i] = RemoveDuplicate(initial.map((key) => key[i]));
+        arr[i] = [];
       }
     }
     setHeading(Object.keys(filter));
@@ -142,6 +115,7 @@ const FilterTable = () => {
       checked[array[i]] = false;
     }
   }, [heading]);
+ 
   useEffect(() => {
     setData(initial);
     Object.keys(filter).forEach((key) => {
@@ -155,10 +129,10 @@ const FilterTable = () => {
   }, [filter]);
 
   return (
-    <div style={{ marginTop: "90px" }}>
+    <div >
       Filter table
-      <div>
-        <div style={{ display: "flex" }}>
+      <div style={{marginLeft:'350px', marginTop: "90px" }}>
+        <div style={{display: "flex"  }}>
           {heading.length > 0 &&
             heading.map((key1, index) => (
               <div style={{ padding: "50px" }} key={index}>
@@ -167,11 +141,11 @@ const FilterTable = () => {
                   {filter[key1].map(
                     (key, index) =>
                       key && (
-                        <div key={index} style={{ display: "flex" }}>
+                        <div key={index} style={{ display: "flex" , borderRight: "1px solid black" }}>
                           <label className="switch">
-                            <input
+                            <input 
                               type="checkbox"
-                              checked={checked[key]}
+                              //checked={checked[key]}
                               onChange={() => handleChange(key, key1)}
                             />
                             <span className="slider round"></span>
@@ -180,18 +154,22 @@ const FilterTable = () => {
                         </div>
                       )
                   )}
-                </h3> 
+                </h3>
               </div>
             ))}
-  
         </div>
-        {key.includes("name")?
-      (<TextField name="name" onChange={(e)=>Change(e)} placeholder="name" />):null }
+        
       </div>
-     
+      {key.includes("name") ? (
+          <TextField
+            name="name"
+            onChange={(e) => Change(e)}
+            placeholder="name"
+          />
+        ) : null}
       <Table tableData={data} headingColumns={key}></Table>
+   
     </div>
   );
 };
-
 export default FilterTable;

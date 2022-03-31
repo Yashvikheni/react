@@ -63,6 +63,6 @@ export const confirmAlert=(Msg)=>{
 }
 
 export const RemoveDuplicate=(names) => {
-  const arr=names.filter((val,id,array) => array.indexOf(val) == id);
+  const arr=names.filter((val,id,array) => array.indexOf(val) === id);
   return arr
 }

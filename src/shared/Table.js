@@ -93,6 +93,7 @@ const Table = ({
         </thead>
         <tbody>{data}</tbody>
       </table>
+      {tableData.length===0 && <h2>Data not Found</h2>}
     </div>
   );
 };
