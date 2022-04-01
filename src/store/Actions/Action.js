@@ -11,10 +11,13 @@ export const fetchUsers =
       .get(`${baseUrl}${api}`, { headers: { "access-token": `${token}` } })
       .then((response) =>{
         dispatch({ type: "FETCH_USERS_SUCCESS", payload: response.data.data })
+       // localStorage.setItem("users",JSON.stringify(response.data.data))
       })
-      .catch((error) =>
-        dispatch({ type: "FETCH_USERS_FAILURE", payload: error.message })
-      );
+      .catch((error) =>{
+       // const collection =JSON.parse(localStorage.getItem("users"))
+        //dispatch({ type: "FETCH_USERS_SUCCESS", payload: collection })
+        dispatch({ type: "FETCH_USERS_FAILURE", payload: "you are offline" })
+       } );
   };
 
 export const viewExam =

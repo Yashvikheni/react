@@ -25,9 +25,11 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-select": "^5.2.2",
+    "react-service-worker": "^0.1.1",
     "react-switch": "^6.0.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
+    "serve": "^13.0.2",
     "styled-components": "^5.3.5",
     "sweetalert": "^2.1.2",
     "web-vitals": "^2.1.4"

@@ -14,10 +14,11 @@ function TeacherDashboard() {
       <button className="btn-primary" onClick={() => setCheck(false)}> All Student Data</button>
       <button className="btn-primary" onClick={() => setCheck(true)}> Verified Student Data</button>
       {check===false?<h3>All Student Data</h3>:<h3>Verified Student Data</h3>}
-            {loading ? (        <h2>Loading...</h2>
-      ) : error ? (
+      { error && (
         <h2>{error}</h2>
-      ) : (
+      ) }     
+            {loading ? (        <h2>Loading...</h2>
+      )  : (
         <div>
           <Table tableData={students} headingColumns={key} button="View Details" handle={handle}></Table>
         </div>

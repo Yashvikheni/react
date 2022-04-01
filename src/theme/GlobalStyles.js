@@ -36,7 +36,14 @@ a{
     list-style-type: none;
     margin-block-start: 0;
   }
-
+  .form-outer-wrapper{
+    width: 20%;
+    margin: 50px auto;
+    padding: 20px 20px 20px 25px;
+    box-shadow: 0px 0pc 9px #c3ccec;
+    border-radius: 10px;
+    background:${({theme})=>theme.form}
+  }
 
 `;
 
@@ -48,7 +55,7 @@ export const lightTheme={
     secondary:'#c3ccec',
     nav:"#c3ccec",
     linkText:'#715495',
-    form:'#CDC9CA'
+    form:'white'
    
 };
 export const darkTheme={
@@ -59,6 +66,6 @@ export const darkTheme={
     secondary:'#6A666A',
     nav:"#715495",
     linkText:"#fff",
-    form:"#A7A4A5"
+    form:'rgb(180, 176, 176)'
 
 };

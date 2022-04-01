@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Table from "../shared/Table";
-import {RemoveDuplicate } from "../utils/Regex";
+import { RemoveDuplicate } from "../utils/Regex";
 import "../App.css";
 import { TextField } from "@material-ui/core";
 const FilterTable = () => {
@@ -12,7 +12,6 @@ const FilterTable = () => {
       category: "one",
       type: "A",
       active: "FALSE",
-   
     },
     {
       id: 2,
@@ -21,7 +20,7 @@ const FilterTable = () => {
       category: "one",
       type: "B",
       active: "FALSE",
-      state:"Gujarat"
+      state: "Gujarat",
     },
     {
       id: 3,
@@ -30,7 +29,7 @@ const FilterTable = () => {
       category: "one",
       type: "B",
       active: "TRUE",
-      state:"Gujarat"
+      state: "Gujarat",
     },
     {
       id: 4,
@@ -39,7 +38,7 @@ const FilterTable = () => {
       category: "two",
       type: "C",
       active: "FALSE",
-      state:"Gujarat"
+      state: "Gujarat",
     },
   ];
   const [data, setData] = useState(initial);
@@ -47,6 +46,8 @@ const FilterTable = () => {
   const [heading, setHeading] = useState([]);
   const [checked, setChecked] = useState({});
   const [arr, setArr] = useState({});
+  const [temp, setTemp] = useState([]);
+  const [temp1, setTemp1] = useState(initial);
 
   const set = () => {
     return RemoveDuplicate(
@@ -60,41 +61,44 @@ const FilterTable = () => {
 
   const handleChange = (key, key1) => {
     if (checked[key]) {
+      setTemp(key);
       checked[key] = false;
       const check = Object.keys(checked).every((key) => checked[key] === false);
-      const index=arr[key1].indexOf(key,0) 
+      const index = arr[key1].indexOf(key, 0);
       arr[key1].splice(index, 1);
       if (check === true) {
         setData(initial);
       } else {
         func(arr);
-      }}
-    else {
+      }
+    } else {
+      setTemp(key);
       arr[key1].push(key);
       checked[key] = true;
-       func(arr);
-      }
+      func(arr);
+    }
   };
-
-  const func=(arr)=>{
+  useEffect(() => {
+    setTemp1(data);
+  }, [temp]);
+  const func = (arr) => {
     Object.keys(arr).forEach((val) => {
       if (arr[val].length > 0) {
         setData(
-          initial.filter(
-            (value) =>
-          (heading.every(ok=>(arr[ok].length === 0 || arr[ok].includes(value[ok]))))
-        ))
+          initial.filter((value) =>
+            heading.every(
+              (ok) => arr[ok].length === 0 || arr[ok].includes(value[ok])
+            )
+          )
+        );
       }
     });
-  }
-  const Change =React.useCallback((e) => {
-    if(e.target.value.length===0){
-      const check = Object.keys(checked).every((key) => checked[key] === false);
-      if(check){ setData(initial)}
-      else{ func(arr)} 
-   }
-    else{
-      setData(data.filter((key) => key.name.includes(e.target.value)))
+  };
+  const Change = React.useCallback((e) => {
+    if (e.target.value.length === 0) {
+      setData(temp1);
+    } else {
+      setData(temp1.filter((key) => key.name.includes(e.target.value)));
     }
   });
 
@@ -115,7 +119,7 @@ const FilterTable = () => {
       checked[array[i]] = false;
     }
   }, [heading]);
- 
+
   useEffect(() => {
     setData(initial);
     Object.keys(filter).forEach((key) => {
@@ -129,10 +133,10 @@ const FilterTable = () => {
   }, [filter]);
 
   return (
-    <div >
+    <div>
       Filter table
-      <div style={{marginLeft:'350px', marginTop: "90px" }}>
-        <div style={{display: "flex"  }}>
+      <div style={{ marginLeft: "350px", marginTop: "90px" }}>
+        <div style={{ display: "flex" }}>
           {heading.length > 0 &&
             heading.map((key1, index) => (
               <div style={{ padding: "50px" }} key={index}>
@@ -141,9 +145,15 @@ const FilterTable = () => {
                   {filter[key1].map(
                     (key, index) =>
                       key && (
-                        <div key={index} style={{ display: "flex" , borderRight: "1px solid black" }}>
+                        <div
+                          key={index}
+                          style={{
+                            display: "flex",
+                            borderRight: "1px solid black",
+                          }}
+                        >
                           <label className="switch">
-                            <input 
+                            <input
                               type="checkbox"
                               //checked={checked[key]}
                               onChange={() => handleChange(key, key1)}
@@ -158,17 +168,11 @@ const FilterTable = () => {
               </div>
             ))}
         </div>
-        
       </div>
       {key.includes("name") ? (
-          <TextField
-            name="name"
-            onChange={(e) => Change(e)}
-            placeholder="name"
-          />
-        ) : null}
+        <TextField name="name" onChange={(e) => Change(e)} placeholder="name" />
+      ) : null}
       <Table tableData={data} headingColumns={key}></Table>
-   
     </div>
   );
 };

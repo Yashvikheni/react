@@ -14,7 +14,7 @@ const Table = ({
 
 }) => {
 
-  const data = tableData
+  const data = tableData.length>0
     ? tableData.map((row, index) => {
         let rowData = [];
         let id = [];
@@ -83,14 +83,14 @@ const Table = ({
     : null;
   return (
     <div>
-      <table > 
+      <table > {tableData.length>0 && 
         <thead>
           <tr>{ind && <th>Index</th>}
             {headingColumns.map((col, index) => (
               <th key={index}>{col}</th>
             ))}
           </tr>
-        </thead>
+        </thead>}
         <tbody>{data}</tbody>
       </table>
       {tableData.length===0 && <h2>Data not Found</h2>}

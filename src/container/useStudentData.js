@@ -15,7 +15,7 @@ const useStudentData = ({check,setCheck}) => {
         dispatch(fetchUsers({api}))
       }
     }, [dispatch,check]);
-    
+    console.log(state);
   const handle = (data,_id) => {
     console.log(_id)
     data.map((user,index)=>

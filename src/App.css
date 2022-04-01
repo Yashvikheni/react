@@ -107,7 +107,7 @@ input:checked + .slider:before {
   padding: 20px 20px 20px 25px;
   box-shadow: 0px 0pc 9px #c3ccec;
   border-radius: 10px;
-  background:white
+  background:rgb(180, 176, 176)
 }
 @keyframes App-logo-spin {
   from {

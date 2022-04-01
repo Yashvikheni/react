@@ -33,12 +33,13 @@ const Container=styled.div`
 text-align: center;
 `;
 function App() {
+ 
   const [{theme,toggleTheme}]=useDarkMode();
   const themeMode= theme==='light'?lightTheme:darkTheme;
   let [auth,setAuth]=useState(localStorage.getItem("isAuthenticated"));
   const location = useLocation();
   useEffect(() => {
-    setAuth(localStorage.getItem("isAuthenticated"))
+    setAuth(localStorage.getItem("isAuthenticated"))  
   },[location])
   return (
     <ThemeProvider theme={themeMode}>
@@ -47,7 +48,7 @@ function App() {
       <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
   
         <Routes>
-            <Route exact path="/" element={<Home />}></Route>
+            <Route  path="/" element={<Home />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
