@@ -172,7 +172,7 @@ const FilterTable = () => {
       {key.includes("name") ? (
         <TextField name="name" onChange={(e) => Change(e)} placeholder="name" />
       ) : null}
-      <Table tableData={data} headingColumns={key}></Table>
+      <Table tableData={data} headingColumns={key} fill={true}></Table>
     </div>
   );
 };

@@ -11,9 +11,9 @@ const Table = ({
   handle2,
   headingColumns2,
   ind,
+  fill
 
 }) => {
-
   const data = tableData.length>0
     ? tableData.map((row, index) => {
         let rowData = [];
@@ -21,14 +21,16 @@ const Table = ({
         let i = 0;
         for (const key in headingColumns) {
           headingColumns[i]
-            ? rowData.push({
+            && rowData.push({
                 key: headingColumns[i],
-                val: row[headingColumns[i]] ?row[headingColumns[i]] :
-                "  ",
+                val: row[headingColumns[i]] ?row[headingColumns[i]]===" "? null:row[headingColumns[i]] :
+                null,
               })
-            : id.push(row["_id"]);
+             
+          id.push(row["_id"]);
           i++;
             }
+
         return (
           <tr className="tablee" key={index}>
 
@@ -71,9 +73,9 @@ const Table = ({
             {button ? (
               <td>
                 <button className="btn-primary"                
-                  onClick={() => handle(rowData, id, index+1)}
+                  onClick={() => handle(rowData,id[0] ,index+1)}
                 >
-                  {ind? rowData[1].val===" " ?"Attempt":"Update":button}
+                  {ind? rowData[1].val===null?"Attempt":"Update":button}
                 </button>
               </td>
             ) : null}
@@ -93,7 +95,7 @@ const Table = ({
         </thead>}
         <tbody>{data}</tbody>
       </table>
-      {tableData.length===0 && <h2>Data not Found</h2>}
+      {fill && tableData.length===0 && <h2>Data not Found</h2>}
     </div>
   );
 };

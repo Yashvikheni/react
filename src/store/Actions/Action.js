@@ -31,7 +31,7 @@ export const viewExam =
         dispatch({ type: "VIEW_EXAM_SUCCESS", payload: response.data.data })
       )
       .catch((error) =>
-        dispatch({ type: "VIEW_EXAM_FAILURE", payload: error.message })
+        dispatch({ type: "VIEW_EXAM_FAILURE", payload: "you are offline"})
       );
   };
 export const studentProfile =
@@ -93,6 +93,7 @@ export const studentProfile =
   ({ api ,history}) =>
   (dispatch) => {
     const id = localStorage.getItem("examId");
+   
     const token = localStorage.getItem("userIn");
     dispatch({ type: "EXAM_PAPER" });
     axios

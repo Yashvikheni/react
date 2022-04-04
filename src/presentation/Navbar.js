@@ -47,8 +47,7 @@ const Navbar=({auth,theme,toggleTheme})=> {
           </li>
         </>
       )}
-   
-      <li style={{marginLeft: '75%'}}  >
+      <li >
       <Switch  onChange={()=>toggleTheme({checked,setChecked})} checked={checked} />
       </li>
       {text}

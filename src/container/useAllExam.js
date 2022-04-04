@@ -16,9 +16,10 @@ const useAllExam = () => {
     dispatch(viewExam({ api }));
   }, [dispatch]);
 
-  const handle = (data,_id) => {
-
-      localStorage.setItem("examId", _id)
+  const handle = (data,id) => {
+    
+console.log(id);
+  localStorage.setItem("examId", id)
    
     data.map((user, index) =>
       user.key === "subjectName"

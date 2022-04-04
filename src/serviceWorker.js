@@ -8,7 +8,14 @@
 // resources are updated in the background.
 
 // To learn more about the benefits of this model and instructions on how to
-
+navigator.serviceWorker.getRegistration('https://YOUR_DOMAIN_HERE.COM/')
+  .then(swReg => {
+    if (swReg) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.swUpdateReady = true;
+      });
+    }
+  });
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
