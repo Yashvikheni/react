@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.6f785b73.css",
-    "main.js": "/static/js/main.6dba0ff0.js",
-    "static/js/787.83fdf458.chunk.js": "/static/js/787.83fdf458.chunk.js",
-    "service-worker.js": "/service-worker.js",
-    "index.html": "/index.html",
-    "main.6f785b73.css.map": "/static/css/main.6f785b73.css.map",
-    "main.6dba0ff0.js.map": "/static/js/main.6dba0ff0.js.map",
-    "787.83fdf458.chunk.js.map": "/static/js/787.83fdf458.chunk.js.map"
+    "main.css": "/Yashvikheni/react/static/css/main.6f785b73.css",
+    "main.js": "/Yashvikheni/react/static/js/main.9517bfd5.js",
+    "static/js/787.83fdf458.chunk.js": "/Yashvikheni/react/static/js/787.83fdf458.chunk.js",
+    "service-worker.js": "/Yashvikheni/react/service-worker.js",
+    "index.html": "/Yashvikheni/react/index.html",
+    "main.6f785b73.css.map": "/Yashvikheni/react/static/css/main.6f785b73.css.map",
+    "main.9517bfd5.js.map": "/Yashvikheni/react/static/js/main.9517bfd5.js.map",
+    "787.83fdf458.chunk.js.map": "/Yashvikheni/react/static/js/787.83fdf458.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.6f785b73.css",
-    "static/js/main.6dba0ff0.js"
+    "static/js/main.9517bfd5.js"
   ]
 }
