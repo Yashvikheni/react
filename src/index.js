@@ -38,7 +38,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
     addBtn.style.display = 'none';
     // Show the prompt
     deferredPrompt.prompt();
-    console.log(deferredPrompt);
     // Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
