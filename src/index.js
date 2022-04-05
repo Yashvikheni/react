@@ -13,9 +13,9 @@ ReactDOM.render(
      <Provider store={store}>
      <BrowserRouter>
     <App />
-    <div >
+    {/* <div >
   <span class="popuptext" id="myPopup">add to home screen</span>
-</div>
+</div> */}
     {/* <button className="add-button">Add to home screen</button> */}
   
     </BrowserRouter>
@@ -25,21 +25,24 @@ ReactDOM.render(
 );
 serviceWorkerRegistration.register();
 reportWebVitals();
-let deferredPrompt;
-const addBtn = document.getElementById('myPopup');
-addBtn.classList.toggle = 'none';
-window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevent Chrome 67 and earlier from automatically showing the prompt
-  e.preventDefault();
-  // Stash the event so it can be triggered later.
-  deferredPrompt = e;
-  // Update UI to notify the user they can add to home screen
-addBtn.classList.toggle = 'show';
+ let deferredPrompt;
+// const addBtn = document.getElementById('myPopup');
+// addBtn.classList.toggle = 'show';
+ window.addEventListener('beforeinstallprompt', (e) => {
+//   // Prevent Chrome 67 and earlier from automatically showing the prompt
+   e.preventDefault();
+//   // Stash the event so it can be triggered later.
+   deferredPrompt = e;
+//   // Update UI to notify the user they can add to home screen
+// addBtn.classList.toggle = 'show';
 
-  window.addEventListener('click', (e) => {
-    // hide our user interface that shows our A2HS button
-    addBtn.classList.toggle = 'none';
+ // window.addEventListener('load', (e) => {
+//     // hide our user interface that shows our A2HS button
+//     addBtn.classList.toggle = 'none';
     // Show the prompt
+
+
+    return (e)=>{
     deferredPrompt.prompt();
     // Wait for the user to respond to the prompt
     deferredPrompt.userChoice.then((choiceResult) => {
@@ -50,9 +53,9 @@ addBtn.classList.toggle = 'show';
         }
         deferredPrompt = null;
       });
-  });
+  
+ }
 });
-
 //swDev();
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
