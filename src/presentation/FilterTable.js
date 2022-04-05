@@ -48,6 +48,7 @@ const FilterTable = () => {
   const [arr, setArr] = useState({});
   const [temp, setTemp] = useState([]);
   const [temp1, setTemp1] = useState(initial);
+  const [data2, setData2] = useState(initial);
 
   const set = () => {
     return RemoveDuplicate(
@@ -85,7 +86,7 @@ const FilterTable = () => {
     Object.keys(arr).forEach((val) => {
       if (arr[val].length > 0) {
         setData(
-          initial.filter((value) =>
+          data2.filter((value) =>
             heading.every(
               (ok) => arr[ok].length === 0 || arr[ok].includes(value[ok])
             )
@@ -97,8 +98,12 @@ const FilterTable = () => {
   const Change = React.useCallback((e) => {
     if (e.target.value.length === 0) {
       setData(temp1);
+      setData2(data)
+     
     } else {
       setData(temp1.filter((key) => key.name.includes(e.target.value)));
+      setData2(data)
+      console.log(data2);
     }
   });
 
