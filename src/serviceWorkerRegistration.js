@@ -49,12 +49,11 @@ export function register(config) {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
-
+ 
     window.addEventListener("load", () => {
-      const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
+          const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
-      if (isLocalhost) {
-        // This is running on localhost. Let's check if a service worker still exists or not.
+      if (!isLocalhost) {
         checkValidServiceWorker(swUrl, config);
 
         // Add some additional logging to localhost, pointing developers to the
@@ -64,6 +63,7 @@ export function register(config) {
           return response.pushManager
             .getSubscription()
             .then(function (subscription) {
+             
               response.pushManager.subscribe({
                 // postMessage:
                 //   "we'd like to send you notifications for the latest news and updates",
