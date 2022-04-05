@@ -14,16 +14,14 @@ import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
 clientsClaim();
-// const cacheName = 'firstVersion';
+const cacheName = 'firstVersion';
 
-// self.addEventListener('install', event => {
-//   event.waitUntil(
-//     caches.open(cacheName)
-//       .then(cache => cache.addAll([
-//         './dog.jpg'
-//       ]))
-//   );
-// });
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(cacheName)
+      .then(cache => console.log(cache))
+  );
+});
 
 self.addEventListener('fetch', function (event) {
   event.respondWith(
