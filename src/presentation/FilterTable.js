@@ -98,7 +98,7 @@ const FilterTable = () => {
   const Change = React.useCallback((e) => {
     if (e.target.value.length === 0) {
       setData(temp1);
-      setData2(temp1)
+      setData2(temp1);
      
     } else {
       setData(temp1.filter((key) => key.name.includes(e.target.value)));
