@@ -4,8 +4,8 @@
     "theme_color": "#000000",
     "background_color": "#000000",
     "display": "standalone",
-    "scope": "/",
-    "start_url": "/",
+    "scope": "https://yashvikheni.github.io/react/",
+    "start_url": "https://yashvikheni.github.io/react/",
   "icons": [
     {
       "src":"maskable.png",
