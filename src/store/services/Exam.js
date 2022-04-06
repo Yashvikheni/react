@@ -43,8 +43,17 @@ export const Exam=createApi({
                     'access-token': `${localStorage.getItem("userIn")}`,
                 },
             })
+        }),
+        deleteExam:builder.mutation({
+            query:(id)=>({
+                url:`dashboard/Teachers/deleteExam?id=${id}`,
+                method:'DELETE',
+                headers: {
+                    'access-token': `${localStorage.getItem("userIn")}`,
+                },
+            })
         })
         
     })
 })
-export const {useGetViewExamQuery,useGetViewExamDetailQuery,useGetAllExamQuery,useGetExamPaperQuery}= Exam
+export const {useGetViewExamQuery,useGetViewExamDetailQuery,useGetAllExamQuery,useGetExamPaperQuery,useDeleteExamMutation}= Exam

@@ -6,11 +6,12 @@ import {
 import { useEffect } from "react";
 import { baseUrl } from "../utils/Constant";
 import axios from "axios";
-import { useGetViewExamQuery } from "../store/services/Exam";
+import { useGetViewExamQuery,useDeleteExamMutation } from "../store/services/Exam";
 
 const useViewExam = () => {
   //const state = useSelector((state) => state.Exam);
   const state=useGetViewExamQuery();
+  const [deletePost,responseInfo]=useDeleteExamMutation()
  const {isLoading,isError,data} = state;
  //let { loading, exam, error } = state;
   const key = data && data.data.length ? Object.keys(data.data[0]) : [];
@@ -20,8 +21,15 @@ const useViewExam = () => {
   //   const api = `dashboard/Teachers/viewExam`;
   //   dispatch(viewExam({ api }))
   // }, [dispatch]);
-
-  async function del(data) {
+useEffect(() => {
+  if(responseInfo.data && responseInfo.data.statusCode === 200){
+    console.log("object");
+    alert(`Exam deleted successfully`)
+  }
+},[responseInfo.data])
+  async function del(data,_id) {
+   deletePost(_id)
+  
     // data.map((user, index) =>
     //   user.key === "_id" ? localStorage.setItem("examId", user.val) : ""
     // );
