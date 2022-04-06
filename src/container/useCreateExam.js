@@ -240,8 +240,11 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
     final.notes[index - 1] = values.notes ? values.notes : " ";
   };
   const handle = (values, add) => {
+   
     if (examIndex) {
+     
       if (final[index - 1].answer !== " ") {
+        
         const ans = confirmAlert();
         if (ans) {
           final[index - 1].answer = values.answer === "" ? " " : values.answer;

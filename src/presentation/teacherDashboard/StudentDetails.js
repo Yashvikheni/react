@@ -1,31 +1,19 @@
 import React from "react";
-import {useState,useEffect} from 'react'
-import { studentDetail } from '../../store/Actions/Action'
-import {useSelector, useDispatch} from "react-redux";
 import Table from "../../shared/Table";
-
+import {useGetStudentDetailQuery} from '../../store/services/StudentData'
 import "../../App.css";
 const StudentDetails = () => {
- 
-  const dispatch= useDispatch();
-  const state= useSelector((state) => state.StudentDetail)
-  const {loading,student,error}= state;
- // const key = student && student.length>0 ? Object.keys(student[0]) : []
- //const key2=['studentAnswer','rank','subjectName','resultStatus']
+  const id=localStorage.getItem('studentid')
+  const {isLoading,isError,data}=useGetStudentDetailQuery(id)
  const key=['name','email','Result']
-useEffect(() => {
-  const api = `dashboard/Teachers/viewStudentDetail`
-  dispatch(studentDetail({api}))
- },[dispatch])
-console.log(student)
   return (
     <div style={{marginLeft:"200px"}}>
       StudentDetails
-      {loading ? (
+      {isLoading ? (
         <h2>Loading...</h2>
-      ) : error ? (
-        <h2>{error}</h2>
-      ) : (<Table tableData={student}  headingColumns={key}></Table>)}
+      ) : isError ? (
+        <h2>{data.message}</h2>
+      ) : (<Table tableData={data.data}  headingColumns={key}></Table>)}
     </div>
   );
 };

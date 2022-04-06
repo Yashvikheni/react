@@ -30,7 +30,6 @@ const Table = ({
           id.push(row["_id"]);
           i++;
             }
-
         return (
           <tr className="tablee" key={index}>
 
@@ -75,7 +74,7 @@ const Table = ({
                 <button className="btn-primary"                
                   onClick={() => handle(rowData,id[0] ,index+1)}
                 >
-                  {ind? rowData[1].val===null?"Attempt":"Update":button}
+                  {ind? rowData[2].val===null?"Attempt":"Update":button}
                 </button>
               </td>
             ) : null}

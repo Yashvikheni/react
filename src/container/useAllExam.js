@@ -2,10 +2,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { viewExam } from "../store/Actions/Action";
 import { useEffect } from "react";
+import { useGetAllExamQuery } from "../store/services/Exam";
 
 const useAllExam = () => {
-  const state = useSelector((state) => state.Exam);
-  const { loading, exam, error } = state;
+  //const state = useSelector((state) => state.Exam);
+  const state=useGetAllExamQuery()
+  
+   const { isLoading, data, isError } = state;
+   const exam=data && data.data
   //const key = exam && exam.length ? Object.keys(exam[0]) : [];
   const key = ["subjectName", "notes", "email", "Result"]
   const key2 = ["rank", "score", "resultStatus"]
@@ -17,8 +21,6 @@ const useAllExam = () => {
   }, [dispatch]);
 
   const handle = (data,id) => {
-    
-console.log(id);
   localStorage.setItem("examId", id)
    
     data.map((user, index) =>
@@ -28,11 +30,10 @@ console.log(id);
     );
     localStorage.setItem("index", 1);
     localStorage.setItem("final", JSON.stringify([]));
-     
-    history("../exampaper");
+    history(`../exampaper`);
   };
   return [{
-    loading, error, exam, handle, key, key2}];
+   isLoading,exam,isError,data,handle, key, key2}];
 };
 
 export default useAllExam;

@@ -40,11 +40,11 @@ export async function Update(final,history) {
       });
   }
  
-  export async function postExam({ api, final ,history}) {
+  export async function postExam({ api, final1 ,history}) {
     const token = localStorage.getItem("userIn");
     const ids = localStorage.getItem("examId");
     await axios
-      .post(`${baseUrl}student/giveExam?id=${ids}`, final, {
+      .post(`${baseUrl}student/giveExam?id=${ids}`, final1, {
         headers: { "access-token": `${token}` },
       })
       .then((response) => {

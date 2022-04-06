@@ -6,25 +6,36 @@ import Table from '../../shared/Table'
 const Preview = () => {
     const history = useNavigate();
     const [data, setData] = useState([])
- 
-    const ind=true
-    const key=['question','answer']
+
+    const key=['question','options','answer']
     useEffect(() => {
      setData(JSON.parse(localStorage.getItem('final')))
     },[])
-    const handle = (data,id,index) => {
+    const handle = (data,_id,index) => {
+      console.log(_id);
         localStorage.setItem('index',index)
-        history('../exampaper')
+        history(`../exampaper`)
     }
     const giveExam=() => {
       const final=JSON.parse(localStorage.getItem('final'))
       console.log(final);
-      postExam({final,history})
+     final.forEach(value=>value.question=value._id)
+      const final1=final.map((value)=>value = Object.keys(value).filter(key =>
+        key !== '_id' && key !== 'options').reduce((obj, key) =>
+        {
+            obj[key] = value[key];
+            return obj;
+        }, {}
+    ))
+      
+      console.log(final1);  
+      postExam({final1,history})
     }
+    console.log(data);
   return (
     <div style={{marginLeft:"200px" ,marginTop:"40px"}}>Preview
           <div>
-          <Table tableData={data} ind={ind} headingColumns={key} button='attempt' handle={handle}></Table>
+          <Table tableData={data} ind={true} headingColumns={key} button='attempt' handle={handle}></Table>
         </div>
         <Button onClick={giveExam}>GIVE EXAM</Button>
     </div>

@@ -1,10 +1,19 @@
-import {createStore,applyMiddleware,compose} from 'redux'
-import RootReducer from "./Reducers/RootReducer"
+import {configureStore} from '@reduxjs/toolkit'
+import {setupListeners} from '@reduxjs/toolkit/query'
+import { studentData } from './services/StudentData'
+import { Exam } from './services/Exam'
+import { StudentProfile } from './services/StudentProfile'
 
 const thunkMiddleware=require('redux-thunk').default
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const store = configureStore({
+  reducer:{
+    [studentData.reducerPath]:studentData.reducer,
+    [Exam.reducerPath]:Exam.reducer,
+    [StudentProfile.reducerPath]:StudentProfile.reducer,
 
-const store = createStore(RootReducer,composeEnhancers(
-    applyMiddleware(thunkMiddleware)
-  ));
-export default store;
+
+  },
+  middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(thunkMiddleware,
+    studentData.middleware,Exam.middleware,StudentProfile.middleware)
+});
+setupListeners(store.dispatch)

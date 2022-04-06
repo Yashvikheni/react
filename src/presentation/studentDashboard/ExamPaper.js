@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from "react";
 import Form from "../../shared/Form";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { ViewExamPaper } from "../../store/Actions/Action";
+import { useLocation } from "react-router-dom";
+
 import useCreateExam from "../../container/useCreateExam";
+import { useGetExamPaperQuery } from "../../store/services/Exam";
 
 const ExamPaper = () => {
-  const history = useNavigate();
-  const dispatch = useDispatch();
-  const examIndex = Number(localStorage.getItem("index"));
-  const state = useSelector((state) => state.ExamPaper);
-  const { loading, data, error } = state;
+
+const id=localStorage.getItem('examId')
+  const state=useGetExamPaperQuery(id)
+  const { isLoading, isError } = state;
+  const data=state.data && state.data.data
+  const examIndex=Number(localStorage.getItem("index"))
+ 
   const [disabled, setDisabled] = useState(true);
-  useEffect(() => {
-    const api = `student/examPaper`;
-    dispatch(ViewExamPaper({ api, history }));
-    return () => {
-      setDisabled(true);
-    };
-  }, [dispatch]);
   const [final, setFinal] = useState(JSON.parse(localStorage.getItem("final")));
   useEffect(() => {
     if (final.length < 7) {
       for (let i = 0; i <= 6; i++) {
-        final.push({ question: " ", answer: " " });
+        final.push({ question: " ", answer: " ",_id: " ",options:[]});
       }
     }
-  }, []);
+  }, [])
+
+ useEffect(()=>{
+   if(data)
+   {
+    final[examIndex-1]._id = data[examIndex-1]._id;
+    final[examIndex-1].options = data[examIndex-1].options;   
+   }
+  
+ },[examIndex,data])
   const [{ template, handle, valuee, setValuee, Prevs, Next }] = useCreateExam({
     final,
     examIndex,
@@ -39,10 +43,10 @@ const ExamPaper = () => {
       <br />
       <br />
       <h2>{subject && subject}</h2>
-      {valuee && loading ? (
+      {valuee && isLoading ? (
         <h2>Loading...</h2>
-      ) : error ? (
-        <h2>{error}</h2>
+      ) : isError ? (
+        <h2>{state.data.message}</h2>
       ) : (
         <>
           <h2>question {Number(localStorage.getItem("index"))}</h2>

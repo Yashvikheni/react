@@ -280,7 +280,6 @@ function Form({
             ? button.map((btn, index) => {
                 return (
                   <Button
-                    className="btn-primary"
                     key={index}
                     onClick={() => {
                       btn === "Prev"
