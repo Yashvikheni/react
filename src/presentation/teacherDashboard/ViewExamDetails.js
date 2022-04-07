@@ -5,9 +5,7 @@ import {useLocation} from 'react-router-dom'
 const ViewExamDetails = () => {
   const {state } = useLocation();
  const {notes}=state
-  const [{isLoading,isError,questions,data,Edit,key}]=useViewExamDetails({notes});
-
-
+const [{isLoading,isError,questions,data,Edit,key}]=useViewExamDetails({notes});
   return (
     <div style={{marginLeft:"200px"}}>View Exam Details 
      {isLoading ? (

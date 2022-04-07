@@ -1,6 +1,5 @@
 import {createApi,fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {baseUrl} from '../../utils/Constant'
-const token = localStorage.getItem("userIn");
 export const studentData=createApi({
     reducerPath:'studentData',
     baseQuery:fetchBaseQuery({
@@ -12,7 +11,7 @@ export const studentData=createApi({
                 url:'dashboard/Teachers',
                 method:'GET',
                 headers: {
-                    'access-token': `${token}`,
+                    'access-token': `${localStorage.getItem("userIn")}`,
                 },
             }),
         }),
@@ -21,7 +20,7 @@ export const studentData=createApi({
                 url:'dashboard/Teachers/StudentForExam',
                 method:'GET',
                 headers: {
-                    'access-token': `${token}`,
+                    'access-token': `${localStorage.getItem("userIn")}`,
                 },
             })
         }),
@@ -30,7 +29,7 @@ export const studentData=createApi({
                 url:`dashboard/Teachers/viewStudentDetail?id=${id}`,
                 method:'GET',
                 headers: {
-                    'access-token': `${token}`,
+                    'access-token': `${localStorage.getItem("userIn")}`,
                 },
             })
         }),

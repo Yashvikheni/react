@@ -1,5 +1,4 @@
-import React, { useState ,useEffect} from "react";
-import Button from "@material-ui/core/Button";
+import React from "react";
 import "../App.css";
 
 const Table = ({
@@ -23,7 +22,7 @@ const Table = ({
           headingColumns[i]
             && rowData.push({
                 key: headingColumns[i],
-                val: row[headingColumns[i]] ?row[headingColumns[i]]===" "? null:row[headingColumns[i]] :
+                val: row[headingColumns[i]]?row[headingColumns[i]]===" "? null:row[headingColumns[i]] :
                 null,
               })
              
@@ -63,8 +62,7 @@ const Table = ({
             {button2 ? (
               <td>
                 <button className="btn-primary"
-                  onClick={() => handle2(rowData)}
-                >
+                  onClick={() => handle2(rowData)}>
                   {button2}
                 </button>
               </td>
@@ -84,10 +82,10 @@ const Table = ({
     : null;
   return (
     <div>
-      <table > {tableData.length>0 && 
+      <table>{tableData.length>0 && 
         <thead>
           <tr>{ind && <th>Index</th>}
-            {headingColumns.map((col, index) => (
+            {headingColumns.map((col,index) => (
               <th key={index}>{col}</th>
             ))}
           </tr>

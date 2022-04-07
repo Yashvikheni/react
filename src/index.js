@@ -13,8 +13,7 @@ ReactDOM.render(
      <Provider store={store}>
      <BrowserRouter>
     <App />
-    <button className="add-button">Add to home screen</button>
-  
+    <button style={{position:'fixed',top:0}} className="add-button">Add to home screen</button>
     </BrowserRouter>
     </Provider>
   </React.StrictMode>,

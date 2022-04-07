@@ -1,12 +1,12 @@
 import { Button } from '@material-ui/core';
 import React,{useEffect,useState} from 'react'
 import {useNavigate} from "react-router-dom";
-import { postExam } from '../../container/useApiCall';
 import Table from '../../shared/Table'
+import { useGiveExamMutation } from '../../store/services/Exam';
 const Preview = () => {
     const history = useNavigate();
     const [data, setData] = useState([])
-
+  const [give,response]=useGiveExamMutation()
     const key=['question','options','answer']
     useEffect(() => {
      setData(JSON.parse(localStorage.getItem('final')))
@@ -27,11 +27,15 @@ const Preview = () => {
             return obj;
         }, {}
     ))
-      
       console.log(final1);  
-      postExam({final1,history})
+      give(final1);
     }
-    console.log(data);
+    useEffect(() => {
+      if (response.data && response.data.statusCode === 200) {
+        alert(response.data.message);
+        history("../allexam");
+      }
+    },[response.data])
   return (
     <div style={{marginLeft:"200px" ,marginTop:"40px"}}>Preview
           <div>

@@ -1,4 +1,4 @@
-import React,{ useEffect,useState} from 'react'
+import React from 'react'
 import useAllExam from "../../container/useAllExam"
 import Table from '../../shared/Table'
 
@@ -9,7 +9,7 @@ const AllExam = () => {
     {isLoading ? (
        <h2>Loading...</h2>
      ) : isError ? (
-       <h2>{data.message}</h2>):
+       <h2>{data.message}</h2>):data && 
     (<Table tableData={exam} headingColumns={key} headingColumns2={key2} button="Exam Paper" handle={handle}></Table>)}
   </div>
   )

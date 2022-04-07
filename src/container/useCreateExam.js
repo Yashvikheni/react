@@ -7,10 +7,15 @@ import {
   checkAns,
   confirmAlert,
 } from "../utils/Regex";
-import { Update, submit } from "../container/useApiCall";
 import { Exam } from "../container/useFields";
 import { useNavigate } from "react-router-dom";
+import {
+  useCreateExamMutation,
+  useEditExamMutation,
+} from "../store/services/Exam";
 const useCreateExam = ({ final, state, examIndex, data }) => {
+  const [createExam, responseInfo] = useCreateExamMutation();
+  const [updateExam, response] = useEditExamMutation();
   const [index, setIndex] = useState(
     examIndex ? examIndex : state ? Number(state.index) : 1
   );
@@ -240,11 +245,8 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
     final.notes[index - 1] = values.notes ? values.notes : " ";
   };
   const handle = (values, add) => {
-   
     if (examIndex) {
-     
       if (final[index - 1].answer !== " ") {
-        
         const ans = confirmAlert();
         if (ans) {
           final[index - 1].answer = values.answer === "" ? " " : values.answer;
@@ -260,9 +262,7 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
         Next();
       }
       if (index === 7) {
-        history("../preview")
-        
-     
+        history("../preview");
       }
     } else {
       let options = handleOptions(values);
@@ -300,11 +300,23 @@ const useCreateExam = ({ final, state, examIndex, data }) => {
           }
         }
         if (index === 15) {
-          state ? Update(final, history) : submit(final, history);
+          state ? updateExam(final) : createExam(final);
         }
       }
     }
   };
+  useEffect(() => {
+    if (response.data || responseInfo.data) {
+      if (responseInfo.data && responseInfo.data.statusCode === 200) {
+        alert(responseInfo.data.message);
+        history("../viewexam");
+      }
+      if (response.data && response.data.statusCode === 200) {
+        alert(response.data.message);
+        history("../viewexam");
+      }
+    }
+  }, [responseInfo.data, response.data]);
   return [{ template, handle, valuee, index, setValuee, Prevs, Next, final }];
 };
 export default useCreateExam;

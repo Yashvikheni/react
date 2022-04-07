@@ -99,10 +99,9 @@ const FilterTable = () => {
     if (e.target.value.length === 0) {
       setData(temp1);
       setData2(temp1);
-     
     } else {
       setData(temp1.filter((key) => key.name.includes(e.target.value)));
-      setData2(data)
+      setData2(data);
       console.log(data2);
     }
   });

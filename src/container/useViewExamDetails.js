@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
-import { examDetail } from "../store/Actions/Action";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import {useGetViewExamDetailQuery} from '../store/services/Exam'
+import { useGetViewExamDetailQuery } from "../store/services/Exam";
 const useViewExamDetails = ({ notes }) => {
   const history = useNavigate();
   const location = useLocation();
   const id = location.search.replace("?id=", "");
-
-  const response =useGetViewExamDetailQuery(id)
-  const {isLoading, isError, data}=response
-  const questions=data&& data.data.questions
-  console.log(questions);
+  const response = useGetViewExamDetailQuery(id);
+  const { isLoading, isError, data } = response;
+  const questions = data && data.data.questions;
   const [state, setState] = useState({});
   const key = ["question", "options", "answer"];
-  const Edit = (val,_id,index) => {
-    console.log(index);
+  const Edit = (val, _id, index) => {
     const subject = localStorage.getItem("subject");
     state.options = val[0].val;
     state.question = val[1].val;
@@ -30,7 +25,7 @@ const useViewExamDetails = ({ notes }) => {
       },
     });
   };
-  return [{ isLoading, isError, questions,data, Edit, key }];
+  return [{ isLoading, isError, questions, data, Edit, key }];
 };
 
 export default useViewExamDetails;
