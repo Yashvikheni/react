@@ -9,7 +9,7 @@ const [{isLoading,isError,questions,data,Edit,key}]=useViewExamDetails({notes});
   return (
     <div style={{marginLeft:"200px"}}>View Exam Details 
      {isLoading ? (
-        <h2>isLoading...</h2>
+        <h2>Loading...</h2>
       ) : isError ? (
         <h2>{data.message}</h2>
       ) : (<Table tableData={questions.length>0 && questions} headingColumns={key} button="Edit" handle={Edit}></Table>)}
