@@ -48,7 +48,7 @@ function Form({
               {...field}
               value={
                 valuee
-                  ? !isNullish(valuee)
+                  ? !isNullish(valuee)  
                     ? valuee[name]
                       ? valuee[name] !== " "
                         ? valuee[name]
@@ -148,7 +148,7 @@ function Form({
         );
       } else if (type === "dropDown") {
         return (
-          <div key={index} >
+          <div key={index}>
             <select
               style={{ width: "100%", height: "50px" }}
               disabled={

@@ -9,6 +9,7 @@ function LogIn() {
   useEffect(() => {
     localStorage.getItem('userIn') && history(-1)
   },[])
+  
   let template = {
     title: "Log IN",
     fields: [Email, Password],

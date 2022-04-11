@@ -29,11 +29,13 @@ import styled,{ThemeProvider} from 'styled-components'
 import useDarkMode from './theme/useDarkMode'
 import { GlobalStyles,lightTheme,darkTheme } from './theme/GlobalStyles';
 import FilterTable from './presentation/FilterTable';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 const Container=styled.div`
 text-align: center;
 `;
 function App() {
 
+  const queryClient = new QueryClient()
   const [{theme,toggleTheme}]=useDarkMode();
   const themeMode= theme==='light'?lightTheme:darkTheme;
   let [auth,setAuth]=useState(localStorage.getItem("isAuthenticated"));
@@ -47,6 +49,7 @@ function App() {
       <GlobalStyles/>
       <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
   
+      <QueryClientProvider client={queryClient}>
         <Routes>
             <Route  path="/" element={<Home />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
@@ -115,11 +118,13 @@ function App() {
                 path="editstudent"
                 element={<ProtectedRoute comp={EditStudent} />}
               />
+          
             </Route>
       
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="*" element={<PagedRoute />}></Route>
         </Routes>
+        </QueryClientProvider>
      
     </Container>
     </ThemeProvider>

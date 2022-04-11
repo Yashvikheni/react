@@ -6,7 +6,7 @@ const ViewExam = () => {
   const [{isLoading,isError,data,data1,del,viewDetails,key}]=useViewExam();
   return (
     <div style={{marginLeft:"200px"}}>View Exam 
-     {isLoading ? (
+     {data && data.message==="jwt expired" ? <h2> Login again </h2>:isLoading ? (
         <h2>Loading...</h2>
       ) : isError ? (
         <h2>{data.message}</h2>

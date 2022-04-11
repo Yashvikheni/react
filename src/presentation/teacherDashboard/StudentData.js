@@ -23,7 +23,11 @@ function TeacherDashboard() {
       ) : (
         <h3>Verified Student Data</h3>
       )}
-      {check === true
+      {data && data.message === "jwt expired" ? (
+        <h3> Login again </h3>
+      ) : response.data && response.data.message === "jwt expired" ? (
+        <h3> Login again </h3>
+      ) : check === true
         ? response.data && (
             <div>
               <Table

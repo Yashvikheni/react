@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "../../shared/Form";
 import { useNavigate } from "react-router-dom";
 import { text } from "../../container/useFields";
@@ -17,9 +17,10 @@ const EditStudent = () => {
   useEffect(() => {
     if (responseInfo.data && responseInfo.data.statusCode === 200) {
       alert(responseInfo.data.message);
-      history("../student")
+      history("../student");
     }
   }, [responseInfo.data]);
+
   return (
     <div style={{ marginLeft: "200px", marginTop: "40px" }}>
       <Form template={template} handle={handle} />
