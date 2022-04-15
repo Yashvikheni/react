@@ -45,6 +45,10 @@ const Navbar = ({ auth, theme, toggleTheme }) => {
               <li>
                 <Link to="/filtertable"> Filter Task</Link>
               </li>
+              <li>
+                <Link to="/courses"> character</Link>
+              </li>
+          
             </>
           )}
           <li>

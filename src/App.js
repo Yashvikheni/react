@@ -29,12 +29,18 @@ import styled,{ThemeProvider} from 'styled-components'
 import useDarkMode from './theme/useDarkMode'
 import { GlobalStyles,lightTheme,darkTheme } from './theme/GlobalStyles';
 import FilterTable from './presentation/FilterTable';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import Courses from './presentation/Courses';
+import { QueryClient, QueryClientProvider } from 'react-query'
+import Other from './presentation/Other';
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from 'react-apollo';
 const Container=styled.div`
 text-align: center;
 `;
 function App() {
-
+const client =new ApolloClient({
+  uri:"https://rickandmortyapi.com/graphql"
+})
   const queryClient = new QueryClient()
   const [{theme,toggleTheme}]=useDarkMode();
   const themeMode= theme==='light'?lightTheme:darkTheme;
@@ -47,15 +53,17 @@ function App() {
     <ThemeProvider theme={themeMode}>
     <Container> 
       <GlobalStyles/>
-      <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
   
+      <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
+     <ApolloProvider client={ApolloClient}>
       <QueryClientProvider client={queryClient}>
         <Routes>
-            <Route  path="/" element={<Home />}></Route>
+            <Route  path="/react" element={<Home />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/signup" element={<SignUp />}></Route>
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
             <Route path="/filtertable" element={<FilterTable />}></Route>
+            <Route path="/courses" element={<Courses />}></Route>
             <Route path="/logout" element={<ProtectedRoute comp={Logout} />} />
             
             <Route
@@ -124,7 +132,9 @@ function App() {
           <Route path="/newpassword" element={<NewPassword />}></Route>
           <Route path="*" element={<PagedRoute />}></Route>
         </Routes>
+        <Other/>
         </QueryClientProvider>
+        </ApolloProvider>
      
     </Container>
     </ThemeProvider>
