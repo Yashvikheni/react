@@ -33,13 +33,13 @@ import Courses from './presentation/Courses';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Other from './presentation/Other';
 import ApolloClient from 'apollo-boost'
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from'@apollo/client' ;
 const Container=styled.div`
 text-align: center;
 `;
 function App() {
 const client =new ApolloClient({
-  uri:"https://rickandmortyapi.com/graphql"
+  uri:"https://graphqlzero.almansi.me/api"
 })
   const queryClient = new QueryClient()
   const [{theme,toggleTheme}]=useDarkMode();
@@ -55,7 +55,7 @@ const client =new ApolloClient({
       <GlobalStyles/>
   
       <Navbar auth={auth} theme={theme} toggleTheme={toggleTheme}/>
-     <ApolloProvider client={ApolloClient}>
+     <ApolloProvider client={client}>
       <QueryClientProvider client={queryClient}>
         <Routes>
             <Route  path="/react" element={<Home />}></Route>
