@@ -13,8 +13,11 @@ const Table = ({
   fill
 
 }) => {
+
+
   const data = tableData.length>0
     ? tableData.map((row, index) => {
+     
         let rowData = [];
         let id = [];
         let i = 0;
@@ -36,7 +39,8 @@ const Table = ({
             {rowData.map((data, index) => (
               
               <td key={index} data-heading={data.key}>
-                {Array.isArray(data.val) &&
+                {
+                Array.isArray(data.val) &&
                 data.val.every((val) => typeof val === "object") ? (
                   <div key={index}>
                     <Table

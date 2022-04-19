@@ -32,14 +32,39 @@ import FilterTable from './presentation/FilterTable';
 import Courses from './presentation/Courses';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import Other from './presentation/Other';
-import ApolloClient from 'apollo-boost'
-import { ApolloProvider } from'@apollo/client' ;
+import { ApolloClient } from '@apollo/client';
+import { ApolloProvider,InMemoryCache ,split, HttpLink } from'@apollo/client' ;
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
+import { createClient } from 'graphql-ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+
+
+
 const Container=styled.div`
 text-align: center;
 `;
 function App() {
+  const httpLink = new HttpLink({
+    uri: 'https://graphqlzero.almansi.me/api'
+  });
+  
+  const wsLink = new GraphQLWsLink(createClient({
+    url: 'ws://localhost:3000/subscriptions',
+  }));
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink,
+    httpLink,
+  );
 const client =new ApolloClient({
-  uri:"https://graphqlzero.almansi.me/api"
+  link: splitLink,
+  cache: new InMemoryCache()
 })
   const queryClient = new QueryClient()
   const [{theme,toggleTheme}]=useDarkMode();

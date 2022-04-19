@@ -6,7 +6,7 @@ const AllExam = () => {
   const [{isLoading,exam,isError,data,handle,key,key2}]=useAllExam();
   return (
     <div style={{marginLeft:"200px" ,marginTop:"40px"}}>All Exam 
-    {data && data.message==="jwt expired" ? <h2>Login again </h2>:isLoading ? (
+    {data && data.message==="jwt expired" ? <h2>useEffectLogin again </h2>:isLoading ? (
        <h2>Loading...</h2>
      ) : isError ? (
        <h2>{data.message}</h2>):data && 

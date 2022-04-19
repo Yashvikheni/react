@@ -1,58 +1,111 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { Query } from 'react-apollo'
 //import gql from 'graphql-tag'
 import Table from '../shared/Table'
 import ApolloClient from 'apollo-boost'
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery,useMutation } from '@apollo/client';
  import InputField from '../shared/InputField'
 import { Button } from '@material-ui/core';
 const Courses = () => {
-  const [data1, setData1] = useState(  {name: "",
-    username: "wetwet",
-    email: "Wgtewg@gmail.com",
-    address: "WEgtewg",
-    phone: "ewtgew",
-    website: "Egfeg",
-    company: "fwef"})
+  const [data1, setData1] = useState("")
+  const [idd, setId] = useState(0)
 
-const GET_USER= gql`
+
+const GET_AlBUM= gql`
         {
-           user(id: 5) {
+          album(id: 5) {
             id,
-            name
+            title
           }
         }
       `;
-      const { loading, error, data } = useQuery(GET_USER);
-      if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-const array=[]
-array[0]=data.user
-const handleChange=(e)=>{
- const value=e.target.value
-  setData1(prev=>({...prev,[e.target.name]:value}
-  ))
-}
-const handle=()=>{
-  console.log(data1);
-  const ok=gql`{
-    createUser(input: ${data1}){
-     user
+
+      const ALL_DATA=gql`
+      {
+        albums{
+         data{
+          id
+          title
+          user{
+            id
+            name
+          }
+        }
+        }
+      }`
+const ADD_ALBUM=gql`
+  mutation updateAlbum($id:ID!,$title: String!,
+    $userId: ID!){
+      updateAlbum(id:$id,input:{title:$title,userId:$userId}){
+      id
+      title
+      
     }
-  }`
-  console.log(ok);
+  }
+`;
+const ADD=gql`
+  mutation createAlbum($title: String!,
+    $userId: ID!){
+      createAlbum(input:{title:$title,userId:$userId}){
+      id,title
+    }
+  }
+`;
+const DELETE=gql`
+mutation deleteAlbum($id:ID!){
+  deleteAlbum(id:$id)
+  
 }
+`
+
+
+//const { loading, error, data } = useQuery(GET_AlBUM);
+const [addAlbum] = useMutation(ADD_ALBUM);
+const [add] = useMutation(ADD);
+const [del] = useMutation(DELETE);
+
+const {loading,error,data}= useQuery(ALL_DATA);
+if (loading) return 'Loading...';
+if (error) return `Error! ${error.message}`;
+const handleChange=(e)=>{
+  const value=e.target.value
+ if(e.target.name==="ID"){
+  setId(e.target.value)
+ }else{
+  setData1(value)
+ }
+}
+
+const handle=()=>{
+  addAlbum( { variables: {id: idd, title: data1 ,userId:25},refetchQueries:{
+    include: [ALL_DATA],
+  }
+  })
+}
+const handle1=()=>{
+  console.log(data1)
+  add({ variables: { title: data1 ,userId:1}})
+}
+
   return (
       <div style={{marginTop:"100px"}}>
-     {array.length>0 && 
-     <>
-         <p>User {array[0].id} data</p>
-         <Table  tableData={array} headingColumns={["id","name"]}></Table>
-         </>
-     }
-<p>post User</p>
-<InputField style={{width:"auto"}} name="name" onChange={(e)=>handleChange(e)} placeholder="enter data"></InputField>
-<button onClick={handle}>add</button>
+     <br/>
+     <p>post data</p>
+<InputField style={{width:"auto"}} name="title" onChange={(e)=>handleChange(e)} placeholder="enter title"></InputField>
+<button onClick={handle1}>POST DATA</button>
+
+     <p> update  data</p>
+<InputField style={{width:"auto"}} name="ID" onChange={(e)=>handleChange(e)} placeholder="ID"></InputField>
+<InputField style={{width:"auto"}} name="title" onChange={(e)=>handleChange(e)} placeholder="enter title"></InputField>
+<button onClick={handle}>update</button>
+<br/>
+<br/>
+<p> delete  data</p>
+<InputField style={{width:"auto"}} name="ID" onChange={(e)=>handleChange(e)} placeholder="ID"></InputField>
+<button onClick={()=> del({ variables: { id:idd}})}>DELETE</button>
+      <p> All data</p> 
+         <Table  tableData={data.albums.data}   headingColumns={["id","title"]}></Table>
+
       </div>
   );
 
